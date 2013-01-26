@@ -1,0 +1,44 @@
+extends layout
+
+block head
+  script
+    var stopID = #{stop}
+    var yelp = #{stop}
+  script(src='js/stops.js')
+  
+block body
+  div.row-fluid
+    h4 Stop # 
+      span.label.label-important #{stop}
+      &nbsp; | &nbsp;
+      span#stopname
+    div#area
+    div#demographics.span4
+      table.table.table-hover
+        th Demographic Information
+        th
+        tr
+          td Total population
+          td#totpop
+        tr
+          td Weighted population
+          td#weightedpop
+        tr
+          td Total area
+          td#totarea
+        tr 
+          td Search radius area
+          td#searcharea
+        th Businesses
+        th
+        tr
+          td Number of restaurants
+          td#numrest
+    div.span6
+      h4 Places to get food
+      ul#restlist.unstyled
+      
+    
+  
+  script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js')
+  
