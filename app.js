@@ -36,13 +36,12 @@ app.get('/partials/:name', routes.partials);
 
 // JSON API
 app.get('/api/yelp/:latlng/:radius', api.yelp);
-app.get('/api/name', api.name);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 
 // Start server
-
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
 });
