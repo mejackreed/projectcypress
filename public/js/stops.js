@@ -88,7 +88,7 @@ function yelpQuery(latlng, radius) {
 
 function blockQuery(name, latlng) {
 	//console.log(name, latlng)
-	var url = buildFTQuery("SELECT TRACTCE10, BLKGRPCE10, ALAND10 FROM " + fusionCensusID + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + latlng + "), 400))")
+	var url = buildFTQuery("SELECT TRACTCE10, BLKGRPCE10, ALAND10, COUNTYFP10 FROM " + fusionCensusID + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + latlng + "), 400))")
 	$.ajax({
 		url : url,
 		dataType : "jsonp"
@@ -109,7 +109,7 @@ function censusQuery(data) {
 	$.each(data, function(index, value) {
 		//$('#blocks').append('<li>' + value[0] + " : " + value[1] + '</li>')
 		area += parseFloat(value[2])
-		var url = buildCensus("P0010001&for=block+group:" + value[1] + "&in=state:13+county:121+tract:" + value[0])
+		var url = buildCensus("P0010001&for=block+group:" + value[1] + "&in=state:13+county:" + value[3] + "+tract:" + value[0])
 		console.log(url)
 		$.ajax({
 			url : url,
@@ -153,8 +153,6 @@ googleKey = "AIzaSyBhwGfhVZK2JpmMVelyTojjHVSqbSyM1ls";
 censusURL = "http://api.census.gov/data/2010/sf1";
 
 fusionURL = "https://www.googleapis.com/fusiontables/v1/query";
-
-pop_tract = "P0010001&for=block+group:*&in=state:13+county:121+tract:";
 
 stopsRoutesQuery = "SELECT route_id FROM " + stopsRoutesTableID + " WHERE stop_id = ";
 
