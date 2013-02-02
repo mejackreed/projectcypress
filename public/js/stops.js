@@ -31,14 +31,14 @@ function buildCensus(query) {
 }
 
 function stopQuery() {
-	console.log(stopID.stopID)
+	//console.log(stopID.stopID)
 	var url = buildFTQuery("SELECT stop_name, stop_lat, stop_lon FROM " + agency.gtfs.stops + " WHERE stop_id = '" + stopID.stopID + "'")
 	$.ajax({
 		url : url,
 		dataType : "jsonp"
 	}).done(function(data) {
 		if (data['rows']) {
-			console.log(data)
+			//console.log(data)
 			$('#stopname').html(data['rows'][0][0])
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
@@ -78,7 +78,7 @@ function yelpQuery(latlng, radius) {
 	$.ajax({
 		url : '/api/yelp/' + latlng + '/' + radius,
 	}).done(function(data, error) {
-		console.log(error)
+		//console.log(error)
 		if (error != "success") {
 			$('#numrest').html(data.total)
 			$.each(data.businesses, function(index, value) {
@@ -119,27 +119,10 @@ function handleCensusResponse(data) {
 			area : value[9],
 			age : [['under_five', value[11]], ['five_nine', value[12]], ['ten_fourteen', value[13]], ['fifteen_seventeen', value[14]], ['eighteen_twentyfour', value[15]], ['twentyfive_thirtyfour', value[16]], ['thirtyfive_fourtyfour', value[17]], ['fourtyfive_fiftyfour', value[18]], ['fiftyfive_sixtyfour', value[19]], ['sixtyfive_seventyfour', value[20]], ['seventyfive_eightfour', value[21]], ['eightyfive_over', value[22]]],
 			race : [['White Alone', value[24]], ['Black or African American Alone', value[25]], ['American Indian and Alaska Native Alone', value[26]], ['Asian Alone', value[27]], ['Native Hawaiian and Other Pacific Islander Alone', value[28]], ['Some Other Race Alone', value[29]], ['Two or More races', value[30]]],
-			//['Employed Civilian Population 16 Years And Over', value[31]], 
+			//['Employed Civilian Population 16 Years And Over', value[31]],
 			employment : [['Private Sector', value[32]], ['Public Sector', value[33]], ['Self-Employed', value[34]], ['Private Non-Profit', value[35]], ['Unpaid Family Workers', value[36]]],
-			householdIncome : {
-				numHouseHolds : value[37],
-				range1 : value[38],
-				range2 : value[39],
-				range3 : value[40],
-				range4 : value[41],
-				range5 : value[42],
-				range6 : value[43],
-				range7 : value[44],
-				range8 : value[45],
-				range9 : value[46],
-				range10 : value[47],
-				range11 : value[48],
-				range12 : value[49],
-				range13 : value[50],
-				range14 : value[51],
-				range15 : value[52],
-				range16 : value[53],
-			},
+			//numHouseHolds : value[37],
+			householdIncome : [["Less than $10,000", value[38]], ["$10,000 to $14,999", value[39]], ["$15,000 to $19,999", value[40]], ["$20,000 to $24,999", value[41]], ["$25,000 to $29,999", value[42]], ["$30,000 to $34,999", value[43]], ["$35,000 to $39,999", value[44]], ["$40,000 to $44,999", value[45]], ["$45,000 to $49,999", value[46]], ["$50,000 to $59,999", value[47]], ["$60,000 to $74,999", value[48]], ["$75,000 to $99,999", value[49]], ["$100,000 to $124,999", value[50]], ["$125,000 to $149,999", value[51]], ["$150,000 to $199,999", value[52]], ["$200,000 or More", value[53]]],
 			perCapitaIncome : value[54],
 			housingUnits : value[55],
 			occupancyStatus : {
@@ -175,7 +158,7 @@ function handleCensusResponse(data) {
 
 function totalBlocks(blks) {
 	//console.log(blks)
-	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, perCapitaIncome = 0, age = [], race = [], employment = [], weightRatio = 0
+	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, perCapitaIncome = 0, age = [], race = [], employment = [], income = [], weightRatio = 0
 	$.each(blks, function(i, value) {
 		totalPop += parseInt(value['totalPopulation'])
 		totalArea += parseFloat(value['area'])
@@ -198,8 +181,14 @@ function totalBlocks(blks) {
 			}
 			employment[i][1] += parseInt(empV[1])
 		})
+		$.each(value['householdIncome'], function(i, incV) {
+			if (income[i] == undefined) {
+				income.push([incV[0], 0])
+			}
+			income[i][1] += parseInt(incV[1])
+		})
 	})
-	perCapitaIncome = Math.round(perCapitaIncome/blks.length*100)/100
+	perCapitaIncome = Math.round(perCapitaIncome / blks.length * 100) / 100
 	//console.log(age)
 	weightRatio = Math.PI / 16 / totalArea
 	totalArea = Math.round(totalArea * 100) / 100;
@@ -211,18 +200,31 @@ function totalBlocks(blks) {
 	ageChart(age, weightRatio)
 	raceChart(race, weightRatio)
 	employmentChart(employment, weightRatio)
+	incomeChart(income, parseInt(blks.length))
 }
-function addCommas(nStr)
-{
-    nStr += '';
-    x = nStr.split('.');
-    x1 = x[0];
-    x2 = x.length > 1 ? '.' + x[1] : '';
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(x1)) {
-        x1 = x1.replace(rgx, '$1' + ',' + '$2');
-    }
-    return x1 + x2;
+
+function addCommas(nStr) {
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
+function getIncomeValues(income, num) {
+	var inc = [];
+	var labels = [];
+	var data = [];
+	$.each(income, function(i, val) {
+		inc.push(parseInt(val[1] / num))
+		labels.push(val[0])
+	})
+	data = [inc, labels];
+	return data;
 }
 
 function getValues(arr, weight) {
@@ -242,8 +244,67 @@ function getRaceValues(arr, weight) {
 	return vals;
 }
 
+function incomeChart(inc, num) {
+	inc = getIncomeValues(inc, num)
+	chart = new Highcharts.Chart({
+		chart : {
+			renderTo : 'income-chart',
+			type : 'bar'
+		},
+		title : {
+			text : 'Household Income'
+		},
+		subtitle : {
+			text : ''
+		},
+		xAxis : {
+			categories : inc[1],
+			title : {
+				text : "Income Bracket"
+			}
+		},
+		yAxis : {
+			min : 0,
+			title : {
+				text : ""
+
+			}
+		},
+		tooltip : {
+			formatter : function() {
+				return '' + this.series.name + ': ' + this.y;
+			}
+		},
+		plotOptions : {
+			bar : {
+				dataLabels : {
+					enabled : true
+				}
+			}
+		},
+		legend : {
+			enabled : false,
+			layout : 'vertical',
+			align : 'right',
+			verticalAlign : 'top',
+			x : -100,
+			y : 100,
+			floating : true,
+			borderWidth : 1,
+			backgroundColor : '#FFFFFF',
+			shadow : true
+		},
+		credits : {
+			enabled : false
+		},
+		series : [{
+			name : "Number of Households",
+			data : inc[0]
+		}]
+	});
+}
+
 function employmentChart(emp, weight) {
-	console.log(emp)
 	chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'employment-chart',
@@ -280,7 +341,6 @@ function employmentChart(emp, weight) {
 
 function raceChart(race, weight) {
 	var raceValues = getRaceValues(race, weight)
-	console.log(raceValues)
 	chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'race-chart',
@@ -336,6 +396,9 @@ function ageChart(age, weight) {
 			title : {
 				text : 'Population'
 			}
+		},
+		legend : {
+			enabled:false
 		},
 		plotOptions : {
 			column : {
