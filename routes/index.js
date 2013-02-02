@@ -77,7 +77,6 @@ exports.stops = function(req, res) {
 	var stop = {"stopID" : req.params.stop};
 	var stopID = req.params.stop;
 	var agency = req.params.agency;
-	console.log(stop)
 	res.render('stop', {
 		stopID : stopID,
 		stop : JSON.stringify(stop),

@@ -8,44 +8,47 @@ block head
   script(src='js/stops.js')
   
 block body
-  div.row-fluid
-    h4 Stop # 
-      span.label.label-important #{stopID}
-      &nbsp; | &nbsp;
-      span#stopname
-      &nbsp; | &nbsp;
-      a(href='#{website}', target='_blank') #{name}
-    div#area
-    div#demographics.span5
-      table.table.table-hover
-        th Demographic Information
-        th
-        tr
-          td Total population
-          td#totpop
-        tr
-          td Weighted population
-          td#weightedpop
-        tr
-          td Total area
-          td#totarea
-        tr 
-          td Search radius area
-          td#searcharea
-        th Businesses
-        th
-        tr
-          td Number of restaurants
-          td#numrest
-    
-      
-  div#age-chart.span6
-  div#race-chart.span6
-  div#income-chart.span6
-  div#map-canvas
-  div.span6
-      h4 Places to get food
-      ul#restlist.unstyled
+  div.container-fluid
+    div.span6
+      h4 Stop # 
+        span.label.label-important #{stopID}
+        &nbsp; | &nbsp;
+        span#stopname
+        &nbsp; | &nbsp;
+        a(href='#{website}', target='_blank') #{name}
+      div#area
+      div#demographics.span5
+        table.table.table-hover
+          th Demographic Information
+          th
+          tr
+            td Total population
+            td#totpop
+          tr
+            td Weighted population
+            td#weightedpop
+          tr
+            td Total area
+            td#totarea
+          tr 
+            td Search radius area
+            td#searcharea
+          tr
+            td Per Capita Income
+            td#percapitaincome
+          th Businesses
+          th
+          tr
+            td Number of restaurants
+            td#numrest
+    div#employment-chart.span6
+    div#age-chart.span6
+    div#race-chart.span6
+    div#income-chart.span6
+    div#map-canvas.span6
+    div.span6
+        h4 Places to get food
+        ul#restlist.unstyled
       
     
   

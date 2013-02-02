@@ -1,4 +1,3 @@
-var routeID;
 var map;
 //var stopPopulation = 0;
 $(window).load(function() {
@@ -33,7 +32,7 @@ function buildCensus(query) {
 
 function stopQuery() {
 	console.log(stopID.stopID)
-	var url = buildFTQuery("SELECT stop_name, stop_lat, stop_lon FROM " + agency.gtfs.stops + " WHERE stop_id = '" + stopID.stopID + "'" )
+	var url = buildFTQuery("SELECT stop_name, stop_lat, stop_lon FROM " + agency.gtfs.stops + " WHERE stop_id = '" + stopID.stopID + "'")
 	$.ajax({
 		url : url,
 		dataType : "jsonp"
@@ -78,12 +77,14 @@ function addMap(name, latlng) {
 function yelpQuery(latlng, radius) {
 	$.ajax({
 		url : '/api/yelp/' + latlng + '/' + radius,
-	}).done(function(data) {
-		console.log(data)
-		$('#numrest').html(data.total)
-		$.each(data.businesses, function(index, value) {
-			$('#restlist').append('<li>' + value.name + '</li>')
-		})
+	}).done(function(data, error) {
+		console.log(error)
+		if (error != "success") {
+			$('#numrest').html(data.total)
+			$.each(data.businesses, function(index, value) {
+				$('#restlist').append('<li>' + value.name + '</li>')
+			})
+		}
 		console.log(data)
 	})
 }
@@ -95,7 +96,7 @@ function blockQuery(name, latlng) {
 		dataType : "jsonp"
 	}).done(function(data) {
 		if (data['rows']) {
-			console.log(data)
+			//console.log(data)
 			//censusQuery(data['rows'])
 			handleCensusResponse(data)
 		} else {
@@ -117,8 +118,9 @@ function handleCensusResponse(data) {
 			totalPopulation : value[7],
 			area : value[9],
 			age : [['under_five', value[11]], ['five_nine', value[12]], ['ten_fourteen', value[13]], ['fifteen_seventeen', value[14]], ['eighteen_twentyfour', value[15]], ['twentyfive_thirtyfour', value[16]], ['thirtyfive_fourtyfour', value[17]], ['fourtyfive_fiftyfour', value[18]], ['fiftyfive_sixtyfour', value[19]], ['sixtyfive_seventyfour', value[20]], ['seventyfive_eightfour', value[21]], ['eightyfive_over', value[22]]],
-			race : [['white', value[24]], ['black', value[25]], ['americanindian', value[26]], ['asian', value[27]], ['pacific', value[28]], ['other', value[29]], ['twoOrMore', value[30]]],
-			employment : [['employedOver16', value[31]], ['privateSector', value[32]], ['publicSector', value[33]], ['self', value[34]], ['privateNonProfit', value[35]], ['unpaidFamilyWorkers', value[36]]],
+			race : [['White Alone', value[24]], ['Black or African American Alone', value[25]], ['American Indian and Alaska Native Alone', value[26]], ['Asian Alone', value[27]], ['Native Hawaiian and Other Pacific Islander Alone', value[28]], ['Some Other Race Alone', value[29]], ['Two or More races', value[30]]],
+			//['Employed Civilian Population 16 Years And Over', value[31]], 
+			employment : [['Private Sector', value[32]], ['Public Sector', value[33]], ['Self-Employed', value[34]], ['Private Non-Profit', value[35]], ['Unpaid Family Workers', value[36]]],
 			householdIncome : {
 				numHouseHolds : value[37],
 				range1 : value[38],
@@ -172,16 +174,16 @@ function handleCensusResponse(data) {
 }
 
 function totalBlocks(blks) {
-	console.log(blks)
-	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, age = [], race = [], weightRatio = 0
+	//console.log(blks)
+	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, perCapitaIncome = 0, age = [], race = [], employment = [], weightRatio = 0
 	$.each(blks, function(i, value) {
 		totalPop += parseInt(value['totalPopulation'])
 		totalArea += parseFloat(value['area'])
+		perCapitaIncome += parseInt(value['perCapitaIncome'])
 		$.each(value['age'], function(i, ageV) {
 			if (age[i] == undefined) {
 				age.push([ageV[0], 0])
 			}
-			//console.log(age[i])
 			age[i][1] += parseInt(ageV[1])
 		})
 		$.each(value['race'], function(i, raceV) {
@@ -190,16 +192,37 @@ function totalBlocks(blks) {
 			}
 			race[i][1] += parseInt(raceV[1])
 		})
+		$.each(value['employment'], function(i, empV) {
+			if (employment[i] == undefined) {
+				employment.push([empV[0], 0])
+			}
+			employment[i][1] += parseInt(empV[1])
+		})
 	})
-	console.log(age)
+	perCapitaIncome = Math.round(perCapitaIncome/blks.length*100)/100
+	//console.log(age)
 	weightRatio = Math.PI / 16 / totalArea
 	totalArea = Math.round(totalArea * 100) / 100;
 	$('#totpop').html(totalPop);
 	$('#totarea').html(totalArea)
 	$('#weightedpop').html(Math.round(weightRatio * totalPop * 100) / 100)
 	$('#searcharea').html(Math.round(.25 * .25 * Math.PI * 100) / 100 + ' miles')
+	$('#percapitaincome').html("$" + addCommas(perCapitaIncome))
 	ageChart(age, weightRatio)
 	raceChart(race, weightRatio)
+	employmentChart(employment, weightRatio)
+}
+function addCommas(nStr)
+{
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
 }
 
 function getValues(arr, weight) {
@@ -213,34 +236,46 @@ function getValues(arr, weight) {
 function getRaceValues(arr, weight) {
 	vals = []
 	$.each(arr, function(i, value) {
-		var label = ""
-		switch (value[0]) {
-			case 'white':
-				label = "White alone";
-				break;
-			case 'black':
-				label = "Black or African American Alone";
-				break;
-			case 'americanindian':
-				label = "American Indian and Alaska Native Alone";
-				break;
-			case 'asian':
-				label = "Asian Alone"
-				break;
-			case 'pacific':
-				label = "Native Hawaiian and Other Pacific Islander Alone";
-				break;
-			case 'other':
-				label = "Some Other Race Alone";
-				break;
-			case 'twoOrMore':
-				label = "Two or More races";
-				break;
-		}
 
-		vals.push([label, Math.round(value[1] * weight)])
+		vals.push([value[0], Math.round(value[1] * weight)])
 	})
 	return vals;
+}
+
+function employmentChart(emp, weight) {
+	console.log(emp)
+	chart = new Highcharts.Chart({
+		chart : {
+			renderTo : 'employment-chart',
+			plotBackgroundColor : null,
+			plotBorderWidth : null,
+			plotShadow : false
+		},
+		title : {
+			text : 'Employment Sector'
+		},
+		tooltip : {
+			pointFormat : '<b>{point.percentage}%</b>',
+			percentageDecimals : 2
+		},
+		plotOptions : {
+			pie : {
+				allowPointSelect : true,
+				cursor : 'pointer',
+				dataLabels : {
+					enabled : false,
+				}
+			}
+		},
+		series : [{
+			type : 'pie',
+			name : 'Sector',
+			data : emp
+		}],
+		credits : {
+			enabled : false
+		},
+	});
 }
 
 function raceChart(race, weight) {
@@ -319,27 +354,6 @@ function ageChart(age, weight) {
 	});
 }
 
-var buildQuery, censusKey, censusURL, fusionCensusID, fusionURL, googleKey, latlng, obj, params, pop_tract, routesQuery, routesTableID, stopsRoutesQuery, stopsRoutesTableID, stopsTableID, _i, _len;
-
-tables = [];
-
-stopsTableID = "11eAYt_iVmfFIa_sUJ6WNq44Y48LrQ7WHD_Pm4_Q";
-
-fusionCensusID = "1fMVqP0kBDm6xJerswSWdsAB59wHAjPrDJb5gZlI";
-
-stopsRoutesTableID = "1k8rQw5krM5mUr5-2Q-vytLMAn8iIGDMF5jYXcOw";
-
-routesTableID = "1vAAlfeAvvUQumHs64tYW5uBOduboZ-eu4jrQGQk";
-
-censusKey = "ae0a36244578b82533c25a3aea85bb66052aecfc";
-
 googleKey = "AIzaSyBhwGfhVZK2JpmMVelyTojjHVSqbSyM1ls";
 
-censusURL = "http://api.census.gov/data/2010/sf1";
-
 fusionURL = "https://www.googleapis.com/fusiontables/v1/query";
-
-stopsRoutesQuery = "SELECT route_id FROM " + stopsRoutesTableID + " WHERE stop_id = ";
-
-routesQuery = "SELECT route_short_name, route_long_name FROM " + routesTableID + " WHERE route_id = ";
-
