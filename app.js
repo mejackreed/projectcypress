@@ -31,7 +31,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/marta/stop/:stop', routes.stops);
+app.get('/:agency/stop/:stop', routes.stops);
 app.get('/partials/:name', routes.partials);
 
 // JSON API

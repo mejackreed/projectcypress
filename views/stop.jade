@@ -2,16 +2,19 @@ extends layout
 
 block head
   script
-    var stopID = #{stop}
-    var yelp = #{stop}
+    var stopID = !{stop}
+    var agency = !{agency}
+    
   script(src='js/stops.js')
   
 block body
   div.row-fluid
     h4 Stop # 
-      span.label.label-important #{stop}
+      span.label.label-important #{stopID}
       &nbsp; | &nbsp;
       span#stopname
+      &nbsp; | &nbsp;
+      a(href='#{website}', target='_blank') #{name}
     div#area
     div#demographics.span5
       table.table.table-hover
@@ -34,13 +37,15 @@ block body
         tr
           td Number of restaurants
           td#numrest
-    div.span6
-      h4 Places to get food
-      ul#restlist.unstyled
+    
       
   div#age-chart.span6
   div#race-chart.span6
+  div#income-chart.span6
   div#map-canvas
+  div.span6
+      h4 Places to get food
+      ul#restlist.unstyled
       
     
   
