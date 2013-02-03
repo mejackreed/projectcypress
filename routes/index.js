@@ -74,9 +74,9 @@ exports.index = function(req, res) {
 };
 
 exports.stops = function(req, res) {
-	var stop = {"stopID" : req.params.stop};
+	var stop = {"stopID" : req.params.stop.toUpperCase()};
 	var stopID = req.params.stop;
-	var agency = req.params.agency;
+	var agency = req.params.agency.toLowerCase();
 	res.render('stop', {
 		stopID : stopID,
 		stop : JSON.stringify(stop),
