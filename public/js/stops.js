@@ -228,7 +228,7 @@ function getTravelValues(travel, num) {
 	labels = [];
 	$.each(travel, function(i, value) {
 		vals.push(Math.round(value[1] / num));
-		labels.push(value[0]);
+		labels.push(value[0].replace(" minutes", ""));
 	})
 	return [labels, vals]
 }
@@ -261,7 +261,11 @@ function travelChart(travel, num) {
 			text : ''
 		},
 		xAxis : {
-			categories : travel[0]
+			categories : travel[0],
+			title : {
+				text : "Minutes"
+			}
+
 		},
 		tooltip : {
 			pointFormat : 'Number of Residents: <b>{point.y}</b>',
