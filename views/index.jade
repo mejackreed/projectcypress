@@ -2,11 +2,22 @@ extends layout
 
 block body
   div(ng-controller='AppCtrl')
-    h2 Project Cypress
+    h1 Project Cypress
     div
-      a(href='marta/stop/797') Try this  
+      h3
+        a(href='marta/stop/797') Check out MARTA's Five Points Station 
+      h3
+        a(href='bart/stop/24TH') Check out BARTS's 24th St. Mission Station 
+      h3
+        a(href='cta/stop/1864') Check out CTA's Clark & Lake Station 
 
     div
+      p Project by:
+      ul.unstyled
+        li Aaron Gooze
+        li <a href="http://www.twitter.com/mejackreed">Jack Reed</a>
+        li Landon Reed
+        li James Wong
    
   script(src='js/lib/angular/angular.js')
   script(src='js/app.js')

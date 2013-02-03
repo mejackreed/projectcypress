@@ -8,18 +8,17 @@ block head
   script(src='js/stops.js')
   
 block body
-  div.container-fluid
+  div.row-fluid
     div.span6
-      h4 Stop # 
+      h4.navbar-inner.navbar-text Stop ID 
         span.label.label-important #{stopID}
         &nbsp; | &nbsp;
         span#stopname
         &nbsp; | &nbsp;
         a(href='#{website}', target='_blank') #{name}
-      div#area
-      div#demographics.span5
+      div#demographics
         table.table.table-hover
-          th Demographic Information
+          th <i class="icon-group"> </i> Demographic Information
           th
           tr
             td Total population
@@ -41,13 +40,26 @@ block body
           tr
             td Number of restaurants
             td#numrest
-    div#employment-chart.span6
-    div#age-chart.span6
-    div#race-chart.span6
-    div#income-chart.span6
-    div#map-canvas.span6
-    div.span4
-        h4 Places to get food
+    div.span6
+      h3.navbar-inner <i class="icon-truck"> </i> Employment Sector
+      #employment-chart.chart
+  div.row-fluid
+    div.span6
+      h3.navbar-inner <i class="icon-bar-chart"> </i> Age Distribution
+      #age-chart.chart
+    div.span6
+      h3.navbar-inner <i class="icon-globe"> </i> Racial Composition
+      #race-chart.chart
+  div.row-fluid
+    div.span6
+      h3.navbar-inner <i class="icon-money"> </i> Household Income
+      #income-chart.chart
+    div.span6
+      h3.navbar-inner <i class="icon-globe"> </i> Map of transit stop
+      #map-canvas
+  div.row-fluid
+    div.span6
+        h3.navbar-inner <i class="icon-food"> </i> Places to eat <img src='images/powered-by-google-on-white.png' class="">
         ul#restlist.unstyled
       
     

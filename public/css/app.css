@@ -1,7 +1,7 @@
 /* app css stylesheet */
 #map-canvas{
-	height:400px;
-	width:400px;
+	height:300px;
+	min-width:200px;
 }
 #restlist{
 	height: 250px;
@@ -10,4 +10,8 @@
 #map-canvas img {
   max-width: none;
 }
-
+.chart {
+  min-width: 200px; 
+  height: 300px; 
+  margin: 0 auto;
+}

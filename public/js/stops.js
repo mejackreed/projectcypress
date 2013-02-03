@@ -43,7 +43,7 @@ function stopQuery() {
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
-			yelpQuery(latlng, 0.25)
+			googleQuery(latlng, 0.25)
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
 			$('#stopname').html("Sorry that isn't a stop")
@@ -73,6 +73,28 @@ function addMap(name, latlng) {
 		title : name
 	})
 }
+
+function googleQuery(latlng, radius) {
+	$.ajax({
+		url : '/api/googleplaces/' + latlng + '/' + radius,
+	}).done(function(data, error) {
+		//console.log(data)
+		if (data.status == "OK") {
+			var total
+			if (data.next_page_token){
+				total = "20+"
+			}else{
+				total = data.results.length
+			}
+			$('#numrest').html(total)
+			$.each(data.results, function(index, value) {
+				$('#restlist').append('<li>' + value.name + '</li>')
+			})
+		}
+		//console.log(data)
+	})
+}
+
 
 function yelpQuery(latlng, radius) {
 	$.ajax({
@@ -252,7 +274,7 @@ function incomeChart(inc, num) {
 			type : 'bar'
 		},
 		title : {
-			text : 'Household Income'
+			text : ''
 		},
 		subtitle : {
 			text : ''
@@ -284,15 +306,6 @@ function incomeChart(inc, num) {
 		},
 		legend : {
 			enabled : false,
-			layout : 'vertical',
-			align : 'right',
-			verticalAlign : 'top',
-			x : -100,
-			y : 100,
-			floating : true,
-			borderWidth : 1,
-			backgroundColor : '#FFFFFF',
-			shadow : true
 		},
 		credits : {
 			enabled : false
@@ -313,7 +326,7 @@ function employmentChart(emp, weight) {
 			plotShadow : false
 		},
 		title : {
-			text : 'Employment Sector'
+			text : '',
 		},
 		tooltip : {
 			pointFormat : '<b>{point.percentage}%</b>',
@@ -349,7 +362,7 @@ function raceChart(race, weight) {
 			plotShadow : false
 		},
 		title : {
-			text : 'Race'
+			text : ''
 		},
 		tooltip : {
 			pointFormat : '<b>{point.percentage}%</b>',
@@ -383,7 +396,7 @@ function ageChart(age, weight) {
 			type : 'column'
 		},
 		title : {
-			text : 'Age Distribution'
+			text : ''
 		},
 		xAxis : {
 			categories : ['Under 5', '5 to 9', '10 to 14', '15 to 17', '18 to 24', '25 to 34', '35 to 44', '45 to 54', '55 to 64', '65 to 74', '75 to 84', '85 and over']
@@ -396,6 +409,7 @@ function ageChart(age, weight) {
 			title : {
 				text : 'Population'
 			}
+			
 		},
 		legend : {
 			enabled:false
