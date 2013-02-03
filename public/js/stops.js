@@ -78,7 +78,7 @@ function googleQuery(latlng, radius) {
 	$.ajax({
 		url : '/api/googleplaces/' + latlng + '/' + radius,
 	}).done(function(data, error) {
-		//console.log(data)
+		console.log(data)
 		if (data.status == "OK") {
 			var total
 			if (data.next_page_token){
