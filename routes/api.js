@@ -14,7 +14,7 @@
 // });
 
 var GooglePlaces = require('google-places');
-if (process.env.RACK_ENV == "production") {
+if (process.env.NODE_ENV == "production") {
 	var places = new GooglePlaces(process.env.googlekey);
 }else{
 	var keys = require('../keys.json')
