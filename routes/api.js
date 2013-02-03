@@ -4,18 +4,18 @@
  *
  */
 
-var keys = require('../keys.json')
-
-var yelp = require("yelp").createClient({
-	consumer_key : keys.yelp.consumer_key,
-	consumer_secret : keys.yelp.consumer_secret,
-	token : keys.yelp.token,
-	token_secret : keys.yelp.token_secret
-});
+// var keys = require('../keys.json')
+// 
+// var yelp = require("yelp").createClient({
+	// consumer_key : keys.yelp.consumer_key,
+	// consumer_secret : keys.yelp.consumer_secret,
+	// token : keys.yelp.token,
+	// token_secret : keys.yelp.token_secret
+// });
 
 var GooglePlaces = require('google-places');
 
-var places = new GooglePlaces(keys.googleKey);
+var places = new GooglePlaces(process.env.googlekey);
 
 exports.googleplaces = function(req, res) {
 	console.log(req.params.latlng);
