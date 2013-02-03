@@ -81,9 +81,9 @@ function googleQuery(latlng, radius) {
 		console.log(data)
 		if (data.status == "OK") {
 			var total
-			if (data.next_page_token){
+			if (data.next_page_token) {
 				total = "20+"
-			}else{
+			} else {
 				total = data.results.length
 			}
 			$('#numrest').html(total)
@@ -94,7 +94,6 @@ function googleQuery(latlng, radius) {
 		//console.log(data)
 	})
 }
-
 
 function yelpQuery(latlng, radius) {
 	$.ajax({
@@ -141,9 +140,7 @@ function handleCensusResponse(data) {
 			area : value[9],
 			age : [['under_five', value[11]], ['five_nine', value[12]], ['ten_fourteen', value[13]], ['fifteen_seventeen', value[14]], ['eighteen_twentyfour', value[15]], ['twentyfive_thirtyfour', value[16]], ['thirtyfive_fourtyfour', value[17]], ['fourtyfive_fiftyfour', value[18]], ['fiftyfive_sixtyfour', value[19]], ['sixtyfive_seventyfour', value[20]], ['seventyfive_eightfour', value[21]], ['eightyfive_over', value[22]]],
 			race : [['White Alone', value[24]], ['Black or African American Alone', value[25]], ['American Indian and Alaska Native Alone', value[26]], ['Asian Alone', value[27]], ['Native Hawaiian and Other Pacific Islander Alone', value[28]], ['Some Other Race Alone', value[29]], ['Two or More races', value[30]]],
-			//['Employed Civilian Population 16 Years And Over', value[31]],
 			employment : [['Private Sector', value[32]], ['Public Sector', value[33]], ['Self-Employed', value[34]], ['Private Non-Profit', value[35]], ['Unpaid Family Workers', value[36]]],
-			//numHouseHolds : value[37],
 			householdIncome : [["Less than $10,000", value[38]], ["$10,000 to $14,999", value[39]], ["$15,000 to $19,999", value[40]], ["$20,000 to $24,999", value[41]], ["$25,000 to $29,999", value[42]], ["$30,000 to $34,999", value[43]], ["$35,000 to $39,999", value[44]], ["$40,000 to $44,999", value[45]], ["$45,000 to $49,999", value[46]], ["$50,000 to $59,999", value[47]], ["$60,000 to $74,999", value[48]], ["$75,000 to $99,999", value[49]], ["$100,000 to $124,999", value[50]], ["$125,000 to $149,999", value[51]], ["$150,000 to $199,999", value[52]], ["$200,000 or More", value[53]]],
 			perCapitaIncome : value[54],
 			housingUnits : value[55],
@@ -151,27 +148,8 @@ function handleCensusResponse(data) {
 				occupied : value[57],
 				vacant : value[58]
 			},
-			workTransport : {
-				workers : value[59],
-				carTruckVan : value[60],
-				publicTransit : value[61],
-				motorcycle : value[62],
-				bicycle : value[63],
-				walked : value[64],
-				other : value[65],
-				workAtHome : value[66]
-			},
-			travelTimetoWork : {
-				workers : value[67],
-				less_ten : value[69],
-				ten_nineteen : value[70],
-				twenty_twentynine : value[71],
-				thirty_thirtynine : value[72],
-				forty_fiftynine : value[73],
-				sixty_eightynine : value[74],
-				ninety_more : value[75],
-				workAtHome : value[76]
-			}
+			workTransport : [["Car, truck, or van", value[60]], ["Public transportation (Includes Taxicab)", value[61]], ["Motorcycle", value[62]], ["Bicycle", value[63]], ["Walked", value[64]], ["Other means", value[65]], ["Worked at home", value[66]]],
+			travelTime : [["Less than 10 minutes", value[69]], ["10 to 19 minutes", value[70]], ["20 to 29 minutes", value[71]], ["30 to 39 minutes", value[72]], ["40 to 59 minutes", value[73]], ["60 to 89 minutes", value[74]], ["90 or More minutes", value[75]], ["Worked at home", value[76]]]
 		}))
 
 	})
@@ -180,35 +158,18 @@ function handleCensusResponse(data) {
 
 function totalBlocks(blks) {
 	//console.log(blks)
-	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, perCapitaIncome = 0, age = [], race = [], employment = [], income = [], weightRatio = 0
+	var totalPop = 0, weightedPop = 0, totalArea = 0, searchArea = 0, perCapitaIncome = 0, age = [], race = [], employment = [], income = [], workTransport = [], travelTime = [], weightRatio = 0
 	$.each(blks, function(i, value) {
 		totalPop += parseInt(value['totalPopulation'])
 		totalArea += parseFloat(value['area'])
 		perCapitaIncome += parseInt(value['perCapitaIncome'])
-		$.each(value['age'], function(i, ageV) {
-			if (age[i] == undefined) {
-				age.push([ageV[0], 0])
-			}
-			age[i][1] += parseInt(ageV[1])
-		})
-		$.each(value['race'], function(i, raceV) {
-			if (race[i] == undefined) {
-				race.push([raceV[0], 0])
-			}
-			race[i][1] += parseInt(raceV[1])
-		})
-		$.each(value['employment'], function(i, empV) {
-			if (employment[i] == undefined) {
-				employment.push([empV[0], 0])
-			}
-			employment[i][1] += parseInt(empV[1])
-		})
-		$.each(value['householdIncome'], function(i, incV) {
-			if (income[i] == undefined) {
-				income.push([incV[0], 0])
-			}
-			income[i][1] += parseInt(incV[1])
-		})
+		age = aggValues(value['age'], age)
+		race = aggValues(value['race'], race)
+		employment = aggValues(value['employment'], employment)
+		income = aggValues(value['householdIncome'], income)
+		workTransport = aggValues(value['workTransport'], workTransport)
+		travelTime = aggValues(value['travelTime'], travelTime)
+
 	})
 	perCapitaIncome = Math.round(perCapitaIncome / blks.length * 100) / 100
 	//console.log(age)
@@ -219,10 +180,23 @@ function totalBlocks(blks) {
 	$('#weightedpop').html(Math.round(weightRatio * totalPop * 100) / 100)
 	$('#searcharea').html(Math.round(.25 * .25 * Math.PI * 100) / 100 + ' miles')
 	$('#percapitaincome').html("$" + addCommas(perCapitaIncome))
+	workChart(workTransport)
 	ageChart(age, weightRatio)
 	raceChart(race, weightRatio)
 	employmentChart(employment, weightRatio)
 	incomeChart(income, parseInt(blks.length))
+	travelChart(travelTime, blks.length)
+}
+
+function aggValues(raw, out) {
+	//console.log(raw, out)
+	$.each(raw, function(i, v) {
+		if (out[i] == undefined) {
+			out.push([v[0], 0])
+		}
+		out[i][1] += parseInt(v[1])
+	})
+	return out
 }
 
 function addCommas(nStr) {
@@ -249,6 +223,16 @@ function getIncomeValues(income, num) {
 	return data;
 }
 
+function getTravelValues(travel, num) {
+	vals = [];
+	labels = [];
+	$.each(travel, function(i, value) {
+		vals.push(Math.round(value[1] / num));
+		labels.push(value[0]);
+	})
+	return [labels, vals]
+}
+
 function getValues(arr, weight) {
 	vals = []
 	$.each(arr, function(i, value) {
@@ -264,6 +248,85 @@ function getRaceValues(arr, weight) {
 		vals.push([value[0], Math.round(value[1] * weight)])
 	})
 	return vals;
+}
+
+function travelChart(travel, num) {
+	travel = getTravelValues(travel, num)
+	chart = new Highcharts.Chart({
+		chart : {
+			renderTo : 'travel-chart',
+			type : 'column'
+		},
+		title : {
+			text : ''
+		},
+		xAxis : {
+			categories : travel[0]
+		},
+		tooltip : {
+			pointFormat : 'Number of Residents: <b>{point.y}</b>',
+		},
+		yAxis : {
+			min : 0,
+			title : {
+				text : 'Number of Residents'
+			}
+
+		},
+		legend : {
+			enabled : false
+		},
+		plotOptions : {
+			column : {
+				pointPadding : 0,
+				borderWidth : 1
+			}
+		},
+		series : [{
+			name : 'Number of residents',
+			data : travel[1]
+
+		}],
+		credits : {
+			enabled : false
+		},
+	});
+}
+
+function workChart(work) {
+	chart = new Highcharts.Chart({
+		chart : {
+			renderTo : 'workTransport-chart',
+			spacingBottom : 0,
+			spacingTop : 0,
+			spacingleft : 0,
+			spacingRight : 0
+		},
+		title : {
+			text : '',
+		},
+		tooltip : {
+			pointFormat : '<b>{point.percentage}%</b>',
+			percentageDecimals : 2
+		},
+		plotOptions : {
+			pie : {
+				allowPointSelect : true,
+				cursor : 'pointer',
+				dataLabels : {
+					enabled : false,
+				}
+			}
+		},
+		series : [{
+			type : 'pie',
+			name : 'Sector',
+			data : work
+		}],
+		credits : {
+			enabled : false
+		},
+	});
 }
 
 function incomeChart(inc, num) {
@@ -321,9 +384,10 @@ function employmentChart(emp, weight) {
 	chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'employment-chart',
-			plotBackgroundColor : null,
-			plotBorderWidth : null,
-			plotShadow : false
+			spacingBottom : 0,
+			spacingTop : 0,
+			spacingleft : 0,
+			spacingRight : 0
 		},
 		title : {
 			text : '',
@@ -357,9 +421,10 @@ function raceChart(race, weight) {
 	chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'race-chart',
-			plotBackgroundColor : null,
-			plotBorderWidth : null,
-			plotShadow : false
+			spacingBottom : 0,
+			spacingTop : 0,
+			spacingleft : 0,
+			spacingRight : 0
 		},
 		title : {
 			text : ''
@@ -409,15 +474,15 @@ function ageChart(age, weight) {
 			title : {
 				text : 'Population'
 			}
-			
+
 		},
 		legend : {
-			enabled:false
+			enabled : false
 		},
 		plotOptions : {
 			column : {
-				pointPadding : 0.2,
-				borderWidth : 0
+				pointPadding : 0,
+				borderWidth : 1
 			}
 		},
 		series : [{

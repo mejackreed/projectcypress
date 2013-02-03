@@ -1,17 +1,17 @@
 /* app css stylesheet */
-#map-canvas{
+#map-canvas {
 	height:300px;
 	min-width:200px;
 }
-#restlist{
-	height: 250px;
-	overflow: scroll;
+#restlist {
+	height:250px;
+	overflow:scroll;
 }
 #map-canvas img {
-  max-width: none;
+	max-width:none;
 }
 .chart {
-  min-width: 200px; 
-  height: 300px; 
-  margin: 0 auto;
+	min-width:200px;
+	height:300px;
+	margin:0 auto;
 }
