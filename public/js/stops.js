@@ -43,7 +43,8 @@ function stopQuery() {
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
-			googleQuery(latlng, 0.25)
+			//googleQuery(latlng, 0.25)
+			yelpQuery(latlng, 0.25);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
 			$('#stopname').html("Sorry that isn't a stop")
@@ -98,16 +99,24 @@ function googleQuery(latlng, radius) {
 function yelpQuery(latlng, radius) {
 	$.ajax({
 		url : '/api/yelp/' + latlng + '/' + radius,
-	}).done(function(data, error) {
-		//console.log(error)
-		if (error != "success") {
+		success : function(data) {
 			$('#numrest').html(data.total)
+			var restaurants = '<dl class="dl-horizontal">';
 			$.each(data.businesses, function(index, value) {
-				$('#restlist').append('<li>' + value.name + '</li>')
+				restaurants += '<dt>' + value.name + '</dt><dd><div class="rating"><i class="star-img stars_' + addStarClass(value.rating) + '"></i></div><small class="muted">' + value.review_count + ' Reviews</small></dd>';
 			})
+			$('#restlist').html(restaurants);
+
 		}
-		console.log(data)
 	})
+}
+
+function addStarClass(value) {
+	half_stars = Math.floor(value * 2 + 0.5);
+	stars_to_nearest_half = half_stars / 2;
+	whole_stars = Math.floor(stars_to_nearest_half);
+	var c = (stars_to_nearest_half > whole_stars) ? ("" + whole_stars + "_half") : ("" + whole_stars);
+	return c
 }
 
 function blockQuery(name, latlng) {

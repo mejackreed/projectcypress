@@ -1,17 +1,76 @@
 /* app css stylesheet */
 #map-canvas {
-	height:300px;
-	min-width:200px;
+	height: 300px;
+	min-width: 200px;
 }
 #restlist {
-	height:250px;
-	overflow:scroll;
+	height: 250px;
+	overflow: scroll;
 }
 #map-canvas img {
-	max-width:none;
+	max-width: none;
 }
 .chart {
-	min-width:200px;
-	height:300px;
-	margin:0 auto;
+	min-width: 200px;
+	height: 300px;
+	margin: 0 auto;
+}
+.rightCol {
+}
+.reviews {
+	position: relative;
+}
+.restName {
+	width: 200px;
+}
+.rating {
+	position: relative;
+	overflow: hidden;
+	width: 90px;
+	height: 18px;
+	margin: 0 3px 4px 0;
+}
+/*.rating-container {
+	width: 200px;
+}*/
+.star-img {
+	display: block;
+	float:left;
+	width: 100%;
+	height: 100%;
+	background: url(/images/stars_map.png) no-repeat;
+}
+
+.stars_0 {
+	background-position: 0px 0px;
+}
+
+.stars_1 {
+	background-position: 0px -19px;
+}
+
+.stars_1_half {
+	background-position: 0px -38px;
+}
+
+.stars_2 {
+	background-position: 0px -57px;
+}
+.stars_2_half {
+	background-position: 0px -76px;
+}
+.stars_3 {
+	background-position: 0px -95px;
+}
+.stars_3_half {
+	background-position: 0px -114px;
+}
+.stars_4 {
+	background-position: 0px -133px;
+}
+.stars_4_half {
+	background-position: 0px -152px;
+}
+.stars_5 {
+	background-position: 0px -171px;
 }

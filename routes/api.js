@@ -4,14 +4,14 @@
 *
 */
 
-// var keys = require('../keys.json')
-//
-// var yelp = require("yelp").createClient({
-// consumer_key : keys.yelp.consumer_key,
-// consumer_secret : keys.yelp.consumer_secret,
-// token : keys.yelp.token,
-// token_secret : keys.yelp.token_secret
-// });
+var keys = require('../keys.json')
+
+var yelp = require("yelp").createClient({
+consumer_key : keys.yelp.consumer_key,
+consumer_secret : keys.yelp.consumer_secret,
+token : keys.yelp.token,
+token_secret : keys.yelp.token_secret
+});
 
 var GooglePlaces = require('google-places');
 if (process.env.NODE_ENV == "production") {
