@@ -1,17 +1,33 @@
 extends layout
 
 block body
-  div.row-fluid
-    div.navbar
-      ul.nav.nav-pills#navi-tabs
-        li.active
-          a(href='#home', data-toggle='tab') Home
-        li
-          a(href='#service', data-toggle='tab') Service
-    .span12
-      h2 The agency is #{name}, the route is #{route}
-  div(id="myTabContent",class="tab-content")
-    div#home.tab-pane.fade.in.active
-      p this is the home
-    div#service.tab-pane.fade.in
-      p this is the service
+  div(ng-controller='RouteCtrl')(ng-init='init(#{agency},#{route})' )
+    div.row-fluid
+      .span12
+        h2 The agency is #{name}, the route is {{routeResult.rows[0][3]}}
+        div.navbar
+          ul.nav.nav-pills#navi-tabs
+            li.active
+              a(href='#home', data-toggle='tab') Home
+            li
+              a(href='#service', data-toggle='tab') Service
+            li
+              a(href='#people', data-toggle='tab') People
+            li
+              a(href='#land', data-toggle='tab') Land Use
+    div(id="myTabContent",class="tab-content")
+      div#home.tab-pane.fade.in.active
+        p this is the home {{agency}}
+        p some basic visualization will go here {{route}}
+        p summary statistics {{routeResult}}
+      div#service.tab-pane.fade.in
+      
+        include partials/rservice
+      div#people.tab-pane.fade.in
+        include partials/rpeople
+      div#land.tab-pane.fade.in
+        include partials/rland
+      
+     
+block scripts
+  script(src='/js/routes.js')
