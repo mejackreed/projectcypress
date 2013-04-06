@@ -1,0 +1,17 @@
+extends layout
+
+block body
+  div.row-fluid
+    div.navbar
+      ul.nav.nav-pills#navi-tabs
+        li.active
+          a(href='#home', data-toggle='tab') Home
+        li
+          a(href='#service', data-toggle='tab') Service
+    .span12
+      h2 The agency is #{name}, the route is #{route}
+  div(id="myTabContent",class="tab-content")
+    div#home.tab-pane.fade.in.active
+      p this is the home
+    div#service.tab-pane.fade.in
+      p this is the service

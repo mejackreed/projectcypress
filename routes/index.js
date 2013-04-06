@@ -37,7 +37,7 @@ var systems = {
 	"cta" : {
 		"name" : "CTA",
 		"censusID" : "12Xx42FS78rI-2-uG_CzSQDZ73mbpbQnvYY0houQ",
-		"website" : "transitchicago.combart.gov",
+		"website" : "http://transitchicago.combart.gov",
 		"gtfs" : {
 			"trips" : "1FkPcilk2xjRQCI63ZPRSMAroBuLXWuzWdI3brds",
 			"trips_per_route" : "unknown",
@@ -52,9 +52,9 @@ var systems = {
 
 	},
 	"bart" : {
-		"name": "BART",
+		"name" : "BART",
 		"censusID" : "1vw_dCjWaKCXKUP6Q8IZ4H3K8pvj-Ap1risu-qWg",
-		"website" : "bart.gov",
+		"website" : "http://bart.gov",
 		"gtfs" : {
 			"trips" : "1TECIqPpAuY5_wzGYmGjQCKD47JlKy1ZRnWREdeg",
 			"trips_per_route" : "unknown",
@@ -69,12 +69,36 @@ var systems = {
 	}
 }
 
+exports.agencies = function(req, res) {
+	console.log(req.params)
+	var agency = req.params.agency.toLowerCase();
+	res.render('agency', {
+		agency : JSON.stringify(systems[agency]),
+		name : systems[agency]["name"],
+		website : systems[agency]["website"]
+	});
+}
+
+exports.routes = function(req, res) {
+	console.log(req.params)
+	var agency = req.params.agency.toLowerCase();
+	var route = req.params.route.toLowerCase();
+	res.render('route', {
+		agency : JSON.stringify(systems[agency]),
+		name : systems[agency]["name"],
+		website : systems[agency]["website"],
+		route : route
+	});
+}
+
 exports.index = function(req, res) {
 	res.render('index');
 };
 
 exports.stops = function(req, res) {
-	var stop = {"stopID" : req.params.stop.toUpperCase()};
+	var stop = {
+		"stopID" : req.params.stop.toUpperCase()
+	};
 	var stopID = req.params.stop;
 	var agency = req.params.agency.toLowerCase();
 	res.render('stop', {
@@ -84,7 +108,7 @@ exports.stops = function(req, res) {
 		name : systems[agency]["name"],
 		website : systems[agency]["website"]
 	});
-	//res.send() 
+	//res.send()
 
 }
 

@@ -32,7 +32,10 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/:agency/stop/:stop', routes.stops);
-app.get('/partials/:name', routes.partials);
+app.get('/:agency/route/:route', routes.routes);
+
+//app.get('/partials/:name', routes.partials);
+app.get('/:agency/', routes.agencies);
 
 // JSON API
 app.get('/api/yelp/:latlng/:radius', api.yelp);
