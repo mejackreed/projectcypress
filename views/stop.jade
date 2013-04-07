@@ -8,16 +8,35 @@ block head
   script(src='js/stops.js')
   
 block body
-  div.row-fluid
-    div.span6
+  div.container-fluid
+    div
       h4.navbar-inner.navbar-text Stop ID 
         span.label.label-important #{stopID}
         &nbsp; | &nbsp;
         span#stopname
         &nbsp; | &nbsp;
         a(href='#{website}', target='_blank') #{name}
-      div#demographics
-        table.table.table-hover
+    div.navbar
+      ul.nav.nav-pills#navi-tabs
+        li.active
+          a(href='#home', data-toggle='tab') Home
+        li
+          a(href='#service', data-toggle='tab') Service
+        li
+          a(href='#people', data-toggle='tab') People
+        li
+          a(href='#land', data-toggle='tab') Land Use
+          
+  div(id="myTabContent",class="tab-content")
+    div#home.tab-pane.fade.in.active
+      div.span6
+        h3.navbar-inner <i class="icon-globe"> </i> Map of transit stop
+        #map-canvas
+    div#service.tab-pane.fade.in
+    
+    div#people.tab-pane.fade.in
+      div.row-fluid
+        table.table.table-hover.span6
           th <i class="icon-group"> </i> Demographic Information
           th
           tr
@@ -40,40 +59,38 @@ block body
           tr
             td Number of restaurants
             td#numrest
-    div.span6
-      h3.navbar-inner <i class="icon-money"> </i> Household Income
-      #income-chart.chart
-  div.row-fluid
-    div.span4
-      h3.navbar-inner <i class="icon-road"> </i> Means of Transportation to Work
-      #workTransport-chart.chart
-    div.span4
-      h3.navbar-inner <i class="icon-road"> </i> Travel Time to Work
-      #travel-chart.chart
-    div.span4
-      h3.navbar-inner <i class="icon-globe"> </i> Racial Composition
-      #race-chart.chart
-  div.row-fluid
-    div.span6
-      h3.navbar-inner <i class="icon-bar-chart"> </i> Age Distribution
-      #age-chart.chart
-    div.span6
-      h3.navbar-inner <i class="icon-truck"> </i> Employment Sector
-      #employment-chart.chart
-  div.row-fluid
-    div.span6
-        h3.navbar-inner <i class="icon-food"> </i> Places to eat <a href='http://www.yelp.com'><img src='images/Powered_By_Yelp_Red.png' class=""></a>
-        div#restlist
+        div.span6
+          h3.navbar-inner <i class="icon-money"> </i> Household Income
+          #income-chart.chart
+      div.row-fluid
+        div.span4
+          h3.navbar-inner <i class="icon-road"> </i> Means of Transportation to Work
+          #workTransport-chart.chart
+        div.span4
+          h3.navbar-inner <i class="icon-road"> </i> Travel Time to Work
+          #travel-chart.chart
+        div.span4
+          h3.navbar-inner <i class="icon-globe"> </i> Racial Composition
+          #race-chart.chart
+      div.row-fluid
+        div.span6
+          h3.navbar-inner <i class="icon-bar-chart"> </i> Age Distribution
+          #age-chart.chart
+        div.span6
+          h3.navbar-inner <i class="icon-truck"> </i> Employment Sector
+          #employment-chart.chart
+    div#land.tab-pane.fade.in
+      div.row-fluid
+        div.span6
+          h3.navbar-inner <i class="icon-food"> </i> Places to eat <a href='http://www.yelp.com'><img src='images/Powered_By_Yelp_Red.png' class=""></a>
+          div#restlist
            
-    div.span6
-      h3.navbar-inner <i class="icon-globe"> </i> Map of transit stop
-      #map-canvas
-  div.row-fluid  
+    
     
       
     
   
   script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js')
   script(src='https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false')
-  script(src='//cdnjs.cloudflare.com/ajax/libs/highcharts/2.3.5/highcharts.js')
+  script(src='http://code.highcharts.com/highcharts.js')
   
