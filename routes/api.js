@@ -7,19 +7,13 @@
 //var keys = require('../keys.json')
 
 var yelp = require("yelp").createClient({
-consumer_key : process.env.YELP_CONSUMER_KEY,
-consumer_secret : process.env.YELP_CONSUMER_SECRET,
-token : process.env.YELP_TOKEN,
-token_secret : process.env.TOKEN_SECRET
+	consumer_key : process.env.YELP_CONSUMER_KEY,
+	consumer_secret : process.env.YELP_CONSUMER_SECRET,
+	token : process.env.YELP_TOKEN,
+	token_secret : process.env.YELP_TOKEN_SECRET
 });
 
 var GooglePlaces = require('google-places');
-if (process.env.NODE_ENV == "production") {
-	var places = new GooglePlaces(process.env.googlekey);
-}else{
-	var keys = require('../keys.json')
-	var places = new GooglePlaces(keys.googlekey)
-}
 
 var places = new GooglePlaces(process.env.GOOGLEKEY)
 
@@ -44,6 +38,7 @@ exports.yelp = function(req, res) {
 		ll : req.params.latlng
 	}, function(error, data) {
 		res.send(data)
+		//console.log(error)
 	});
 
 }
