@@ -1,0 +1,58 @@
+div.row-fluid
+  div.span6
+    form
+      label.select
+        span Select Service Type
+        select(ng-model='serviceSelect', ng-options="stop[3] for stop in stopResults", ng-change='updateRoutes()') 
+    table.table.table-hover
+      tr
+        th Service ID
+        th Number of trips
+        th Number of routes
+        th First arrival
+        th Last arrival
+      tr(ng-repeat=" stop in stopResults | filter:serviceSelect")
+        td {{stop[3]}}
+        td {{stop[5]}}
+        td {{stop[6]}}
+        td {{stop[8]}}
+        td {{stop[10]}}
+  div.span6
+    div(ng-show="serviceSelect.length > 0")
+      form
+        label.select
+          span Select Route
+          select(ng-model='routeSelect', ng-options="route[3] for route in routeStopResults ", ng-change='updateRouteInfo()') 
+      table.table.table-hover
+        tr
+          th Route ID
+          th Trips Serving Stop
+          th First arrival
+          th Last arrival
+        tr(ng-repeat=" route in routeStopResults | filter:routeSelect")
+          td 
+            a(href='/{{agency.name}}/route/{{route[3]}}'){{route[3]}}
+          td {{route[6]}}
+          td {{route[8]}}
+          td {{route[10]}}
+div.row-fluid
+  div.span6
+    div(ng-show="routeStats.length > 0")
+      table.table.table-hover
+        tr
+          th Average speed
+          th Route length
+          th Average headway
+          th Std. Dev of headway
+          th Hours of service
+          th Service span
+          th Stop spacing
+        tr(ng-repeat='route in routeStats')
+          td {{route[4]}}
+          td {{route[5]}}
+          td {{route[7]}}
+          td {{route[8]}}
+          td {{route[10]}}
+          td {{route[11]}}
+          td {{route[12]}}
+                

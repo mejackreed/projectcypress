@@ -1,7 +1,15 @@
 var map;
 //var stopPopulation = 0;
 $(window).load(function() {
+	// $(".tabclick").click(function() {
+		// //console.log('test')
+		// //travel_chart.redraw()
+// 		
+// 		
+// 		
+	// });
 	stopQuery()
+	//outputQuery()
 })
 function initialize() {
 	var mapOptions = {
@@ -40,6 +48,28 @@ function stopQuery() {
 		if (data['rows']) {
 			//console.log(data)
 			$('#stopname').html(data['rows'][0][0])
+			name = data['rows'][0][0]
+			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
+			blockQuery(name, latlng)
+			//googleQuery(latlng, 0.25)
+			yelpQuery(latlng, 0.25);
+			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
+		} else {
+			$('#stopname').html("Sorry that isn't a stop")
+			console.log('not a valid stop')
+		}
+	});
+}
+
+function outputQuery() {
+	var url = buildFTQuery("SELECT * FROM " + agency.output.stop + " WHERE stop_id = '" + stopID.stopID + "'")
+	$.ajax({
+		url : url,
+		dataType : "jsonp"
+	}).done(function(data) {
+		if (data['rows']) {
+			console.log(data)
+			$('#firstarrival').html(data['rows'][0][0])
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
@@ -258,10 +288,11 @@ function getRaceValues(arr, weight) {
 	})
 	return vals;
 }
+var travel_chart;
 
 function travelChart(travel, num) {
 	travel = getTravelValues(travel, num)
-	chart = new Highcharts.Chart({
+	travel_chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'travel-chart',
 			type : 'column'

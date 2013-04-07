@@ -48,6 +48,12 @@ var systems = {
 			"calendar" : "1UvcmZPITGce92bESRjSWCd0ZRt7FMKxcLl-heIk",
 			"calendar_dates" : "1QtzsuAPkVK2J1zfEUHPhAQEjKtU0_sFd68AsMgI",
 			"agency" : "13Qswnscl9VmvmlZXGrMhRrK2Q8bkRKD231dVW5k"
+		},
+		"output": {
+			"stop_route" : "1bicK9T-3V3oZjBdZI5_Xh8Ox5_P-sK3E71fvSDw",
+			"route" : "1mr6QLIgyohcA7bDO49S6baY8-xOvGDWmw7iJfm4",
+			"active_trips" : "12cjopQyiJbh2NWthcPTKyJ1ySWLiqkeu3m50CjE",
+			"stop" : "1nFhBi5XL5ETwkxmsB77o-Ik9Ldc9dL_ikYNA5n0"
 		}
 
 	},
@@ -80,14 +86,15 @@ exports.agencies = function(req, res) {
 }
 
 exports.routes = function(req, res) {
-	console.log(req.params)
+	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
-	var route = req.params.route.toLowerCase();
+	var route = req.params.route;
+	console.log(route)
 	res.render('route', {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
-		route : route
+		route : JSON.stringify(route)
 	});
 }
 
