@@ -15,7 +15,7 @@ function(version) {
 			items : '='
 		},
 		controller : function($scope, $element, $attrs) {
-			console.log(2);
+			//console.log(2);
 
 		},
 		template : '<div id="container" class="span12" style="margin: 0 auto">not working</div>',
@@ -33,6 +33,15 @@ function(version) {
 					text : ''
 				},
 				tooltip : {
+					formatter : function() {
+						var hour = parseInt(this.x / 60)
+						var minute = this.x % 60
+						var time = hour + ":" + minute
+						//console.log(hour,minute)
+						//console.log(moment(this.value.toString(), 'mm'));
+						return "<b>" + moment(time, 'hh:mm').format('h:mm A') + "</b> - " + this.y + " trips";
+						//return this.x
+					}
 					//pointFormat : '{series.name}: <b>{point.percentage}%</b>',
 					//percentageDecimals : 1
 				},
@@ -58,14 +67,19 @@ function(version) {
 				},
 				xAxis : {
 					labels : {
-						formatter : function(){
-							return this.value
+						formatter : function() {
+							var hour = parseInt(this.value / 60)
+							var minute = this.value % 60
+							var time = hour + ":" + minute
+							//console.log(hour, minute)
+							//console.log(moment(this.value.toString(), 'mm'));
+							return moment(time, 'hh:mm').format('h:mm A')
 						}
 					}
 				},
 				series : [{
 					//type : 'pie',
-					name : 'test',
+					name : 'Service ID',
 					data : scope.items
 				}]
 			});

@@ -114,18 +114,13 @@ function RouteCtrl($scope, $http, $resource) {
 		}).success(function(data) {
 			//console.log(data)
 			_.each(data['rows'], function(value, i) {
-				//console.log(value[1])
-				//console.log($scope.routeTrips)
+			
 				if (_.where($scope.routeTrips, {
 					"service_id" : value[1]
 				}).length == 0) {
 					$scope.routeTrips.push({
 						"service_id" : value[1],
 						"trips" : [[parseInt(value[2]), parseInt(value[3])]]
-						// "trips" : [{
-						// "time" : value[2],
-						// "sum" : value[3]
-						// }]
 					})
 				} else {
 					_.where($scope.routeTrips, {
@@ -133,9 +128,7 @@ function RouteCtrl($scope, $http, $resource) {
 					}, function(val) {
 						return val
 					}).trips.push([parseInt(value[2]), parseInt(value[3])]//{
-					// "time" : value[2],
-					// "sum" : value[3]
-					//})
+
 					)
 				}
 			})
@@ -186,7 +179,7 @@ function StopCtrl($scope, $http, $resource) {
 		console.log($scope.routeStopResults)
 		//$scope.routeStopResults =
 	}
-	$scope.updateRouteInfo = function(){
+	$scope.updateRouteInfo = function() {
 		$scope.getRouteStats()
 	}
 
@@ -205,7 +198,7 @@ function StopCtrl($scope, $http, $resource) {
 			$scope.routeStopResultsAll = data['rows'];
 		})
 	}
-	
+
 	$scope.getRouteStats = function() {
 		console.log($scope.serviceSelect)
 		$http({
@@ -221,7 +214,7 @@ function StopCtrl($scope, $http, $resource) {
 			$scope.routeStats = data['rows'];
 		})
 	}
-	
+
 	$scope.getStop = function() {
 		console.log($scope.stop)
 		$http({
@@ -233,7 +226,7 @@ function StopCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-				console.log(data)
+			console.log(data)
 			$scope.stopResults = data['rows'];
 		})
 	}
