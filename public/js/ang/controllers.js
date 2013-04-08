@@ -114,7 +114,7 @@ function RouteCtrl($scope, $http, $resource) {
 		}).success(function(data) {
 			//console.log(data)
 			_.each(data['rows'], function(value, i) {
-			
+
 				if (_.where($scope.routeTrips, {
 					"service_id" : value[1]
 				}).length == 0) {
@@ -132,9 +132,9 @@ function RouteCtrl($scope, $http, $resource) {
 					)
 				}
 			})
-			$scope.activeTrip = _.sortBy($scope.routeTrips[0]['trips'], function(val) {
+			$scope.activeTrip = [$scope.routeTrips[0]['service_id'], _.sortBy($scope.routeTrips[0]['trips'], function(val) {
 				return val[0]
-			})
+			})]
 			console.log($scope.testtrip)
 			console.log($scope.routeTrips)
 			//$scope.routeTrips = data['rows'];
@@ -145,9 +145,11 @@ function RouteCtrl($scope, $http, $resource) {
 
 	$scope.updateChart = function() {
 		console.log($scope.serviceSelect)
-		$scope.activeTrip = _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : $scope.serviceSelect[1]})['trips'], function(val) {
+		
+		$scope.activeTrip = [$scope.serviceSelect[1], _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : $scope.serviceSelect[1]})['trips'], function(val) {
 			return val[0]
-		})
+		})]
+		console.log($scope.activeTrip)
 	}
 
 	$scope.init = function(agency, route) {
@@ -205,7 +207,7 @@ function StopCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.routeSelect[3] + "' AND direction_id = 1 AND service_id = " + $scope.serviceSelect[3],
+				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.routeSelect[3] + "' AND service_id = " + $scope.serviceSelect[3],
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
@@ -221,7 +223,7 @@ function StopCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.stop + " WHERE direction_id = 0 AND stop_id ='" + $scope.stop + "'",
+				sql : "SELECT * from " + $scope.agency.output.stop + " WHERE stop_id ='" + $scope.stop + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}

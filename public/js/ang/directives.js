@@ -7,12 +7,13 @@ function(version) {
 	return function(scope, elm, attrs) {
 		elm.text(version);
 	};
-}]).directive('hcPie', function() {
+}]).directive('hcScatter', function() {
 	return {
 		restrict : 'C',
 		replace : true,
 		scope : {
-			items : '='
+			items : '=',
+			name : '='
 		},
 		controller : function($scope, $element, $attrs) {
 			//console.log(2);
@@ -79,15 +80,20 @@ function(version) {
 				},
 				series : [{
 					//type : 'pie',
-					name : 'Service ID',
+					name : scope.name,
 					data : scope.items
 				}]
 			});
 			//	console.log(scope.items)
 
 			scope.$watch("items", function(newValue) {
-				//console.log(newValue)
+				//console.log(scope.name)
+				//chart.series[0].name = 'test123'
+				chart.series[0].update({
+					name : scope.name
+				})
 				chart.series[0].setData(newValue, true);
+
 			}, true);
 
 		}
