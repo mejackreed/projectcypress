@@ -1,3 +1,18 @@
 extends layout
 
 block body
+  div(ng-controller = "AgencyCtrl")
+      div.container-fluid(ng-init='init(#{agency})' )
+        div
+          h4.navbar-inner.navbar-text Agency
+            span.label.label-important {{stop}}
+            &nbsp; | &nbsp;
+            a(href='{{agency.website}}', target='_blank') {{agency.name}}
+        div
+          h2 Average Speed
+          d-Hist(val='routeResults')
+        
+
+block scripts
+  script(src='http://d3js.org/d3.v3.min.js')
+  

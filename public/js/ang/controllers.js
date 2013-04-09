@@ -145,7 +145,7 @@ function RouteCtrl($scope, $http, $resource) {
 
 	$scope.updateChart = function() {
 		console.log($scope.serviceSelect)
-		
+
 		$scope.activeTrip = [$scope.serviceSelect[1], _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : $scope.serviceSelect[1]})['trips'], function(val) {
 			return val[0]
 		})]
@@ -240,3 +240,36 @@ function StopCtrl($scope, $http, $resource) {
 		$scope.getStopRoute()
 	}
 }
+
+function AgencyCtrl($scope, $http, $resource) {
+	//$scope.routeResults = []
+
+	$scope.getRoutes = function() {
+		$http({
+			method : 'JSONP',
+			url : fusionURL,
+			params : {
+				sql : "SELECT average_speed from " + $scope.agency.output.route,
+				key : googleKey,
+				callback : 'JSON_CALLBACK'
+			}
+		}).success(function(data) {
+			console.log(data)
+			$scope.routeResults = []
+			_.forEach(data['rows'], function(val){
+				$scope.routeResults.push(val[0])
+			})
+			//$scope.routeResults = data['rows'];
+			//console.log($scope.routeResults)
+		})
+	}
+
+	$scope.init = function(agency) {
+		$scope.agency = agency;
+		//$scope.stop = stop;
+		$scope.getRoutes()
+		//$scope.getStop()
+		//$scope.getStopRoute()
+	}
+}
+

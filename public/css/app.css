@@ -74,3 +74,22 @@
 .stars_5 {
 	background-position: 0px -171px;
 }
+
+
+
+
+
+.bar rect {
+  fill: steelblue;
+  shape-rendering: crispEdges;
+}
+
+.bar text {
+  fill: #fff;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
