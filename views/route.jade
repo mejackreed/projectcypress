@@ -6,9 +6,15 @@ block head
 
 block body
   div(ng-controller='RouteCtrl')(ng-init='init(#{agency},#{route})' )
+    div
+        h4.navbar-inner.navbar-text Route ID 
+          span.label.label-important {{route}}
+          &nbsp; | &nbsp;
+          {{routeResult[0][2]}}
+          &nbsp; | &nbsp;
+          a(href='{{agency.website}}', target='_blank') {{agency.name}}
     div.row-fluid
       .span12
-        h2 The agency is #{name}, the route is {{routeResult.rows[0][2]}}
         div.navbar
           ul.nav.nav-pills#navi-tabs
             li

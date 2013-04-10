@@ -11,6 +11,25 @@ block body
             span.label.label-important {{stop}}
             &nbsp; | &nbsp;
             a(href='{{agency.website}}', target='_blank') {{agency.name}}
+        div.row-fluid
+          div.span6
+            label Search for a {{agency.name}} stop
+            div.form-search
+              fieldset
+                div
+                  label
+                    input#stopField(type='text', class='search-query', ng-model='stopSearch')
+                div.search
+                  a#stopSubmit.btn(href='{{agency.name}}/stop/{{stopSearch}}') Search
+          div.span6
+            label Search for a {{agency.name}} route
+            div.form-search
+              fieldset
+                div
+                  label
+                    input#stopField(type='text', class='search-query', ng-model='routeSearch')
+                div.search
+                  a#stopSubmit.btn(href='{{agency.name}}/route/{{routeSearch}}') Search
         div
           h2 Average Speed
           d-Hist(val='routeResults')

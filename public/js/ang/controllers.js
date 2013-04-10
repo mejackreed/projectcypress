@@ -55,7 +55,7 @@ function RouteCtrl($scope, $http, $resource) {
 
 	$scope.getRoute = function() {
 		//	console.log($scope.agency.name)
-		//console.log($scope.route)
+		console.log($scope.route)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
@@ -66,7 +66,7 @@ function RouteCtrl($scope, $http, $resource) {
 			}
 		}).success(function(data) {
 			$scope.routeResult = data['rows'];
-			//console.log(data)
+			console.log(data)
 			//		console.log($scope.routeResult.rows)
 		}).error(function(data) {
 			return data;
@@ -258,6 +258,8 @@ function StopCtrl($scope, $http, $resource) {
 
 function AgencyCtrl($scope, $http, $resource) {
 	//$scope.routeResults = []
+	
+	
 
 	$scope.getRoutes = function() {
 		$http({
