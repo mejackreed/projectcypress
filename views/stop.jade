@@ -40,29 +40,35 @@ block body
         include partials/sservice
       div#people.tab-pane.fade.in
         div.row-fluid
-          table.table.table-hover.span6
-            th <i class="icon-group"> </i> Demographic Information
-            th
-            tr
-              td Total population
-              td#totpop
-            tr
-              td Weighted population
-              td#weightedpop
-            tr
-              td Total area
-              td#totarea
-            tr 
-              td Search radius area
-              td#searcharea
-            tr
-              td Per Capita Income
-              td#percapitaincome
-            th Businesses
-            th
-            tr
-              td Number of restaurants
-              td#numrest
+          div.span6
+            label Search Radius : 
+              select#searchRadius(onChange='updateRadius()') miles
+                option .25
+                option .5
+                option 1
+            table.table.table-hover
+              th <i class="icon-group"> </i> Demographic Information
+              th
+              tr
+                td Total population
+                td#totpop
+              tr
+                td Weighted population
+                td#weightedpop
+              tr
+                td Total area
+                td#totarea
+              tr 
+                td Search radius area
+                td#searcharea
+              tr
+                td Per Capita Income
+                td#percapitaincome
+              th Businesses
+              th
+              tr
+                td Number of restaurants
+                td#numrest
           div.span6
             h3.navbar-inner <i class="icon-money"> </i> Household Income
             #income-chart.chart

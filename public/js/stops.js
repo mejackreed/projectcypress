@@ -1,6 +1,18 @@
 var map;
 var streetmap;
+var searchRadius = .25;
+var name;
+var latlng;
 //var stopPopulation = 0;
+function updateRadius() {
+	searchRadius = $('#searchRadius').val()
+	blockQuery(name, latlng)
+	//googleQuery(latlng, 0.25)
+	yelpQuery(latlng, searchRadius);
+	//console.log(searchRadius)
+}
+
+
 $(window).load(function() {
 	// $(".tabclick").click(function() {
 	// //console.log('test')
@@ -69,7 +81,7 @@ function stopQuery() {
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
 			//googleQuery(latlng, 0.25)
-			yelpQuery(latlng, 0.25);
+			yelpQuery(latlng, searchRadius);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
 			$('#stopname').html("Sorry that isn't a stop")
@@ -91,7 +103,7 @@ function outputQuery() {
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
 			//googleQuery(latlng, 0.25)
-			yelpQuery(latlng, 0.25);
+			yelpQuery(latlng, searchRadius);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
 			$('#stopname').html("Sorry that isn't a stop")
@@ -172,7 +184,7 @@ function addStarClass(value) {
 }
 
 function blockQuery(name, latlng) {
-	var url = buildFTQuery("SELECT * FROM " + agency.censusID + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + latlng + "), 400))")
+	var url = buildFTQuery("SELECT * FROM " + agency.censusID + " WHERE ST_INTERSECTS(geometry, CIRCLE(LATLNG(" + latlng + ")," + searchRadius * 1609.34 + "))")
 	$.ajax({
 		url : url,
 		dataType : "jsonp"
@@ -239,7 +251,7 @@ function totalBlocks(blks) {
 	$('#totpop').html(totalPop);
 	$('#totarea').html(totalArea)
 	$('#weightedpop').html(Math.round(weightRatio * totalPop * 100) / 100)
-	$('#searcharea').html(Math.round(.25 * .25 * Math.PI * 100) / 100 + ' miles')
+	$('#searcharea').html(Math.round(searchRadius * searchRadius * Math.PI * 100) / 100 + ' miles')
 	$('#percapitaincome').html("$" + addCommas(perCapitaIncome))
 	workChart(workTransport)
 	ageChart(age, weightRatio)
