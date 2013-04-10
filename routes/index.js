@@ -17,8 +17,13 @@ var systems = {
 			"calendar" : "1YxXy52xgur3dz6DODZTNHRqkIn0pZ8Re6yCHKgE",
 			"calendar_dates" : "11qlAl8pt0clnXZMEq8XuTSIcQL6pEVM2COiIam4",
 			"agency" : "1cJuMfn6uCQyCX1rFnaYc3Xqivow6I_4ma2xNYLc"
+		},
+		"output" : {
+			"stop_route" : "1zdFI88liTig_sA1TrF956945e0HeoiGRYrMtXto",
+			"route" : "1TZePUztJs6TizyfAraNOozHM7UpZ_fB1WGIt_ew",
+			"active_trips" : "13PyAohHNDAuxgVEReX3BGrWPhj_7RifhGrlzi_0",
+			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc"
 		}
-
 	},
 	"septa" : {
 		"gtfs" : {
@@ -49,7 +54,7 @@ var systems = {
 			"calendar_dates" : "1QtzsuAPkVK2J1zfEUHPhAQEjKtU0_sFd68AsMgI",
 			"agency" : "13Qswnscl9VmvmlZXGrMhRrK2Q8bkRKD231dVW5k"
 		},
-		"output": {
+		"output" : {
 			"stop_route" : "1bicK9T-3V3oZjBdZI5_Xh8Ox5_P-sK3E71fvSDw",
 			"route" : "1mr6QLIgyohcA7bDO49S6baY8-xOvGDWmw7iJfm4",
 			"active_trips" : "12cjopQyiJbh2NWthcPTKyJ1ySWLiqkeu3m50CjE",
@@ -71,12 +76,18 @@ var systems = {
 			"calendar" : "1z1DG3wZaKAr3HSXz0Ho8KQXYckdxAWNKoQn056U",
 			"calendar_dates" : "1TD65p5fX4Q9Eh61AzoOtb4e7V7XFKLFdfqMWSCE",
 			"agency" : "1b_C6WurzKwGGm2_A4uaS-GmFqpJ43X6ul9_YOfo"
+		},
+		"output" : {
+			"stop_route" : "1NbSSQ3QnuXaIn9Ld8tBmNmv8RPoODWecD8_UKPQ",
+			"route" : "1PXOwYh2-wC3sgeXznT1nCStR4_i9mwv9dsTAfb8",
+			"active_trips" : "1Mos8MBcBLOrtyNJInuSUGaBskmNnkcvUr23YRvU",
+			"stop" : "18jlD7Lv8h4nncRKE1M3fAF7yjKvRdg3NLTOfABw"
 		}
 	}
 }
 
 exports.agencies = function(req, res) {
-	console.log(req.params)
+	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
 	res.render('agency', {
 		agency : JSON.stringify(systems[agency]),
@@ -89,7 +100,7 @@ exports.routes = function(req, res) {
 	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
 	var route = req.params.route;
-	console.log(route)
+	//console.log(route)
 	res.render('route', {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],

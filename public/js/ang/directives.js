@@ -19,9 +19,8 @@ function(version) {
 			//console.log(2);
 
 		},
-		template : '<div id="container" class="span12" style="margin: 0 auto">not working</div>',
+		template : '<div id="container" class="span12" style="margin: 0 auto; height:400px;">not working</div>',
 		link : function(scope, element, attrs) {
-			console.log(3);
 			var chart = new Highcharts.Chart({
 				chart : {
 					type : 'scatter',
@@ -85,9 +84,15 @@ function(version) {
 				}]
 			});
 			//	console.log(scope.items)
+			scope.$watch("name", function(newValue) {
+				chart.series[0].update({
+					name : scope.name
+				})
+				chart.series[0].setData(scope.items, true)
+			}, true);
 
 			scope.$watch("items", function(newValue) {
-				//console.log(scope.name)
+				//console.log(scope.items)
 				//chart.series[0].name = 'test123'
 				chart.series[0].update({
 					name : scope.name
@@ -117,9 +122,7 @@ function(version) {
 
 			scope.$watch('val', function(newVal, oldVal) {
 				var values = new Array();
-				// clear the elements inside of the directive
-				//vis.selectAll('*').remove();
-				// if 'val' is undefined, exit
+
 				if (!newVal) {
 					return;
 				} else {
@@ -127,13 +130,12 @@ function(version) {
 				}
 				//console.log(newVal)
 				values = newVal
-				//values.push(newVal)
+				
 				//console.log(values)
-				//console.log(newVal)
-				//var values = newVal//d3.range(1000).map(d3.random.irwinHall(10));
-				//console.log(values)
+				if (values.length < 1){
+					return;
+				}
 
-				// A formatter for counts.
 				var formatCount = d3.format(",.0f");
 
 				var mouseover = function(d, i) {
@@ -141,7 +143,7 @@ function(version) {
 
 				};
 
-				var synchronizedMouseOut = function() {
+				var mouseout = function() {
 					d3.select(this).select('rect').style('fill', 'steelblue')
 
 				};
@@ -154,8 +156,7 @@ function(version) {
 				}, width = 960 - margin.left - margin.right, height = 500 - margin.top - margin.bottom;
 
 				var x = d3.scale.linear().domain([0, d3.max(values)]).range([0, width]);
-				//console.log(d3.extent(values))
-				// Generate a histogram using twenty uniformly-spaced bins.
+
 				var data = d3.layout.histogram()
 				.bins(x.ticks(20))(values);
 				//console.log(data)
@@ -169,7 +170,7 @@ function(version) {
 
 				var bar = svg.selectAll(".bar").data(data).enter().append("g").attr("class", "bar").attr("transform", function(d) {
 					return "translate(" + x(d.x) + "," + y(d.y) + ")";
-				}).on('mouseover', mouseover).on("mouseout", synchronizedMouseOut)
+				}).on('mouseover', mouseover).on("mouseout", mouseout)
 
 				bar.append("rect").attr("x", 1).attr("width", x(data[0].dx) - 1).attr("height", function(d) {
 					return height - y(d.y);
@@ -181,136 +182,113 @@ function(version) {
 
 				svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
 
-				// // Based on: http://mbostock.github.com/d3/ex/stack.html
-				// var n = newVal.length, // number of layers
-				// m = newVal[0].length, // number of samples per layer
-				// data = d3.layout.stack()(newVal);
-				//
-				// var mx = m, my = d3.max(data, function(d) {
-				// return d3.max(d, function(d) {
-				// return d.y0 + d.y;
-				// });
-				// }), mz = d3.max(data, function(d) {
-				// return d3.max(d, function(d) {
-				// return d.y;
-				// });
-				// }), x = function(d) {
-				// return d.x * width / mx;
-				// }, y0 = function(d) {
-				// return height - d.y0 * height / my;
-				// }, y1 = function(d) {
-				// return height - (d.y + d.y0) * height / my;
-				// }, y2 = function(d) {
-				// return d.y * height / mz;
-				// };
-				// // or `my` not rescale
-				//
-				// // Layers for each color
-				// // =====================
-				//
-				// var layers = vis.selectAll("g.layer").data(data).enter().append("g").style("fill", function(d, i) {
-				// return color(i / (n - 1));
-				// }).attr("class", "layer");
-				//
-				// // Bars
-				// // ====
-				//
-				// var bars = layers.selectAll("g.bar").data(function(d) {
-				// return d;
-				// }).enter().append("g").attr("class", "bar").attr("transform", function(d) {
-				// return "translate(" + x(d) + ",0)";
-				// });
-				//
-				// bars.append("rect").attr("width", x({
-				// x : .9
-				// })).attr("x", 0).attr("y", height).attr("height", 0).transition().delay(function(d, i) {
-				// return i * 10;
-				// }).attr("y", y1).attr("height", function(d) {
-				// return y0(d) - y1(d);
-				// });
-				//
-				// // X-axis labels
-				// // =============
-				//
-				// var labels = vis.selectAll("text.label").data(data[0]).enter().append("text").attr("class", "label").attr("x", x).attr("y", height + 6).attr("dx", x({
-				// x : .45
-				// })).attr("dy", ".71em").attr("text-anchor", "middle").text(function(d, i) {
-				// return d.date;
-				// });
-				//
-				// // Chart Key
-				// // =========
-				//
-				// var keyText = vis.selectAll("text.key").data(data).enter().append("text").attr("class", "key").attr("y", function(d, i) {
-				// return height + 42 + 30 * (i % 3);
-				// }).attr("x", function(d, i) {
-				// return 155 * Math.floor(i / 3) + 15;
-				// }).attr("dx", x({
-				// x : .45
-				// })).attr("dy", ".71em").attr("text-anchor", "left").text(function(d, i) {
-				// return d[0].user;
-				// });
-				//
-				// var keySwatches = vis.selectAll("rect.swatch").data(data).enter().append("rect").attr("class", "swatch").attr("width", 20).attr("height", 20).style("fill", function(d, i) {
-				// return color(i / (n - 1));
-				// }).attr("y", function(d, i) {
-				// return height + 36 + 30 * (i % 3);
-				// }).attr("x", function(d, i) {
-				// return 155 * Math.floor(i / 3);
-				// });
-				//
-				// // Animate between grouped and stacked
-				// // ===================================
-				//
-				// function transitionGroup() {
-				// vis.selectAll("g.layer rect").transition().duration(500).delay(function(d, i) {
-				// return (i % m) * 10;
-				// }).attr("x", function(d, i) {
-				// return x({
-				// x : .9 * ~~(i / m) / n
-				// });
-				// }).attr("width", x({
-				// x : .9 / n
-				// })).each("end", transitionEnd);
-				//
-				// function transitionEnd() {
-				// d3.select(this).transition().duration(500).attr("y", function(d) {
-				// return height - y2(d);
-				// }).attr("height", y2);
-				// }
-				//
-				// }
-				//
-				// function transitionStack() {
-				// vis.selectAll("g.layer rect").transition().duration(500).delay(function(d, i) {
-				// return (i % m) * 10;
-				// }).attr("y", y1).attr("height", function(d) {
-				// return y0(d) - y1(d);
-				// }).each("end", transitionEnd);
-				//
-				// function transitionEnd() {
-				// d3.select(this).transition().duration(500).attr("x", 0).attr("width", x({
-				// x : .9
-				// }));
-				// }
-				//
-				// }
+			});
+		}
+	}
+}).directive('dScat', function() {
 
-				// reset grouped state to false
-				scope.grouped = false;
+	// constants
+	var margin = 50, width = $('d-scat').width(), height = 300, color = d3.interpolateRgb("#f77", "#77f");
 
-				// setup a watch on 'grouped' to switch between views
-				// scope.$watch('grouped', function(newVal, oldVal) {
-				// // ignore first call which happens before we even have data from the Github API
-				// if (newVal === oldVal) {
-				// return;
-				// }
-				// if (newVal) {
-				// transitionGroup();
-				// } else {
-				// transitionStack();
-				// }
-				// });
+	return {
+		restrict : 'E',
+		terminal : true,
+		scope : {
+			items : '=',
+			name : '='
+			//grouped : '='
+		},
+		link : function(scope, element, attrs) {
+			width = $('d-scat').width()
+
+			function formatTime(d) {
+				var hour = parseInt(d / 60)
+				var minute = d % 60
+				var time = hour + ":" + minute
+				return moment(time, 'hh:mm').format('h:mm a')
+			}
+
+			//console.log(d3.select(element[0]))
+			//console.log($('d-scat').width())
+			// set up initial svg object
+			//var vis = d3.select(element[0]).append("svg").attr("width", width).attr("height", height + margin + 100);
+			var svg = d3.select(element[0]).append("svg").attr("width", width).attr("height", height);
+			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+			scope.$watch('items', function(newVal, oldVal) {
+
+				svg.selectAll('*').remove();
+
+				var values = new Array();
+
+				if (!newVal) {
+					return;
+				} else {
+					//console.log(newVal)
+				}
+				//console.log(newVal)
+				function mouseon() {
+					//console.log(d3.select(this).data())
+					var d = d3.select(this).data()
+					d3.select(this).transition().duration(150).style('fill', 'red').attr('r', 10)
+					div.transition().duration(0).style("opacity", .9);
+					div.html(formatTime(d[0][0]) + " - " + d[0][1] + " trips").style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+					//console.log(this)
+					//d3.select(this).select('circle').style('fill', 'red')
+
+				}
+
+				function mouseout() {
+					d3.select(this).transition().duration(100).style('fill', 'steelblue').attr('r', 5)
+					div.transition().duration(100).style("opacity", 0);
+				}
+
+				values = newVal
+
+				var padding = 20;
+
+				var xScale = d3.scale.linear().domain([0, d3.max(values, function(d) {
+					return d[0];
+				})]).range([margin, width - margin]).nice();
+
+				var yScale = d3.scale.linear().domain([0, d3.max(values, function(d) {
+					return d[1];
+				})]).range([height - margin, margin]).nice();
+
+				var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(12).tickFormat(function(d, i) {
+					return formatTime(d)
+				});
+				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+
+				svg.append("g").attr("class", "axis")//Assign "axis" class
+				.call(xAxis).attr("transform", "translate(0," + (height - margin ) + ")").attr('')
+
+				svg.append("g").attr("class", "axis").attr("transform", "translate(" + padding + ",0)").call(yAxis);
+
+				svg.selectAll("circle").data(values).enter().append("circle").attr("cx", function(d) {
+					var hour = parseInt(d[0] / 60)
+					var minute = d[0] % 60
+					var time = hour + ":" + minute
+					//return time
+					//console.log(hour, minute)
+					//console.log(moment(this.value.toString(), 'mm'));
+					//return moment(time, 'hh:mm').format('h:mm A')
+
+					return xScale(d[0]);
+				}).attr("cy", function(d) {
+					return yScale(d[1]);
+				})
+				//.transition().duration(800)
+				.attr("r", 5).attr("fill", 'steelblue').attr("fill-opacity", '.5').on('mouseover', mouseon).on('mouseout', mouseout).append("svg:title").text(function(d) {
+					return d;
+				});
+				// svg.selectAll("text").data(values).enter().append("text").text(function(d) {
+				// return d[0] + "," + d[1];
+				// }).attr("x", function(d) {
+				// return xScale(d[0]);
+				// }).attr("y", function(d) {
+				// return yScale(d[1]);
+				// }).attr("font-family", "sans-serif").attr("font-size", "11px").attr("fill", "red");
 			});
 		}
 	}

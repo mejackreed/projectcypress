@@ -1,5 +1,8 @@
 extends layout
 
+block head
+  link(rel='stylesheet', href='/css/agency.css')
+
 block body
   div(ng-controller = "AgencyCtrl")
       div.container-fluid(ng-init='init(#{agency})' )

@@ -27,6 +27,7 @@ MyCtrl2.$inject = [];
 
 function RouteCtrl($scope, $http, $resource) {
 	//$scope.serviceSelect = '40205'
+	$scope.dayButtons = "Tuesday"
 	$scope.currentPage = 0;
 	$scope.pageSize = 8;
 
@@ -53,7 +54,8 @@ function RouteCtrl($scope, $http, $resource) {
 	$scope.serviceType = "this is the type";
 
 	$scope.getRoute = function() {
-		console.log($scope.route)
+		//	console.log($scope.agency.name)
+		//console.log($scope.route)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
@@ -63,8 +65,8 @@ function RouteCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK',
 			}
 		}).success(function(data) {
-			$scope.routeResult = data;
-			console.log(data)
+			$scope.routeResult = data['rows'];
+			//console.log(data)
 			//		console.log($scope.routeResult.rows)
 		}).error(function(data) {
 			return data;
@@ -91,18 +93,18 @@ function RouteCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.route + "' AND direction_id = 1",
+				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.route + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			//console.log(data)
-			$scope.routeStats = data;
+			console.log(data)
+			$scope.routeStats = data['rows'];
 		})
 	}
 
 	$scope.getRouteTrips = function() {
-		console.log($scope.agency.output)
+		//console.log($scope.agency.output)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
@@ -113,50 +115,59 @@ function RouteCtrl($scope, $http, $resource) {
 			}
 		}).success(function(data) {
 			//console.log(data)
-			_.each(data['rows'], function(value, i) {
+			if (data['rows']) {
+				_.each(data['rows'], function(value, i) {
 
-				if (_.where($scope.routeTrips, {
-					"service_id" : value[1]
-				}).length == 0) {
-					$scope.routeTrips.push({
-						"service_id" : value[1],
-						"trips" : [[parseInt(value[2]), parseInt(value[3])]]
-					})
-				} else {
-					_.where($scope.routeTrips, {
+					if (_.where($scope.routeTrips, {
 						"service_id" : value[1]
-					}, function(val) {
-						return val
-					}).trips.push([parseInt(value[2]), parseInt(value[3])]//{
+					}).length == 0) {
+						$scope.routeTrips.push({
+							"service_id" : value[1],
+							"trips" : [[parseInt(value[2]), parseInt(value[3])]]
+						})
+					} else {
+						_.where($scope.routeTrips, {
+							"service_id" : value[1]
+						}, function(val) {
+							return val
+						}).trips.push([parseInt(value[2]), parseInt(value[3])]//{
 
-					)
-				}
-			})
-			$scope.activeTrip = [$scope.routeTrips[0]['service_id'], _.sortBy($scope.routeTrips[0]['trips'], function(val) {
+						)
+					}
+				})
+			} else {
+				return;
+			}
+			//console.log($scope.routeTrips)
+			$scope.activeTrip = ["Tuesday", _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : "Tuesday"})['trips'], function(val) {
+				//console.log(val)
 				return val[0]
 			})]
-			console.log($scope.testtrip)
-			console.log($scope.routeTrips)
+			//console.log($scope.activeTrip)
+			//console.log($scope.testtrip)
+			//console.log($scope.routeTrips)
 			//$scope.routeTrips = data['rows'];
 			//$scope.drawChart($scope.routeTrips)
 		})
 	}
+
 	$scope.routeTrips = [];
 
 	$scope.updateChart = function() {
-		console.log($scope.serviceSelect)
-
-		$scope.activeTrip = [$scope.serviceSelect[1], _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : $scope.serviceSelect[1]})['trips'], function(val) {
+		//console.log($scope.dayButtons)
+		//console.log($scope.serviceSelect)
+		//console.log($scope.routeTrips)
+		$scope.activeTrip = [$scope.tripSelect[1], _.sortBy(_.findWhere($scope.routeTrips, {"service_id" : $scope.tripSelect[1]})['trips'], function(val) {
 			return val[0]
 		})]
-		console.log($scope.activeTrip)
+		//console.log($scope.activeTrip)
 	}
 
 	$scope.init = function(agency, route) {
 		//This function is sort of private constructor for controller
 		$scope.agency = agency;
-		$scope.route = route;
-		console.log($scope.route)
+		$scope.route = route.toString();
+		//console.log($scope.route)
 		//console.log($scope.agency)
 
 		$scope.getRoute()
@@ -168,17 +179,19 @@ function RouteCtrl($scope, $http, $resource) {
 }
 
 function StopCtrl($scope, $http, $resource) {
+	$scope.dayButtons = "Tuesday"
+
 	//	$scope.serviceSelect = "xxxxx"
 	$scope.updateRoutes = function() {
 		$scope.routeStopResults = []
 		_.each($scope.routeStopResultsAll, function(val) {
 			//console.log(val)
 			//console.log($scope.serviceSelect)
-			if (val[4] == $scope.serviceSelect[3]) {
-				$scope.routeStopResults.push(val)
-			}
+			//if (val[4] == $scope.serviceSelect[3]) {
+			$scope.routeStopResults.push(val)
+			//	}
 		})
-		console.log($scope.routeStopResults)
+		//console.log($scope.routeStopResults)
 		//$scope.routeStopResults =
 	}
 	$scope.updateRouteInfo = function() {
@@ -186,12 +199,12 @@ function StopCtrl($scope, $http, $resource) {
 	}
 
 	$scope.getStopRoute = function() {
-		console.log($scope.agency.output)
+		//console.log($scope.agency.output)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE stop_id =" + $scope.stop,
+				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE stop_id ='" + $scope.stop + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
@@ -202,12 +215,12 @@ function StopCtrl($scope, $http, $resource) {
 	}
 
 	$scope.getRouteStats = function() {
-		console.log($scope.serviceSelect)
+		//console.log($scope.serviceSelect)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.routeSelect[3] + "' AND service_id = " + $scope.serviceSelect[3],
+				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.routeSelect[3] + "' AND dow = '" + $scope.dayButtons + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
@@ -234,7 +247,7 @@ function StopCtrl($scope, $http, $resource) {
 	}
 	$scope.init = function(agency, stop) {
 		$scope.agency = agency;
-		$scope.stop = stop;
+		$scope.stop = stop.toString();
 
 		$scope.getStop()
 		$scope.getStopRoute()
@@ -256,8 +269,10 @@ function AgencyCtrl($scope, $http, $resource) {
 		}).success(function(data) {
 			console.log(data)
 			$scope.routeResults = []
-			_.forEach(data['rows'], function(val){
-				$scope.routeResults.push(val[0])
+			_.forEach(data['rows'], function(val) {
+				if (typeof val[0] == 'number') {
+					$scope.routeResults.push(val[0])
+				}
 			})
 			//$scope.routeResults = data['rows'];
 			//console.log($scope.routeResults)
