@@ -5,7 +5,7 @@ var name;
 var latlng;
 //var stopPopulation = 0;
 function updateRadius(value) {
-	console.log(value)
+	//console.log(value)
 	if (!value) {
 		value = .25
 	}
@@ -191,7 +191,7 @@ function blockQuery(name, latlng) {
 		dataType : "jsonp"
 	}).done(function(data) {
 		if (data['rows']) {
-			//console.log(data)
+			console.log(data)
 			//censusQuery(data['rows'])
 			handleCensusResponse(data)
 		} else {
