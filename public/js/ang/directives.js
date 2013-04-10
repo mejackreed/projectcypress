@@ -130,9 +130,9 @@ function(version) {
 				}
 				//console.log(newVal)
 				values = newVal
-				
+
 				//console.log(values)
-				if (values.length < 1){
+				if (values.length < 1) {
 					return;
 				}
 
@@ -196,10 +196,9 @@ function(version) {
 		scope : {
 			items : '=',
 			name : '='
-			//grouped : '='
 		},
 		link : function(scope, element, attrs) {
-			width = $('d-scat').width()
+			width = $('d-scat').width()-margin
 
 			function formatTime(d) {
 				var hour = parseInt(d / 60)
@@ -208,10 +207,6 @@ function(version) {
 				return moment(time, 'hh:mm').format('h:mm a')
 			}
 
-			//console.log(d3.select(element[0]))
-			//console.log($('d-scat').width())
-			// set up initial svg object
-			//var vis = d3.select(element[0]).append("svg").attr("width", width).attr("height", height + margin + 100);
 			var svg = d3.select(element[0]).append("svg").attr("width", width).attr("height", height);
 			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
@@ -266,29 +261,13 @@ function(version) {
 				svg.append("g").attr("class", "axis").attr("transform", "translate(" + padding + ",0)").call(yAxis);
 
 				svg.selectAll("circle").data(values).enter().append("circle").attr("cx", function(d) {
-					var hour = parseInt(d[0] / 60)
-					var minute = d[0] % 60
-					var time = hour + ":" + minute
-					//return time
-					//console.log(hour, minute)
-					//console.log(moment(this.value.toString(), 'mm'));
-					//return moment(time, 'hh:mm').format('h:mm A')
-
 					return xScale(d[0]);
 				}).attr("cy", function(d) {
 					return yScale(d[1]);
-				})
-				//.transition().duration(800)
-				.attr("r", 5).attr("fill", 'steelblue').attr("fill-opacity", '.5').on('mouseover', mouseon).on('mouseout', mouseout).append("svg:title").text(function(d) {
+				}).attr("r", 5).attr("fill", 'steelblue').attr("fill-opacity", '.5').on('mouseover', mouseon).on('mouseout', mouseout).append("svg:title").text(function(d) {
 					return d;
 				});
-				// svg.selectAll("text").data(values).enter().append("text").text(function(d) {
-				// return d[0] + "," + d[1];
-				// }).attr("x", function(d) {
-				// return xScale(d[0]);
-				// }).attr("y", function(d) {
-				// return yScale(d[1]);
-				// }).attr("font-family", "sans-serif").attr("font-size", "11px").attr("fill", "red");
+
 			});
 		}
 	}

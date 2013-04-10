@@ -1,12 +1,13 @@
 var map;
+var streetmap;
 //var stopPopulation = 0;
 $(window).load(function() {
 	// $(".tabclick").click(function() {
-		// //console.log('test')
-		// //travel_chart.redraw()
-// 		
-// 		
-// 		
+	// //console.log('test')
+	// //travel_chart.redraw()
+	//
+	//
+	//
 	// });
 	stopQuery()
 	//outputQuery()
@@ -18,6 +19,22 @@ function initialize() {
 		mapTypeId : google.maps.MapTypeId.ROADMAP
 	};
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+	var streetOptions = {
+		position : new google.maps.LatLng(33.755, -84.39)//,
+		// pov : {
+		// heading : 34,
+		// pitch : 10
+		// }
+	};
+
+	// var mapOptions = {
+	// zoom : 8,
+	// center : new google.maps.LatLng(33.755, -84.39),
+	// mapTypeId : google.maps.MapTypeId.ROADMAP
+	// };
+	streetmap = new google.maps.StreetViewPanorama(document.getElementById("street-canvas"), streetOptions);
+
 }
 
 function buildFTQuery(query) {
@@ -86,6 +103,17 @@ function outputQuery() {
 function addMap(name, latlng) {
 	initialize();
 	map.setCenter(latlng)
+	var streetOptions = {
+		position : latlng//,
+		// pov : {
+		// heading : 34,
+		// pitch : 10
+		// }
+	};
+	streetmap.setPosition(latlng)
+
+	//streetmap.setStreetView()
+	//streetmap.setZoom(15)
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
 		center : latlng,
@@ -288,6 +316,7 @@ function getRaceValues(arr, weight) {
 	})
 	return vals;
 }
+
 var travel_chart;
 
 function travelChart(travel, num) {

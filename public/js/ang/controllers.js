@@ -98,13 +98,13 @@ function RouteCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
+			//console.log(data)
 			$scope.routeStats = data['rows'];
 		})
 	}
 
 	$scope.getRouteTrips = function() {
-		//console.log($scope.agency.output)
+		//console.log($scope.route)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
@@ -114,7 +114,7 @@ function RouteCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			//console.log(data)
+			console.log(data)
 			if (data['rows']) {
 				_.each(data['rows'], function(value, i) {
 
@@ -148,6 +148,8 @@ function RouteCtrl($scope, $http, $resource) {
 			//console.log($scope.routeTrips)
 			//$scope.routeTrips = data['rows'];
 			//$scope.drawChart($scope.routeTrips)
+		}).error(function(data){
+			console.log(data)
 		})
 	}
 
