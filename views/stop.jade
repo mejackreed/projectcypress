@@ -17,6 +17,7 @@ block body
           span#stopname
           &nbsp; | &nbsp;
           a(href='{{agency.website}}', target='_blank') {{agency.name}}
+          include partials/homenav
     div.row-fluid
       div.navbar
         ul.nav.nav-pills#navi-tabs
@@ -100,7 +101,7 @@ block body
             #travel-chart.chart
         div.row-fluid
           div.span6
-            h3.navbar-inner <i class="icon-truck"> </i> Employment Sector
+            h3.navbar-inner <i class="icon-truck"> </i> Employment Sector of Residents
             #employment-chart.chart
           div.span6
             h3.navbar-inner <i class="icon-food"> </i> Places to eat <a href='http://www.yelp.com'><img src='images/Powered_By_Yelp_Red.png' class=""></a>

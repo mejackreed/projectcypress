@@ -3,6 +3,7 @@ var streetmap;
 var searchRadius = .25;
 var name;
 var latlng;
+var sv;
 //var stopPopulation = 0;
 function updateRadius(value) {
 	//console.log(value)
@@ -32,7 +33,7 @@ function initialize() {
 	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
 	var streetOptions = {
-		position : new google.maps.LatLng(33.755, -84.39)//,
+		position : new google.maps.LatLng(39.755, -84.39)//,
 		// pov : {
 		// heading : 34,
 		// pitch : 10
@@ -115,6 +116,7 @@ function addMap(name, glatlng) {
 	initialize();
 	//var nglatlng = new google.maps.LatLng(latlng)
 	map.setCenter(glatlng)
+	
 
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
@@ -261,8 +263,8 @@ function totalBlocks(blks) {
 	ageChart(age, weightRatio)
 	raceChart(race, weightRatio)
 	employmentChart(employment, weightRatio)
-	incomeChart(income, 1)//parseInt(blks.length))
-	travelChart(travelTime, 1)// blks.length)
+	incomeChart(income, weightRatio)//parseInt(blks.length))
+	travelChart(travelTime, weightRatio)// blks.length)
 }
 
 function aggValues(raw, out) {
@@ -288,12 +290,12 @@ function addCommas(nStr) {
 	return x1 + x2;
 }
 
-function getIncomeValues(income, num) {
+function getIncomeValues(income, ratio) {
 	var inc = [];
 	var labels = [];
 	var data = [];
 	$.each(income, function(i, val) {
-		inc.push(parseInt(val[1] / num))
+		inc.push(parseInt(val[1] * ratio))
 		labels.push(val[0])
 		//console.log(val)
 	})
@@ -301,11 +303,11 @@ function getIncomeValues(income, num) {
 	return data;
 }
 
-function getTravelValues(travel, num) {
+function getTravelValues(travel, ratio) {
 	vals = [];
 	labels = [];
 	$.each(travel, function(i, value) {
-		vals.push(Math.round(value[1] / num));
+		vals.push(Math.round(value[1] * ratio));
 		labels.push(value[0].replace(" minutes", ""));
 	})
 	return [labels, vals]
@@ -330,8 +332,8 @@ function getRaceValues(arr, weight) {
 
 var travel_chart;
 
-function travelChart(travel, num) {
-	travel = getTravelValues(travel, num)
+function travelChart(travel, ratio) {
+	travel = getTravelValues(travel, ratio)
 	travel_chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'travel-chart',
@@ -413,8 +415,8 @@ function workChart(work) {
 	});
 }
 
-function incomeChart(inc, num) {
-	inc = getIncomeValues(inc, num)
+function incomeChart(inc, ratio) {
+	inc = getIncomeValues(inc, ratio)
 	chart = new Highcharts.Chart({
 		chart : {
 			renderTo : 'income-chart',

@@ -19,7 +19,7 @@ var systems = {
 			"agency" : "1cJuMfn6uCQyCX1rFnaYc3Xqivow6I_4ma2xNYLc"
 		},
 		"output" : {
-			"stop_route" : "1zdFI88liTig_sA1TrF956945e0HeoiGRYrMtXto",
+			"stop_route" : "13nOBIacXVPggxP4oJJksQxNjtHdXUrImla1Psvo",
 			"route" : "1TZePUztJs6TizyfAraNOozHM7UpZ_fB1WGIt_ew",
 			"active_trips" : "13PyAohHNDAuxgVEReX3BGrWPhj_7RifhGrlzi_0",
 			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc"
@@ -41,7 +41,7 @@ var systems = {
 			"agency" : "1QmuCRA5ioCwPjlQxmWvv0GVEYz5Z113IfwynbsQ"
 		},
 		"output" : {
-			"stop_route" : "1qTTCjGE8rL0hxGDbg-8iWGLgIiAjcaThz78tb58",
+			"stop_route" : "153-hu-hTm_GL_EaMazb3EijeM0isnlxBHx913sE",
 			"route" : "1eBMp0xS32mcDcbqtr8rycKBm84Uy9FT58viH7QE",
 			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
 			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY"

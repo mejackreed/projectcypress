@@ -211,7 +211,7 @@ function StopCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			//console.log(data)
+			console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
 		})
 	}

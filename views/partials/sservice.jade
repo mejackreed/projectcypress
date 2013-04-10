@@ -29,19 +29,21 @@ div.row-fluid
       form
         label.select
           span Select Route
-          select(ng-model='routeSelect', ng-options="route[3] for route in routeStopResultsAll ", ng-change='updateRouteInfo()') 
+          select(ng-model='routeSelect', ng-options="route[3] for route in routeStopResultsAll | filter:dayButtons", ng-change='updateRouteInfo()') 
       table.table.table-hover
         tr
           th Route ID
+          th Trip sign
           th Trips Serving Stop
           th First arrival
           th Last arrival
-        tr(ng-repeat=" route in routeStopResultsAll | filter:routeSelect")
+        tr(ng-repeat=" route in routeStopResultsAll | filter:dayButtons")
           td 
             a(href='/{{agency.name}}/route/{{route[3]}}'){{route[3]}}
+          td {{route[9]}}
           td {{route[6]}}
-          td {{route[8]}}
-          td {{route[10]}}
+          td {{route[13]}}
+          td {{route[15]}}
 div.row-fluid
   div.span6
     div(ng-show="routeStats.length > 0")
