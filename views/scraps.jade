@@ -7,3 +7,10 @@
 label.radio(ng-repeat="route in routeStats['rows']")
               input(type='radio', name='serviceRadio', ng-model="serviceSelect", ng-value='{{route[1]}}') 
               span {{route[1]}}
+              
+
+
+button.btn.btn-small(ng-show='routeStopResult.length > 0', ng-disabled="currentPage == 0", ng-click="currentPage=currentPage-1") Previous
+    span(ng-show='routeStopResult.length > 0') &nbsp; {{currentPage+1}}/{{numberOfPages()}} &nbsp;
+    button.btn.btn-small(ng-show='routeStopResult.length > 0', ng-disabled="currentPage >= routeStopResult.length/pageSize - 1", ng-click="currentPage=currentPage+1") Next
+    

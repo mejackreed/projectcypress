@@ -79,11 +79,12 @@ function RouteCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT stop_name, stop_id from " + $scope.agency.output.stop_route + " WHERE route_id ='" + $scope.route + "'",
+				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE route_id ='" + $scope.route + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
+			console.log(data)
 			$scope.routeStopResult = data['rows'];
 		})
 	}
