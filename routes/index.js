@@ -27,7 +27,7 @@ var systems = {
 	},
 	"septa-rail" : {
 		"name" : "Septa-Rail",
-		"censusID" : "1zPts6m6NnKfmMG0gb9ZqS-1EbV812bxdlZQaRyc",
+		"censusID" : "1bVQPes8ecGyaD2wCIdQ3mP8_0M0PZvx7lnECRGs",
 		"website" : "http://www.septa.org/schedules/rail/index.html",
 		"gtfs" : {
 			"trips" : "1eGcJCunJb43NVE2V9EzLc_uwDKGeW8cGmnbR65g",
