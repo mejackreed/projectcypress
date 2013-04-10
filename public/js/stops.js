@@ -104,16 +104,10 @@ function addMap(name, latlng) {
 	initialize();
 	map.setCenter(latlng)
 	var streetOptions = {
-		position : latlng//,
-		// pov : {
-		// heading : 34,
-		// pitch : 10
-		// }
+		position : latlng
 	};
 	streetmap.setPosition(latlng)
 
-	//streetmap.setStreetView()
-	//streetmap.setZoom(15)
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
 		center : latlng,
