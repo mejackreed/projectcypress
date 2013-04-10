@@ -9,7 +9,7 @@ var systems = {
 		"website" : "http://www.itsmarta.com",
 		"gtfs" : {
 			"trips" : "1226w9UDeUDKqz3UynnDRlfxqXnn7esgvvim64zU",
-			"trips_per_route" : "1of01Kl4aZXMiuGxECAEmVc5sg17N-x7MbF6-DqQ",
+			"trips_per_route" : "unknown",
 			"stop_times" : "12Mi_R6NyNEy-mQat4XJShXy_Q9hQOAomf6uTuH8",
 			"stops" : "11eAYt_iVmfFIa_sUJ6WNq44Y48LrQ7WHD_Pm4_Q",
 			"shapes" : "1X0x4ud2xSJp2w32SyC9QdtyAnE4CV86_oIZprFM",
@@ -25,17 +25,26 @@ var systems = {
 			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc"
 		}
 	},
-	"septa" : {
+	"septa-rail" : {
+		"name" : "Septa Rail",
+		"censusID" : "1zPts6m6NnKfmMG0gb9ZqS-1EbV812bxdlZQaRyc",
+		"website" : "http://www.septa.org/schedules/rail/index.html",
 		"gtfs" : {
-			"trips" : "unknown",
+			"trips" : "1eGcJCunJb43NVE2V9EzLc_uwDKGeW8cGmnbR65g",
 			"trips_per_route" : "unknown",
 			"stop_times" : "unknown",
-			"stops" : "unknown",
-			"shapes" : "unknown",
-			"routes" : "unknown",
-			"calendar" : "unknown",
-			"calendar_dates" : "unknown",
-			"agency" : "unknown"
+			"stops" : "11bWnhzXxGwxbkn_Nh0pthQFVMSO_SwbJVMySerY",
+			"shapes" : "1qeCTpChzm6DLjpby7IrHx1r1hs5DiDBSNlU39DU",
+			"routes" : "19iOTcGvHukrcxmrtb-JMrq_dwAARq2HP4k0s48A",
+			"calendar" : "1cWKJuiMJIaLpwVu6JQQmlAWJueij4nHkS5ZIYJ8",
+			"calendar_dates" : "16vS16yYeckG2GS81P_f2-3VoUptF-yGd_tCqUmA",
+			"agency" : "1QmuCRA5ioCwPjlQxmWvv0GVEYz5Z113IfwynbsQ"
+		},
+		"output" : {
+			"stop_route" : "1qTTCjGE8rL0hxGDbg-8iWGLgIiAjcaThz78tb58",
+			"route" : "1eBMp0xS32mcDcbqtr8rycKBm84Uy9FT58viH7QE",
+			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
+			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY"
 		}
 
 	},
