@@ -24,9 +24,9 @@ block body
           li
             a(href='#service', data-toggle='tab') Service
           li
-            a(href='#people', data-toggle='tab').tabclick People
+            a(href='#people', data-toggle='tab', onClick='updateRadius()') People
           li
-            a(href='#land', data-toggle='tab') Land Use
+            a(href='#locale', data-toggle='tab', onClick='updateRadius()') Locale
             
     div(id="myTabContent",class="tab-content").container-fluid
       div#home.tab-pane.fade.in.active
@@ -72,29 +72,38 @@ block body
           div.span6
             h3.navbar-inner <i class="icon-money"> </i> Household Income
             #income-chart.chart
-        div.row-fluid
-          div.span4
-            h3.navbar-inner <i class="icon-road"> </i> Means of Transportation to Work
-            #workTransport-chart.chart
-          div.span4
-            h3.navbar-inner <i class="icon-road"> </i> Travel Time to Work
-            #travel-chart.chart
-          div.span4
-            h3.navbar-inner <i class="icon-globe"> </i> Racial Composition
-            #race-chart.chart
+        
+          
         div.row-fluid
           div.span6
             h3.navbar-inner <i class="icon-bar-chart"> </i> Age Distribution
             #age-chart.chart
           div.span6
+            h3.navbar-inner <i class="icon-globe"> </i> Racial Composition
+            #race-chart.chart
+          
+      div#locale.tab-pane.fade.in
+        div
+          label Search Radius : 
+              select#searchRadius(onChange='updateRadius()') miles
+                option .25
+                option .5
+                option 1
+        div.row-fluid
+          div.span6
+            h3.navbar-inner <i class="icon-road"> </i> Means of Transportation to Work
+            #workTransport-chart.chart
+          div.span6
+            h3.navbar-inner <i class="icon-road"> </i> Travel Time to Work
+            #travel-chart.chart
+        div.row-fluid
+          div.span6
             h3.navbar-inner <i class="icon-truck"> </i> Employment Sector
             #employment-chart.chart
-      div#land.tab-pane.fade.in
-        div.row-fluid
           div.span6
             h3.navbar-inner <i class="icon-food"> </i> Places to eat <a href='http://www.yelp.com'><img src='images/Powered_By_Yelp_Red.png' class=""></a>
             div#restlist
-           
+         
     
     
       

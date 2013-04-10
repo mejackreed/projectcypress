@@ -14,15 +14,9 @@ function updateRadius() {
 
 
 $(window).load(function() {
-	// $(".tabclick").click(function() {
-	// //console.log('test')
-	// //travel_chart.redraw()
-	//
-	//
-	//
-	// });
+
 	stopQuery()
-	//outputQuery()
+
 })
 function initialize() {
 	var mapOptions = {
@@ -79,9 +73,9 @@ function stopQuery() {
 			$('#stopname').html(data['rows'][0][0])
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
-			blockQuery(name, latlng)
+			//blockQuery(name, latlng)
 			//googleQuery(latlng, 0.25)
-			yelpQuery(latlng, searchRadius);
+			//yelpQuery(latlng, searchRadius);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
 			$('#stopname').html("Sorry that isn't a stop")
@@ -112,17 +106,15 @@ function outputQuery() {
 	});
 }
 
-function addMap(name, latlng) {
+function addMap(name, glatlng) {
 	initialize();
-	map.setCenter(latlng)
-	var streetOptions = {
-		position : latlng
-	};
-	streetmap.setPosition(latlng)
+	//var glatlng = new google.maps.latlng(latlng)
+	map.setCenter(glatlng)
+	console.log(glatlng)
 
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
-		center : latlng,
+		center : glatlng,
 		map : map,
 		radius : 402.336,
 		clickable : false,
@@ -133,10 +125,12 @@ function addMap(name, latlng) {
 		fillOpacity : 0.5
 	})
 	var marker = new google.maps.Marker({
-		position : latlng,
+		position : glatlng,
 		map : map,
 		title : name
 	})
+	streetmap.setPosition(glatlng)
+
 }
 
 function googleQuery(latlng, radius) {
@@ -226,6 +220,7 @@ function handleCensusResponse(data) {
 		}))
 
 	})
+	//console.log(stopBlocks)
 	totalBlocks(stopBlocks);
 }
 
@@ -242,23 +237,25 @@ function totalBlocks(blks) {
 		income = aggValues(value['householdIncome'], income)
 		workTransport = aggValues(value['workTransport'], workTransport)
 		travelTime = aggValues(value['travelTime'], travelTime)
-
+		//console.log(income)
 	})
+	//console.log(totalArea)
 	perCapitaIncome = Math.round(perCapitaIncome / blks.length * 100) / 100
-	//console.log(age)
-	weightRatio = Math.PI / 16 / totalArea
+	//console.log(searchRadius)
+	weightRatio = (Math.PI * (searchRadius * searchRadius)) / totalArea
+	//console.log(weightRatio)
 	totalArea = Math.round(totalArea * 100) / 100;
 	$('#totpop').html(totalPop);
-	$('#totarea').html(totalArea)
+	$('#totarea').html(totalArea + ' miles <sup>2</sup>')
 	$('#weightedpop').html(Math.round(weightRatio * totalPop * 100) / 100)
-	$('#searcharea').html(Math.round(searchRadius * searchRadius * Math.PI * 100) / 100 + ' miles')
+	$('#searcharea').html(Math.round(searchRadius * searchRadius * Math.PI * 100) / 100 + ' miles <sup>2</sup>')
 	$('#percapitaincome').html("$" + addCommas(perCapitaIncome))
 	workChart(workTransport)
 	ageChart(age, weightRatio)
 	raceChart(race, weightRatio)
 	employmentChart(employment, weightRatio)
-	incomeChart(income, parseInt(blks.length))
-	travelChart(travelTime, blks.length)
+	incomeChart(income, 1)//parseInt(blks.length))
+	travelChart(travelTime,1)// blks.length)
 }
 
 function aggValues(raw, out) {
@@ -291,6 +288,7 @@ function getIncomeValues(income, num) {
 	$.each(income, function(i, val) {
 		inc.push(parseInt(val[1] / num))
 		labels.push(val[0])
+		//console.log(val)
 	})
 	data = [inc, labels];
 	return data;
