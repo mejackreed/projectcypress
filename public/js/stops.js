@@ -4,8 +4,13 @@ var searchRadius = .25;
 var name;
 var latlng;
 //var stopPopulation = 0;
-function updateRadius() {
-	searchRadius = $('#searchRadius').val()
+function updateRadius(value) {
+	console.log(value)
+	if (!value) {
+		value = .25
+	}
+	$('.radius').val(value)
+	searchRadius = value;
 	blockQuery(name, latlng)
 	//googleQuery(latlng, 0.25)
 	yelpQuery(latlng, searchRadius);
@@ -108,9 +113,8 @@ function outputQuery() {
 
 function addMap(name, glatlng) {
 	initialize();
-	//var glatlng = new google.maps.latlng(latlng)
+	//var nglatlng = new google.maps.LatLng(latlng)
 	map.setCenter(glatlng)
-	console.log(glatlng)
 
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
@@ -160,6 +164,9 @@ function yelpQuery(latlng, radius) {
 		success : function(data) {
 			$('#numrest').html(data.total)
 			var restaurants = '<dl class="dl-horizontal">';
+			if (!data.total) {
+				return;
+			}
 			$.each(data.businesses, function(index, value) {
 				restaurants += '<dt>' + value.name + '</dt><dd><div class="rating"><i class="star-img stars_' + addStarClass(value.rating) + '"></i></div><small class="muted">' + value.review_count + ' Reviews</small></dd>';
 			})
@@ -255,7 +262,7 @@ function totalBlocks(blks) {
 	raceChart(race, weightRatio)
 	employmentChart(employment, weightRatio)
 	incomeChart(income, 1)//parseInt(blks.length))
-	travelChart(travelTime,1)// blks.length)
+	travelChart(travelTime, 1)// blks.length)
 }
 
 function aggValues(raw, out) {

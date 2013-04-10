@@ -42,7 +42,7 @@ block body
         div.row-fluid
           div.span6
             label Search Radius : 
-              select#searchRadius(onChange='updateRadius()') miles
+              select#searchRadius(onChange='updateRadius(value)').radius miles
                 option .25
                 option .5
                 option 1
@@ -85,7 +85,7 @@ block body
       div#locale.tab-pane.fade.in
         div
           label Search Radius : 
-              select#searchRadius(onChange='updateRadius()') miles
+              select#searchRadius(onChange='updateRadius(value)').radius miles
                 option .25
                 option .5
                 option 1
