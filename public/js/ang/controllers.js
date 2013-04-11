@@ -25,11 +25,13 @@ function MyCtrl2() {
 
 MyCtrl2.$inject = [];
 
-function RouteCtrl($scope, $http, $resource) {
+function RouteCtrl($scope, $http, $resource, $filter) {
 	//$scope.serviceSelect = '40205'
 	$scope.dayButtons = "Tuesday"
 	$scope.currentPage = 0;
 	$scope.pageSize = 8;
+	//$scope.setPage = function (pageNo) {
+   
 
 	$scope.getService = function(input) {
 		if (input != undefined) {
@@ -46,7 +48,9 @@ function RouteCtrl($scope, $http, $resource) {
 		if ($scope.routeStopResult == undefined) {
 			return ""
 		} else {
-			return Math.ceil($scope.routeStopResult.length / $scope.pageSize);
+			//var dayFilter = $filter('dayButtons')
+			//console.log($scope.routeStopUnique | filter:dayButtons)
+			return Math.ceil(($scope.routeStopUnique).length / $scope.pageSize);
 		}
 	}
 	//$scope.agency = '456';
@@ -84,8 +88,18 @@ function RouteCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
 			$scope.routeStopResult = data['rows'];
+			$scope.routeStopUnique = [];
+			_.each($scope.routeStopResult, function(v,i){
+				var stop = _.findWhere($scope.routeStopUnique, {'stop_id' : v[2], "dow" : v[4]})
+				if (stop == undefined){
+					$scope.routeStopUnique.push({
+						"stop_id" : v[2],
+						"stop_name" : v[1],
+						"dow" : v[4]
+					})
+				}
+			})
 		})
 	}
 	$scope.getRouteStats = function() {
@@ -209,30 +223,7 @@ function StopCtrl($scope, $http, $resource) {
 		}).success(function(data) {
 			//console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
-			// $scope.routesOnStop = {
-				// "nodes" : [$scope.stop],
-				// "links" : []
-			// };
-			// console.log($scope.routesOnStop)
-			// var i = 1;
-			// _.each($scope.routeStopResultsAll, function(val) {
-				// if (_.indexOf($scope.routesOnStop.nodes, val[3]) == -1) {
-					// $scope.routesOnStop.nodes.push(val[3])
-					// $scope.routesOnStop.links.push({
-						// "source" : 0,
-						// "target" : i,
-						// "value" : 1
-					// })
-					// i++;
-				// }
-// 
-				// // if (_.indexOf($scope.routesOnStop.children, val[3]) == -1) {
-				// // $scope.routesOnStop.children.push({"name" : val[3]})
-				// // }
-			// })
-			//console.log($scope.routesOnStop.links)
-			//$scope.routesOnStop.links = $scope.routesOnStop.links.splice(0,1)
-			//console.log($scope.routesOnStop)
+		
 
 		})
 	}
