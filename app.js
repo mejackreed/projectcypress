@@ -39,7 +39,7 @@ app.get('/:agency/', routes.agencies);
 
 // JSON API
 app.get('/api/yelp/:latlng/:radius', api.yelp);
-app.get('/api/googleplaces/:latlng/:radius', api.googleplaces);
+app.get('/api/googleplaces/:cat/:latlng/:radius', api.googleplaces);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

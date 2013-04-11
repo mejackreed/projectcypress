@@ -17,18 +17,34 @@ var GooglePlaces = require('google-places');
 
 var places = new GooglePlaces(process.env.GOOGLEKEY)
 
+// exports.googleplaces = function(req, res) {
+// latlng = req.params.latlng.split(',');
+// lat = parseFloat(latlng[0]);
+// lng = parseFloat(latlng[1]);
+// places.search({
+// keyword : 'Food',
+// location : [lat, lng],
+// radius : req.params.radius * 1609.34
+// }, function(err, response) {
+// res.send(response);
+// });
+// }
+
 exports.googleplaces = function(req, res) {
+
 	latlng = req.params.latlng.split(',');
 	lat = parseFloat(latlng[0]);
 	lng = parseFloat(latlng[1]);
 	places.search({
-		keyword : 'Food',
+		types : [req.params.cat],
 		location : [lat, lng],
-		radius : req.params.radius * 1609.34
+		radius : req.params.radius * 1609.34,
 	}, function(err, response) {
-		res.send(response);
-	});
+				//console.log(response)
 
+		res.jsonp(response);
+	});
+	//console.log(req.params);
 }
 
 exports.yelp = function(req, res) {

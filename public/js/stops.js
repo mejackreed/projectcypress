@@ -4,6 +4,10 @@ var searchRadius = .25;
 var name;
 var latlng;
 var sv;
+var cat = ["school", "park", "bicycle_store", "food", "bus_station", "train_station", "liquor_store"];
+var catLabel = ["Schools", "Parks", "Bike shops", "Food", "Bus stations", "Train stations", "Liquor stores"];
+var relig = ["church", "hindu_temple", "mosque", "synagogue"]
+var religLabel = ["Church", "Hindu temple", "Mosque", "Synagogue"]
 //var stopPopulation = 0;
 function updateRadius(value) {
 	//console.log(value)
@@ -13,7 +17,8 @@ function updateRadius(value) {
 	$('.radius').val(value)
 	searchRadius = value;
 	blockQuery(name, latlng)
-	//googleQuery(latlng, 0.25)
+	googleQuery(cat, latlng, searchRadius, catLabel, "goog-chart")
+	googleQuery(relig, latlng, searchRadius, religLabel, "relig-chart")
 	yelpQuery(latlng, searchRadius);
 	//console.log(searchRadius)
 }
@@ -80,7 +85,7 @@ function stopQuery() {
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			//blockQuery(name, latlng)
-			//googleQuery(latlng, 0.25)
+			//googleQuery(cat, latlng, searchRadius)
 			//yelpQuery(latlng, searchRadius);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
@@ -102,7 +107,8 @@ function outputQuery() {
 			name = data['rows'][0][0]
 			latlng = data['rows'][0][1] + ", " + data['rows'][0][2]
 			blockQuery(name, latlng)
-			//googleQuery(latlng, 0.25)
+			googleQuery(cat, latlng, searchRadius, catLabel, "goog-chart")
+			googleQuery(relig, latlng, searchRadius, religLabel, "relig-chart")
 			yelpQuery(latlng, searchRadius);
 			addMap(name, new google.maps.LatLng(data['rows'][0][1], data['rows'][0][2]))
 		} else {
@@ -138,24 +144,36 @@ function addMap(name, glatlng) {
 
 }
 
-function googleQuery(latlng, radius) {
-	$.ajax({
-		url : '/api/googleplaces/' + latlng + '/' + radius,
-	}).done(function(data, error) {
-		console.log(data)
-		if (data.status == "OK") {
-			var total
-			if (data.next_page_token) {
-				total = "20+"
+function googleQuery(cat, latlng, radius, labels, chartDiv) {
+	//var total = []
+	//var label = []
+	var value = []
+	$(cat).each(function(index) {
+
+		$.ajax({
+			url : '/api/googleplaces/' + cat[index] + '/' + latlng + '/' + radius
+			//type : 'JSONP'
+		}).done(function(data, error) {
+
+			if (data.status == "OK" || data.status == "ZERO_RESULTS") {
+				//console.log(data);
+
+				if (data.next_page_token) {
+					//total[index] = [20, "20+"]
+					value[index] = 20
+					//label[index] = "20+"
+				} else {
+					//total[index] = [data.results.length, data.results.length]
+					value[index] = data.results.length;
+					//label[index] = data.results.length;
+				}
 			} else {
-				total = data.results.length
+				console.log("Google Places Error:");
+				$('#goog-chart').html("What is going on!?")
+				console.log(data);
 			}
-			$('#numrest').html(total)
-			$.each(data.results, function(index, value) {
-				$('#restlist').append('<li>' + value.name + '</li>')
-			})
-		}
-		//console.log(data)
+			googChart(value, labels, chartDiv)
+		})
 	})
 }
 
@@ -192,7 +210,7 @@ function blockQuery(name, latlng) {
 		dataType : "jsonp"
 	}).done(function(data) {
 		if (data['rows']) {
-			console.log(data)
+			//console.log(data)
 			//censusQuery(data['rows'])
 			handleCensusResponse(data)
 		} else {
@@ -320,6 +338,17 @@ function getValues(arr, weight) {
 	return vals;
 }
 
+function getGoogValues(arr, lab) {
+	vals = []
+	labels = []
+	$.each(arr, function(i, value) {
+		vals.push(lab[i])
+		labels.push(value)
+	})
+	console.log([vals, labels])
+	return [vals, labels];
+}
+
 function getRaceValues(arr, weight) {
 	vals = []
 	$.each(arr, function(i, value) {
@@ -391,9 +420,8 @@ function workChart(work) {
 			text : '',
 		},
 		tooltip : {
-			formatter : function() {
-				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
-			}
+			pointFormat : '<b>{point.percentage}%</b>',
+			percentageDecimals : 2
 		},
 		plotOptions : {
 			pie : {
@@ -491,12 +519,6 @@ function employmentChart(emp, weight) {
 				}
 			}
 		},
-		tooltip : {
-			formatter : function() {
-				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
-			}
-		},
-
 		series : [{
 			type : 'pie',
 			name : 'Sector',
@@ -522,9 +544,8 @@ function raceChart(race, weight) {
 			text : ''
 		},
 		tooltip : {
-			formatter : function() {
-				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
-			}
+			pointFormat : '<b>{point.percentage}%</b>',
+			percentageDecimals : 2
 		},
 		plotOptions : {
 			pie : {
@@ -581,6 +602,49 @@ function ageChart(age, weight) {
 		series : [{
 			name : 'Number of residents',
 			data : ageValues
+
+		}],
+		credits : {
+			enabled : false
+		},
+	});
+}
+
+function googChart(value, label, chartDiv) {
+	chart = new Highcharts.Chart({
+		chart : {
+			renderTo : chartDiv,
+			type : 'column'
+		},
+		title : {
+			text : ''
+		},
+		xAxis : {
+			categories : label
+		},
+		tooltip : {
+			pointFormat : '{point.y}',
+		},
+		yAxis : {
+			min : 0,
+			title : {
+				text : ''
+			},
+			max : 20
+
+		},
+		legend : {
+			enabled : false
+		},
+		plotOptions : {
+			column : {
+				pointPadding : 0,
+				borderWidth : 1
+			}
+		},
+		series : [{
+			name : 'Number of residents',
+			data : value
 
 		}],
 		credits : {
