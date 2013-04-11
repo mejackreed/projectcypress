@@ -144,8 +144,7 @@ function RouteCtrl($scope, $http, $resource) {
 				//console.log(val)
 				return val[0]
 			})]
-		
-		}).error(function(data){
+		}).error(function(data) {
 			console.log(data)
 		})
 	}
@@ -208,8 +207,33 @@ function StopCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
+			//console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
+			// $scope.routesOnStop = {
+				// "nodes" : [$scope.stop],
+				// "links" : []
+			// };
+			// console.log($scope.routesOnStop)
+			// var i = 1;
+			// _.each($scope.routeStopResultsAll, function(val) {
+				// if (_.indexOf($scope.routesOnStop.nodes, val[3]) == -1) {
+					// $scope.routesOnStop.nodes.push(val[3])
+					// $scope.routesOnStop.links.push({
+						// "source" : 0,
+						// "target" : i,
+						// "value" : 1
+					// })
+					// i++;
+				// }
+// 
+				// // if (_.indexOf($scope.routesOnStop.children, val[3]) == -1) {
+				// // $scope.routesOnStop.children.push({"name" : val[3]})
+				// // }
+			// })
+			//console.log($scope.routesOnStop.links)
+			//$scope.routesOnStop.links = $scope.routesOnStop.links.splice(0,1)
+			//console.log($scope.routesOnStop)
+
 		})
 	}
 
@@ -240,7 +264,7 @@ function StopCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
+			//	console.log(data)
 			$scope.stopResults = data['rows'];
 		})
 	}
@@ -265,12 +289,12 @@ function AgencyCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-		//	console.log(data)
+			//	console.log(data)
 			$scope.tripsPerTime = data['rows']//[[],[]]
-		//	console.log($scope.tripsPerTime)
+			//	console.log($scope.tripsPerTime)
 		})
 	}
-	
+
 	$scope.getTripsPerDay = function() {
 		$http({
 			method : 'JSONP',
@@ -301,10 +325,10 @@ function AgencyCtrl($scope, $http, $resource) {
 			$scope.averageSpeed = []
 			$scope.averageHeadway = []
 			_.forEach(data['rows'], function(val) {
-				if (typeof val[0] == 'number') {
+				if ( typeof val[0] == 'number') {
 					$scope.averageSpeed.push(val[0])
 				}
-				if (typeof val[1] == 'number'){
+				if ( typeof val[1] == 'number') {
 					$scope.averageHeadway.push(val[1])
 				}
 			})

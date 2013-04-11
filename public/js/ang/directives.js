@@ -162,19 +162,13 @@ function(version) {
 				var xAxis = d3.svg.axis().scale(x).orient("bottom");
 				var svg = d3.select(element[0]).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				var bar = svg.selectAll(".bar").data(data).enter().append("g")
-				.attr("class", "bar")
-				
-				.attr("transform", function(d) {
+				var bar = svg.selectAll(".bar").data(data).enter().append("g").attr("class", "bar").attr("transform", function(d) {
 					return "translate(" + x(d.x) + "," + y(d.y) + ")";
 				}).on('mouseover', mouseover).on("mouseout", mouseout)
-				
 
-				bar.append("rect").attr("x", 1).attr("width", x(data[0].dx) - 1)
-				.transition()
-					.delay(function (d,i){ return i * 50;})
-					.duration(400).ease("sin")
-				.attr("height", function(d) {
+				bar.append("rect").attr("x", 1).attr("width", x(data[0].dx) - 1).transition().delay(function(d, i) {
+					return i * 50;
+				}).duration(400).ease("sin").attr("height", function(d) {
 					return height - y(d.y);
 				})
 
@@ -289,7 +283,7 @@ function(version) {
 		},
 		link : function(scope, element, attrs) {
 
-			var svg = d3.select(element[0]).append("svg").attr("width", width ).attr("height", height).attr('class', 'chart');
+			var svg = d3.select(element[0]).append("svg").attr("width", width).attr("height", height).attr('class', 'chart');
 
 			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
@@ -300,13 +294,13 @@ function(version) {
 					return;
 				} else {
 				}
-				
+
 				values = newVal
 
 				var formatCount = d3.format(",.0f");
-				
-				var dayValue = function(d){
-					switch(d){
+
+				var dayValue = function(d) {
+					switch(d) {
 						case "Sunday":
 							return 0;
 							break;
@@ -328,9 +322,8 @@ function(version) {
 						case "Saturday":
 							return 6;
 							break;
-					}	
+					}
 				}
-
 				var mouseover = function(d, i) {
 					d3.select(this).style('fill', 'red')
 					div.transition().duration(0).style("opacity", .9);
@@ -341,62 +334,40 @@ function(version) {
 					d3.select(this).style('fill', 'steelblue')
 					div.transition().duration(0).style("opacity", 0);
 
-				};								
-				
-				values.sort(function(a,b){
-				 	return dayValue(a[0]) - dayValue(b[0])
+				};
+
+				values.sort(function(a, b) {
+					return dayValue(a[0]) - dayValue(b[0])
 
 				})
-			
-                var xScale = d3.time.scale().domain(values[0])
-                var barWidth = Math.floor(width / values.length) - 30;
-                
+				var xScale = d3.time.scale().domain(values[0])
+				var barWidth = Math.floor(width / values.length) - 30;
 
-                     
-	            var yScale = d3.scale.linear()
-	             	.domain([0, d3.max(values.map(function(v){
-	             		return parseInt(v[1]);
-	             	}))])
-	             	.rangeRound([height-margin.top, margin.top])
-	            	//.rangeRound([0, height - margin.top]);
-	            	
+				var yScale = d3.scale.linear().domain([0, d3.max(values.map(function(v) {
+					return parseInt(v[1]);
+				}))]).rangeRound([height - margin.top, margin.top])
+				//.rangeRound([0, height - margin.top]);
+
 				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
 				svg.append("g").attr("class", "axis").attr("transform", "translate(60,-5)").call(yAxis);
 
+				svg.selectAll("rect").data(values).enter().append("rect").attr("x", function(d, i) {
+					return (i * ((width - margin.left) / values.length)) + margin.left;
+				}).attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout).attr("height", 0).attr("y", height).transition().delay(function(d, i) {
+					return i * 50;
+				}).duration(400).ease("sin").attr("height", function(d) {
+					//	console.log(yScale)
+					return height - yScale(d[1]);
+				}).attr("y", function(d) {
+					//console.log(height - yScale(d[1]) - 5)
+					return yScale(d[1]) - 5;
+				})
 
-				svg.selectAll("rect")
-					.data(values)
-   					.enter()
-   					.append("rect")
-   					.attr("x", function(d,i){
-   						return (i * ((width-margin.left)/values.length)) + margin.left;
-   						})
-   					.attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout)
-	
-   					.attr("height", 0)
-   					.attr("y", height)
-   					.transition()
-   						.delay(function (d,i){ return i * 50;})
- 						.duration(400).ease("sin")
-					.attr("height", function(d){
-   					//	console.log(yScale)
-   						return height - yScale(d[1]);
-   					})
-   					.attr("y", function(d){
-   						//console.log(height - yScale(d[1]) - 5)
-   						return yScale(d[1]) - 5;
-   					})
-   					
-				 svg.selectAll("text")
-				 	.data(values)
-				 	.enter()
-				 	.append("text")
-  					.attr("y", height +15)
-  					.attr("class", "small")
-  					.attr("x", function(d,i){
-  						return (i * (width/values.length))  + margin.left
-  					})
-      				.text(function(d){return d[0].slice(0,3)});
+				svg.selectAll("text").data(values).enter().append("text").attr("y", height + 15).attr("class", "small").attr("x", function(d, i) {
+					return (i * (width / values.length)) + margin.left
+				}).text(function(d) {
+					return d[0].slice(0, 3)
+				});
 			});
 		}
 	}
@@ -410,7 +381,7 @@ function(version) {
 		bottom : 30,
 		left : 30
 	}
-	var width = $('d-Bar').width() - margin.left - margin.right, height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
+	var width = $('d-Barttd').width() - margin.left - margin.right, height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
 
 	return {
 		restrict : 'E',
@@ -419,7 +390,7 @@ function(version) {
 			val : '='
 		},
 		link : function(scope, element, attrs) {
-			
+
 			function formatTime(d) {
 				var hour = parseInt(d / 60)
 				var minute = d % 60
@@ -438,13 +409,12 @@ function(version) {
 					return;
 				} else {
 				}
-				
+
 				values = newVal
 
 				//console.log(values)
-                var barWidth = Math.floor(width / values.length);
+				var barWidth = Math.floor(width / values.length);
 
-				
 				var mouseover = function(d, i) {
 					d3.select(this).style('fill', 'red')
 					div.transition().duration(0).style("opacity", .9);
@@ -455,28 +425,24 @@ function(version) {
 					d3.select(this).style('fill', 'steelblue')
 					div.transition().duration(0).style("opacity", 0);
 
-				};								
-				
-				values.sort(function(a,b){
-				 	return a[1] - b[1]
+				};
+
+				values.sort(function(a, b) {
+					return a[1] - b[1]
 
 				})
-				
 				var xScale = d3.scale.linear().domain([0, d3.max(values, function(d) {
 					return parseInt(d[1]);
 				})]).range([margin.left, width - margin.right]).nice();
-				
-				var yScale = d3.scale.linear()
-	             	.domain([0, d3.max(values.map(function(v){
-	             		return parseInt(v[2]);
-	             	}))])
-	             	.range([height-margin.top, 0])
 
+				var yScale = d3.scale.linear().domain([0, d3.max(values.map(function(v) {
+					return parseInt(v[2]);
+				}))]).range([height - margin.top, 0])
 
 				var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5).tickFormat(function(d, i) {
 					return formatTime(d)
 				});
-				
+
 				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
 
 				svg.append("g").attr("class", "axis")//Assign "axis" class
@@ -484,22 +450,130 @@ function(version) {
 
 				svg.append("g").attr("class", "axis").attr("transform", "translate(40,-5)").call(yAxis);
 
-				svg.selectAll("rect").data(values).enter().append("rect")
-				.attr("x", function(d,i){
-					
-					return (i* (width/values.length));
+				svg.selectAll("rect").data(values).enter().append("rect").attr("x", function(d, i) {
+
+					return (i * (width / values.length));
+				}).attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout).transition().delay(function(d, i) {
+					return i * 10;
+				}).duration(400).ease("sin").attr("height", function(d) {
+					return height - margin.top - yScale(parseInt(d[2]))
+				}).attr("y", function(d) {
+					return yScale(parseInt(d[2])) - 5;
 				})
-   					.attr("width", barWidth)
-   					.on('mouseover', mouseover).on('mouseout', mouseout)
-   					.transition()
-   						.delay(function (d,i){ return i * 10;})
- 						.duration(400).ease("sin")
-   					.attr("height", function(d){
-   						return height - margin.top - yScale(parseInt(d[2]))
-					})
-					.attr("y", function(d){
-   						return yScale(parseInt(d[2])) - 5;
-   					})
+			});
+		}
+	}
+}).directive('dClus', function() {
+
+	// constants
+	//console.log($('d-hist').width())
+	var margin = {
+		top : 10,
+		right : 30,
+		bottom : 30,
+		left : 30
+	}
+	var width = $('d-Clus').width() - margin.left - margin.right, height = 400 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
+
+	return {
+		restrict : 'E',
+		terminal : true,
+		scope : {
+			val : '='
+		},
+		link : function(scope, element, attrs) {
+
+			var svg = d3.select(element[0]).append("svg").attr("width", width + 1).attr("height", height)
+
+			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+			scope.$watch('val', function(newVal, oldVal) {
+				var values;
+
+				if (!newVal) {
+					return;
+				} else {
+				}
+
+			values = newVal			
+			var j =1;
+			
+				var my_nodes = [{
+					"name" : values[0][2],
+					"group" : 1
+				}]
+				var my_links = [];
+
+			values.forEach(function(d, i ) {
+				if (_.findWhere(my_nodes, {"name": d[3]}) == undefined){
+					my_nodes.push({
+							"name" : d[3],
+							"group" : 1
+						})
+						my_links.push({
+							"source" : 0,
+							 "target" : j
+						})
+						j++;
+				}
+			})
+     
+
+			var force = d3.layout.force()
+			    .gravity(.05)
+			    .distance(100)
+			    .charge(-100)
+			    .size([width, height-margin.top]);
+			
+			  force
+			      .nodes(my_nodes)
+			      .links(my_links)
+			      .start();
+			
+			  var link = svg.selectAll(".link")
+			      .data(my_links)
+			    .enter().append("line")
+			      .attr("class", "link");
+			
+			  var node = svg.selectAll(".node")
+			      .data(my_nodes)
+			    .enter().append("g")
+			      .attr("class", "node")
+			      .call(force.drag);
+			      
+		      node.append("circle")
+		      	.attr("r", function(d){
+		      		if (d.name == values[0][2]){
+		      			return 20;
+		      		}else{
+		      			return 10;
+		      		}
+		      	})
+		      	.attr("fill", function(d){
+		      		if (d.name == values[0][2]){
+		      			return "steelblue";
+		      		}else{
+		      			return "red";
+		      		}
+		      	})
+		
+			
+			  node.append("text")
+			      .attr("dx", 12)
+			      .attr("dy", ".35em")
+			      .text(function(d) { return d.name });
+			
+			  force.on("tick", function() {
+			    link.attr("x1", function(d) { return d.source.x; })
+			        .attr("y1", function(d) { return d.source.y; })
+			        .attr("x2", function(d) { return d.target.x; })
+			        .attr("y2", function(d) { return d.target.y; });
+			
+			    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+			  });
+							
+			
+				
 			});
 		}
 	}

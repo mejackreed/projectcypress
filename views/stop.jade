@@ -1,6 +1,8 @@
 extends layout
 
 block head
+  link(rel='stylesheet', href='/css/stop.css')
+
   script
     var stopID = !{stop}
     var agency = !{agency}
@@ -39,6 +41,8 @@ block body
           div.span6
             h3.navbar-inner <i class="icon-globe"> </i> Streetview
             #street-canvas
+        div.row-fluid
+          d-Clus(val="routeStopResultsAll").span12
       div#service.tab-pane.fade.in
         include partials/sservice
       div#people.tab-pane.fade.in
