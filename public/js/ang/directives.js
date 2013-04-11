@@ -162,13 +162,21 @@ function(version) {
 				var xAxis = d3.svg.axis().scale(x).orient("bottom");
 				var svg = d3.select(element[0]).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-				var bar = svg.selectAll(".bar").data(data).enter().append("g").attr("class", "bar").attr("transform", function(d) {
+				var bar = svg.selectAll(".bar").data(data).enter().append("g")
+				.attr("class", "bar")
+				
+				.attr("transform", function(d) {
 					return "translate(" + x(d.x) + "," + y(d.y) + ")";
 				}).on('mouseover', mouseover).on("mouseout", mouseout)
+				
 
-				bar.append("rect").attr("x", 1).attr("width", x(data[0].dx) - 1).attr("height", function(d) {
+				bar.append("rect").attr("x", 1).attr("width", x(data[0].dx) - 1)
+				.transition()
+					.delay(function (d,i){ return i * 50;})
+					.duration(400).ease("sin")
+				.attr("height", function(d) {
 					return height - y(d.y);
-				});
+				})
 
 				// bar.append("text").attr("dy", ".75em").attr("y", 6).attr("x", x(data[0].dx) / 2).attr("text-anchor", "middle").text(function(d) {
 				// return formatCount(d.y);
@@ -363,15 +371,26 @@ function(version) {
    					.attr("x", function(d,i){
    						return i * (width/values.length);
    						})
-   					.attr("y", function(d){
-   						//console.log(d)
-   						return height - yScale(d[1]) -.5;
-   					})
-   					.attr("width", barWidth)
-   					.attr("height", function(d){
+   					.attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout)
+					//.delay(function (d,i){ return i * 30;})
+ 					//.duration(30).ease("elastic")
+   					
+   					.attr("height", 0)
+   					.attr("y", height)
+   					.transition()
+   						.delay(function (d,i){ return i * 50;})
+ 						.duration(400).ease("sin")
+					.attr("height", function(d){
    					//	console.log(yScale)
    						return yScale(d[1]);
-   					}).on('mouseover', mouseover).on('mouseout', mouseout)
+   					})
+   					.attr("y", function(d){
+   						//console.log(height - yScale(d[1]) - 5)
+   						return height - yScale(d[1]) - 5;
+   					})
+   					
+   					
+   					
    					
 				 svg.selectAll("text")
 				 	.data(values)
