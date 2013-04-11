@@ -178,10 +178,6 @@ function(version) {
 					return height - y(d.y);
 				})
 
-				// bar.append("text").attr("dy", ".75em").attr("y", 6).attr("x", x(data[0].dx) / 2).attr("text-anchor", "middle").text(function(d) {
-				// return formatCount(d.y);
-				// });
-
 				svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
 
 			});
@@ -307,8 +303,6 @@ function(version) {
 				
 				values = newVal
 
-				console.log(values)
-
 				var formatCount = d3.format(",.0f");
 				
 				var dayValue = function(d){
@@ -372,9 +366,7 @@ function(version) {
    						return i * (width/values.length);
    						})
    					.attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout)
-					//.delay(function (d,i){ return i * 30;})
- 					//.duration(30).ease("elastic")
-   					
+	
    					.attr("height", 0)
    					.attr("y", height)
    					.transition()
@@ -389,24 +381,121 @@ function(version) {
    						return height - yScale(d[1]) - 5;
    					})
    					
-   					
-   					
-   					
 				 svg.selectAll("text")
 				 	.data(values)
 				 	.enter()
 				 	.append("text")
   					.attr("y", height +15)
   					.attr("class", "small")
-  					//.attr("transform())","rotate(180)")
   					.attr("x", function(d,i){
   						return (i * (width/values.length)) + 10
   					})
       				.text(function(d){return d[0].slice(0,3)});
-				//var x = d3.scale.linear().domain([0, d3.max(values)]).range([0, width]);
+			});
+		}
+	}
+}).directive('dBarttd', function() {
+
+	// constants
+	//console.log($('d-hist').width())
+	var margin = {
+		top : 10,
+		right : 30,
+		bottom : 30,
+		left : 30
+	}
+	var width = $('d-Bar').width() - margin.left - margin.right, height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
+
+	return {
+		restrict : 'E',
+		terminal : true,
+		scope : {
+			val : '='
+		},
+		link : function(scope, element, attrs) {
+			
+			function formatTime(d) {
+				var hour = parseInt(d / 60)
+				var minute = d % 60
+				var time = hour + ":" + minute
+				return moment(time, 'hh:mm').format('h:mm a')
+			}
+
+			var svg = d3.select(element[0]).append("svg").attr("width", width + 1).attr("height", height).attr('class', 'chart');
+
+			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+			scope.$watch('val', function(newVal, oldVal) {
+				var values = new Array();
+
+				if (!newVal) {
+					return;
+				} else {
+				}
+				
+				values = newVal
+
+				//console.log(values)
+                var barWidth = Math.floor(width / values.length);
+
+				
+				var mouseover = function(d, i) {
+					d3.select(this).style('fill', 'red')
+					div.transition().duration(0).style("opacity", .9);
+					div.html(formatTime(d[1]) + " - " + d[2]).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+				};
+
+				var mouseout = function() {
+					d3.select(this).style('fill', 'steelblue')
+					div.transition().duration(0).style("opacity", 0);
+
+				};								
+				
+				values.sort(function(a,b){
+				 	return a[1] - b[1]
+
+				})
+				
+				var xScale = d3.scale.linear().domain([0, d3.max(values, function(d) {
+					return parseInt(d[1]);
+				})]).range([margin.left, width - margin.right]).nice();
+				
+				var yScale = d3.scale.linear()
+	             	.domain([0, d3.max(values.map(function(v){
+	             		return parseInt(v[2]);
+	             	}))])
+	             	.range([height-margin.top, 0])
 
 
+				var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5).tickFormat(function(d, i) {
+					return formatTime(d)
+				});
+				
+				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+
+				svg.append("g").attr("class", "axis")//Assign "axis" class
+				.call(xAxis).attr("transform", "translate(0," + (height - margin.top ) + ")").attr('')
+
+				svg.append("g").attr("class", "axis").attr("transform", "translate(40,-5)").call(yAxis);
+
+				svg.selectAll("rect").data(values).enter().append("rect")
+				.attr("x", function(d,i){
+					
+					return (i* (width/values.length));
+				})
+   					.attr("width", barWidth)
+   					.on('mouseover', mouseover).on('mouseout', mouseout)
+   					.transition()
+   						.delay(function (d,i){ return i * 10;})
+ 						.duration(400).ease("sin")
+   					.attr("height", function(d){
+   						return height - margin.top - yScale(parseInt(d[2]))
+					})
+					.attr("y", function(d){
+   						return yScale(parseInt(d[2])) - 5;
+   					})
 			});
 		}
 	}
 });
+

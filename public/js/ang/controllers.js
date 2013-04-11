@@ -144,11 +144,7 @@ function RouteCtrl($scope, $http, $resource) {
 				//console.log(val)
 				return val[0]
 			})]
-			//console.log($scope.activeTrip)
-			//console.log($scope.testtrip)
-			//console.log($scope.routeTrips)
-			//$scope.routeTrips = data['rows'];
-			//$scope.drawChart($scope.routeTrips)
+		
 		}).error(function(data){
 			console.log(data)
 		})
@@ -258,7 +254,22 @@ function StopCtrl($scope, $http, $resource) {
 }
 
 function AgencyCtrl($scope, $http, $resource) {
-	//$scope.routeResults = []
+	//$scope.routeResults = []all_trips_tod
+	$scope.getTripsPerTime = function() {
+		$http({
+			method : 'JSONP',
+			url : fusionURL,
+			params : {
+				sql : "SELECT * from " + $scope.agency.output.all_trips_tod + " WHERE dow = 'Tuesday'",
+				key : googleKey,
+				callback : 'JSON_CALLBACK'
+			}
+		}).success(function(data) {
+		//	console.log(data)
+			$scope.tripsPerTime = data['rows']//[[],[]]
+		//	console.log($scope.tripsPerTime)
+		})
+	}
 	
 	$scope.getTripsPerDay = function() {
 		$http({
@@ -272,20 +283,7 @@ function AgencyCtrl($scope, $http, $resource) {
 		}).success(function(data) {
 			console.log(data)
 			$scope.tripsPerDay = data['rows']//[[],[]]
-			//$scope.tripsPerDay = data['rows']
-			// $scope.averageSpeed = []
-			// $scope.averageHeadway = []
-			// _.forEach(data['rows'], function(val) {
-				// if (typeof val[1] == 'number') {
-				//	 $scope.tripsPerDay[0].push(val[0])
-					// $scope.tripsPerDay[1].push(val[1])
-				// }
-				// if (typeof val[1] == 'number'){
-					// $scope.averageHeadway.push(val[1])
-				// }
-			// })
-			//$scope.routeResults = data['rows'];
-			console.log($scope.tripsPerDay)
+			//console.log($scope.tripsPerDay)
 		})
 	}
 
@@ -319,6 +317,7 @@ function AgencyCtrl($scope, $http, $resource) {
 		$scope.agency = agency;
 		//$scope.stop = stop;
 		$scope.getRoutes()
+		$scope.getTripsPerTime()
 		$scope.getTripsPerDay()
 		//$scope.getStop()
 		//$scope.getStopRoute()

@@ -47,7 +47,9 @@ var systems = {
 			"route" : "1eBMp0xS32mcDcbqtr8rycKBm84Uy9FT58viH7QE",
 			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
 			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY",
-			"all_trips_day" : "17XCiVpgdSVWa6In8Dx8d1YsPvFcwfSCaTEhrjzY"
+			"all_trips_day" : "17XCiVpgdSVWa6In8Dx8d1YsPvFcwfSCaTEhrjzY",
+			"all_trips_tod" : "1uPGAd4zKYBsDHMQ6MZ5MJJTI_gbFAOweon0tZNw"
+
 		}
 
 	},
