@@ -19,8 +19,8 @@ var systems = {
 			"agency" : "1cJuMfn6uCQyCX1rFnaYc3Xqivow6I_4ma2xNYLc"
 		},
 		"output" : {
-			"stop_route" : "13nOBIacXVPggxP4oJJksQxNjtHdXUrImla1Psvo",
-			"route" : "1TZePUztJs6TizyfAraNOozHM7UpZ_fB1WGIt_ew",
+			"stop_route" : "1ZELvqKn0JE_KyEUi-15aWwnFhQ9u7HBARvdpDEo",
+			"route" : "1cnkvllw7MoYy88qH5SrR5E2PbpdHA-_KudVSmqg",
 			"active_trips" : "13PyAohHNDAuxgVEReX3BGrWPhj_7RifhGrlzi_0",
 			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc",
 			"all_trips_day" : "14ivHFZI39H7VY1gXw2sTZX4wy1odxtSZMNTqTvg",
@@ -43,14 +43,17 @@ var systems = {
 			"agency" : "1QmuCRA5ioCwPjlQxmWvv0GVEYz5Z113IfwynbsQ"
 		},
 		"output" : {
-			"stop_route" : "153-hu-hTm_GL_EaMazb3EijeM0isnlxBHx913sE",
-			"route" : "1eBMp0xS32mcDcbqtr8rycKBm84Uy9FT58viH7QE",
+			"stop_route" : "1jOXT0VjrhC8hU_oxSoM3uXmNfoVikPicKcjM9W8",
+			"route" : "1henfUvSofz2FgYWpVX6x6AdKdrOtQ7VvPrNR6OA",
 			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
 			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY",
 			"all_trips_day" : "17XCiVpgdSVWa6In8Dx8d1YsPvFcwfSCaTEhrjzY",
 			"all_trips_tod" : "1uPGAd4zKYBsDHMQ6MZ5MJJTI_gbFAOweon0tZNw"
 
 		}
+		
+		// SEPTA-bus
+// route : 1gNdpc6oOV0hMahN2MU5byjPVR4WRY7YcI3NJnqI
 
 	},
 	"cta" : {
@@ -93,9 +96,11 @@ var systems = {
 		},
 		"output" : {
 			"stop_route" : "1NbSSQ3QnuXaIn9Ld8tBmNmv8RPoODWecD8_UKPQ",
-			"route" : "1PXOwYh2-wC3sgeXznT1nCStR4_i9mwv9dsTAfb8",
+			"route" : "1TTqFZx41tgmFno7wRrqgOPAo7Nhww5C5-3X3Vtw",
 			"active_trips" : "1Mos8MBcBLOrtyNJInuSUGaBskmNnkcvUr23YRvU",
-			"stop" : "18jlD7Lv8h4nncRKE1M3fAF7yjKvRdg3NLTOfABw"
+			"stop" : "18jlD7Lv8h4nncRKE1M3fAF7yjKvRdg3NLTOfABw",
+			"all_trips_day" : "1_WlKqutfPlbF0BFwC7GxHXGgML-W2c1-1F8SbkA",
+			"all_trips_tod" : "1aMXVnWiq7Hmykx-a1Dr5ufLBm4zaTmRfCJ2IvOs"
 		}
 	}
 }

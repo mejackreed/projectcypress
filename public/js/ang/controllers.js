@@ -321,7 +321,7 @@ function AgencyCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			//console.log(data)
+			console.log(data)
 			$scope.averageSpeed = []
 			$scope.averageHeadway = []
 			_.forEach(data['rows'], function(val) {
@@ -333,7 +333,7 @@ function AgencyCtrl($scope, $http, $resource) {
 				}
 			})
 			//$scope.routeResults = data['rows'];
-			//console.log($scope.routeResults)
+			//console.log($scope.averageSpeed)
 		})
 	}
 
