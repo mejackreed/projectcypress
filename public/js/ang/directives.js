@@ -277,9 +277,9 @@ function(version) {
 		top : 10,
 		right : 30,
 		bottom : 30,
-		left : 30
+		left : 60
 	}
-	var width = $('d-Bar').width() - margin.left - margin.right, height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
+	var width = $('d-Bar').width(), height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
 
 	return {
 		restrict : 'E',
@@ -289,7 +289,7 @@ function(version) {
 		},
 		link : function(scope, element, attrs) {
 
-			var svg = d3.select(element[0]).append("svg").attr("width", width + 1).attr("height", height).attr('class', 'chart');
+			var svg = d3.select(element[0]).append("svg").attr("width", width ).attr("height", height).attr('class', 'chart');
 
 			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
@@ -349,21 +349,27 @@ function(version) {
 				})
 			
                 var xScale = d3.time.scale().domain(values[0])
-                var barWidth = Math.floor(width / values.length) - 10;
+                var barWidth = Math.floor(width / values.length) - 30;
+                
 
                      
 	            var yScale = d3.scale.linear()
 	             	.domain([0, d3.max(values.map(function(v){
 	             		return parseInt(v[1]);
 	             	}))])
-	            	.rangeRound([0, height - margin.top]);
+	             	.rangeRound([height-margin.top, margin.top])
+	            	//.rangeRound([0, height - margin.top]);
+	            	
+				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+				svg.append("g").attr("class", "axis").attr("transform", "translate(60,-5)").call(yAxis);
+
 
 				svg.selectAll("rect")
 					.data(values)
    					.enter()
    					.append("rect")
    					.attr("x", function(d,i){
-   						return i * (width/values.length);
+   						return (i * ((width-margin.left)/values.length)) + margin.left;
    						})
    					.attr("width", barWidth).on('mouseover', mouseover).on('mouseout', mouseout)
 	
@@ -374,11 +380,11 @@ function(version) {
  						.duration(400).ease("sin")
 					.attr("height", function(d){
    					//	console.log(yScale)
-   						return yScale(d[1]);
+   						return height - yScale(d[1]);
    					})
    					.attr("y", function(d){
    						//console.log(height - yScale(d[1]) - 5)
-   						return height - yScale(d[1]) - 5;
+   						return yScale(d[1]) - 5;
    					})
    					
 				 svg.selectAll("text")
@@ -388,7 +394,7 @@ function(version) {
   					.attr("y", height +15)
   					.attr("class", "small")
   					.attr("x", function(d,i){
-  						return (i * (width/values.length)) + 10
+  						return (i * (width/values.length))  + margin.left
   					})
       				.text(function(d){return d[0].slice(0,3)});
 			});
