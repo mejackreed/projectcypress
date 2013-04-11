@@ -105,20 +105,22 @@ function(version) {
 	}
 }).directive('dHist', function() {
 
-	// constants
-	var margin = 20, width = 960, height = 500 - .5 - margin, color = d3.interpolateRgb("#f77", "#77f");
+	var margin = {
+		top : 10,
+		right : 30,
+		bottom : 30,
+		left : 30
+	}
+	var width = $('d-hist').width() - margin.left - margin.right, height = 300 - .5 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
 
 	return {
 		restrict : 'E',
 		terminal : true,
 		scope : {
-			val : '='//,
-			//grouped : '='
+			val : '='
 		},
 		link : function(scope, element, attrs) {
-
-			// set up initial svg object
-			//var vis = d3.select(element[0]).append("svg").attr("width", width).attr("height", height + margin + 100);
+			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 
 			scope.$watch('val', function(newVal, oldVal) {
 				var values = new Array();
@@ -126,12 +128,9 @@ function(version) {
 				if (!newVal) {
 					return;
 				} else {
-					//console.log(newVal)
 				}
-				//console.log(newVal)
 				values = newVal
 
-				//console.log(values)
 				if (values.length < 1) {
 					return;
 				}
@@ -140,20 +139,15 @@ function(version) {
 
 				var mouseover = function(d, i) {
 					d3.select(this).select('rect').style('fill', 'red')
-
+					div.transition().duration(0).style("opacity", .9);
+					div.html(formatCount(d.y)).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
 				};
 
 				var mouseout = function() {
 					d3.select(this).select('rect').style('fill', 'steelblue')
+					div.transition().duration(0).style("opacity", 0);
 
 				};
-
-				var margin = {
-					top : 10,
-					right : 30,
-					bottom : 30,
-					left : 30
-				}, width = 960 - margin.left - margin.right, height = 500 - margin.top - margin.bottom;
 
 				var x = d3.scale.linear().domain([0, d3.max(values)]).range([0, width]);
 
@@ -176,9 +170,9 @@ function(version) {
 					return height - y(d.y);
 				});
 
-				bar.append("text").attr("dy", ".75em").attr("y", 6).attr("x", x(data[0].dx) / 2).attr("text-anchor", "middle").text(function(d) {
-					return formatCount(d.y);
-				});
+				// bar.append("text").attr("dy", ".75em").attr("y", 6).attr("x", x(data[0].dx) / 2).attr("text-anchor", "middle").text(function(d) {
+				// return formatCount(d.y);
+				// });
 
 				svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
 
@@ -198,7 +192,7 @@ function(version) {
 			name : '='
 		},
 		link : function(scope, element, attrs) {
-			width = $('d-scat').width()-margin
+			width = $('d-scat').width() - margin
 
 			function formatTime(d) {
 				var hour = parseInt(d / 60)
@@ -267,6 +261,131 @@ function(version) {
 				}).attr("r", 5).attr("fill", 'steelblue').attr("fill-opacity", '.5').on('mouseover', mouseon).on('mouseout', mouseout).append("svg:title").text(function(d) {
 					return d;
 				});
+
+			});
+		}
+	}
+}).directive('dBar', function() {
+
+	// constants
+	//console.log($('d-hist').width())
+	var margin = {
+		top : 10,
+		right : 30,
+		bottom : 30,
+		left : 30
+	}
+	var width = $('d-Bar').width() - margin.left - margin.right, height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
+
+	return {
+		restrict : 'E',
+		terminal : true,
+		scope : {
+			val : '='
+		},
+		link : function(scope, element, attrs) {
+
+			var svg = d3.select(element[0]).append("svg").attr("width", width + 1).attr("height", height).attr('class', 'chart');
+
+			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+
+			scope.$watch('val', function(newVal, oldVal) {
+				var values = new Array();
+
+				if (!newVal) {
+					return;
+				} else {
+				}
+				
+				values = newVal
+
+				console.log(values)
+
+				var formatCount = d3.format(",.0f");
+				
+				var dayValue = function(d){
+					switch(d){
+						case "Sunday":
+							return 0;
+							break;
+						case "Monday":
+							return 1;
+							break;
+						case "Tuesday":
+							return 2;
+							break;
+						case "Wednesday":
+							return 3;
+							break;
+						case "Thursday":
+							return 4;
+							break;
+						case "Friday":
+							return 5;
+							break;
+						case "Saturday":
+							return 6;
+							break;
+					}	
+				}
+
+				var mouseover = function(d, i) {
+					d3.select(this).style('fill', 'red')
+					div.transition().duration(0).style("opacity", .9);
+					div.html(d).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+				};
+
+				var mouseout = function() {
+					d3.select(this).style('fill', 'steelblue')
+					div.transition().duration(0).style("opacity", 0);
+
+				};								
+				
+				values.sort(function(a,b){
+				 	return dayValue(a[0]) - dayValue(b[0])
+
+				})
+			
+                var xScale = d3.time.scale().domain(values[0])
+                var barWidth = Math.floor(width / values.length) - 10;
+
+                     
+	            var yScale = d3.scale.linear()
+	             	.domain([0, d3.max(values.map(function(v){
+	             		return parseInt(v[1]);
+	             	}))])
+	            	.rangeRound([0, height - margin.top]);
+
+				svg.selectAll("rect")
+					.data(values)
+   					.enter()
+   					.append("rect")
+   					.attr("x", function(d,i){
+   						return i * (width/values.length);
+   						})
+   					.attr("y", function(d){
+   						//console.log(d)
+   						return height - yScale(d[1]) -.5;
+   					})
+   					.attr("width", barWidth)
+   					.attr("height", function(d){
+   					//	console.log(yScale)
+   						return yScale(d[1]);
+   					}).on('mouseover', mouseover).on('mouseout', mouseout)
+   					
+				 svg.selectAll("text")
+				 	.data(values)
+				 	.enter()
+				 	.append("text")
+  					.attr("y", height +15)
+  					.attr("class", "small")
+  					//.attr("transform())","rotate(180)")
+  					.attr("x", function(d,i){
+  						return (i * (width/values.length)) + 10
+  					})
+      				.text(function(d){return d[0].slice(0,3)});
+				//var x = d3.scale.linear().domain([0, d3.max(values)]).range([0, width]);
+
 
 			});
 		}

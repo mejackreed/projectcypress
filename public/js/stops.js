@@ -116,7 +116,6 @@ function addMap(name, glatlng) {
 	initialize();
 	//var nglatlng = new google.maps.LatLng(latlng)
 	map.setCenter(glatlng)
-	
 
 	map.setZoom(15)
 	var radius = new google.maps.Circle({
@@ -392,8 +391,9 @@ function workChart(work) {
 			text : '',
 		},
 		tooltip : {
-			pointFormat : '<b>{point.percentage}%</b>',
-			percentageDecimals : 2
+			formatter : function() {
+				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
+			}
 		},
 		plotOptions : {
 			pie : {
@@ -491,6 +491,12 @@ function employmentChart(emp, weight) {
 				}
 			}
 		},
+		tooltip : {
+			formatter : function() {
+				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
+			}
+		},
+
 		series : [{
 			type : 'pie',
 			name : 'Sector',
@@ -516,8 +522,9 @@ function raceChart(race, weight) {
 			text : ''
 		},
 		tooltip : {
-			pointFormat : '<b>{point.percentage}%</b>',
-			percentageDecimals : 2
+			formatter : function() {
+				return '<b>' + this.point.name + '</b>: ' + Math.round(this.percentage * 100) / 100 + ' %';
+			}
 		},
 		plotOptions : {
 			pie : {

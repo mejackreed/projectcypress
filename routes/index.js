@@ -22,7 +22,9 @@ var systems = {
 			"stop_route" : "13nOBIacXVPggxP4oJJksQxNjtHdXUrImla1Psvo",
 			"route" : "1TZePUztJs6TizyfAraNOozHM7UpZ_fB1WGIt_ew",
 			"active_trips" : "13PyAohHNDAuxgVEReX3BGrWPhj_7RifhGrlzi_0",
-			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc"
+			"stop" : "1poD_G84Ax7QrF-Z-v6N8Q0F0TRUTohr8JwJTRdc",
+			"all_trips_day" : "14ivHFZI39H7VY1gXw2sTZX4wy1odxtSZMNTqTvg",
+			"all_trips_tod" : "1XUfX3I7XYFdUnB3aQru6gtvmPoh_gDjHIB24HBQ"
 		}
 	},
 	"septa-rail" : {
@@ -44,7 +46,8 @@ var systems = {
 			"stop_route" : "153-hu-hTm_GL_EaMazb3EijeM0isnlxBHx913sE",
 			"route" : "1eBMp0xS32mcDcbqtr8rycKBm84Uy9FT58viH7QE",
 			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
-			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY"
+			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY",
+			"all_trips_day" : "17XCiVpgdSVWa6In8Dx8d1YsPvFcwfSCaTEhrjzY"
 		}
 
 	},

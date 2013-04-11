@@ -2,15 +2,18 @@
 	fill: steelblue;
 	shape-rendering: crispEdges;
 }
+rect {
+	fill: steelblue;
+	shape-rendering: crispEdges;
+}
 
 .bar text {
 	fill: #fff;
 }
 
-.axis path,
-.axis line {
-    fill: none;
-    stroke: #eee;
-    stroke-width: 0.5;
-    shape-rendering: crispEdges;
+.axis path, .axis line {
+	fill: none;
+	stroke: #eee;
+	stroke-width: 0.5;
+	shape-rendering: crispEdges;
 }

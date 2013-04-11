@@ -260,23 +260,54 @@ function StopCtrl($scope, $http, $resource) {
 function AgencyCtrl($scope, $http, $resource) {
 	//$scope.routeResults = []
 	
-	
+	$scope.getTripsPerDay = function() {
+		$http({
+			method : 'JSONP',
+			url : fusionURL,
+			params : {
+				sql : "SELECT * from " + $scope.agency.output.all_trips_day,
+				key : googleKey,
+				callback : 'JSON_CALLBACK'
+			}
+		}).success(function(data) {
+			console.log(data)
+			$scope.tripsPerDay = data['rows']//[[],[]]
+			//$scope.tripsPerDay = data['rows']
+			// $scope.averageSpeed = []
+			// $scope.averageHeadway = []
+			// _.forEach(data['rows'], function(val) {
+				// if (typeof val[1] == 'number') {
+				//	 $scope.tripsPerDay[0].push(val[0])
+					// $scope.tripsPerDay[1].push(val[1])
+				// }
+				// if (typeof val[1] == 'number'){
+					// $scope.averageHeadway.push(val[1])
+				// }
+			// })
+			//$scope.routeResults = data['rows'];
+			console.log($scope.tripsPerDay)
+		})
+	}
 
 	$scope.getRoutes = function() {
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT average_speed from " + $scope.agency.output.route,
+				sql : "SELECT average_speed, route_avg_hdwy from " + $scope.agency.output.route,
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
-			$scope.routeResults = []
+			//console.log(data)
+			$scope.averageSpeed = []
+			$scope.averageHeadway = []
 			_.forEach(data['rows'], function(val) {
 				if (typeof val[0] == 'number') {
-					$scope.routeResults.push(val[0])
+					$scope.averageSpeed.push(val[0])
+				}
+				if (typeof val[1] == 'number'){
+					$scope.averageHeadway.push(val[1])
 				}
 			})
 			//$scope.routeResults = data['rows'];
@@ -288,6 +319,7 @@ function AgencyCtrl($scope, $http, $resource) {
 		$scope.agency = agency;
 		//$scope.stop = stop;
 		$scope.getRoutes()
+		$scope.getTripsPerDay()
 		//$scope.getStop()
 		//$scope.getStopRoute()
 	}
