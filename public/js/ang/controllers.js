@@ -194,6 +194,7 @@ function RouteCtrl($scope, $http, $resource, $filter) {
 
 function StopCtrl($scope, $http, $resource) {
 	$scope.dayButtons = "Tuesday"
+	$scope.stop_name = "Stop Name"
 
 	//	$scope.serviceSelect = "xxxxx"
 	$scope.updateRoutes = function() {
@@ -223,9 +224,12 @@ function StopCtrl($scope, $http, $resource) {
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
+			console.log($scope.stop, $scope.route)
 			console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
-
+			if (data['rows']){
+			$scope.stop_name = $scope.routeStopResultsAll[0][1]
+			}
 		})
 	}
 
@@ -244,29 +248,30 @@ function StopCtrl($scope, $http, $resource) {
 			$scope.routeStats = data['rows'];
 		})
 	}
+	
+	$scope.getRouteInfo = function(){
+		$http({
+			method : 'JSONP',
+			url : fusionURL,
+			params : {
+				sql : "SELECT * from " + $scope.agency.gtfs.routes + " WHERE route_id ='" + $scope.route + "'",
+				key : googleKey,
+				callback : 'JSON_CALLBACK'
+			}
+		}).success(function(data) {
+			//console.log(data)
+			$scope.routeResult = data['rows']
+		})
+	}
 
-	// $scope.getStop = function() {
-		// console.log($scope.stop)
-		// $http({
-			// method : 'JSONP',
-			// url : fusionURL,
-			// params : {
-				// sql : "SELECT * from " + $scope.agency.output.stop + " WHERE stop_id ='" + $scope.stop + "'",
-				// key : googleKey,
-				// callback : 'JSON_CALLBACK'
-			// }
-		// }).success(function(data) {
-			// //	console.log(data)
-			// $scope.stopResults = data['rows'];
-		// })
-	// }
 	$scope.init = function(agency, stop, route) {
 		$scope.agency = agency;
-		$scope.stop = stop.toString();
-		$scope.route = route.toString();
-
-		//$scope.getStop()
+		$scope.stop = stop
+		$scope.route = route.toString()
+	console.log($scope.route, route.toString())
+		$scope.getRouteInfo()
 		$scope.getStopRoute()
+//		$scope.getRouteStats()
 	}
 }
 

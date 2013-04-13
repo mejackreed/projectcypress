@@ -116,21 +116,25 @@ exports.agencies = function(req, res) {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
-		title : " | " + systems[agency]["name"]
+		title : " | " + systems[agency]["name"],
+		controller : 'AgencyCtrl'
 	});
 }
 
 exports.routes = function(req, res) {
 	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
-	var routeID = req.params.route;
+	var routeID = "";
+	routeID = req.params.route;
+	console.log(routeID)
 	//console.log(route)
 	res.render('route', {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
 		routeID : routeID,
-		title : " | " + systems[agency]["name"] + " | " + routeID
+		title : " | " + systems[agency]["name"] + " | " + routeID,
+		controller : 'RouteCtrl'
 	});
 }
 
@@ -141,7 +145,8 @@ exports.index = function(req, res) {
 	})
 	res.render('index', {
 		systems : sys,
-		title : ""
+		title : "",
+		controller : 'HomeCtrl'
 	});
 };
 
@@ -166,17 +171,21 @@ exports.stoproute = function(req, res) {
 	var stop = {
 		"stopID" : req.params.stop.toUpperCase()
 	};
-	var routeID = req.params.route;
+	var routeID = "";
+	routeID = req.params.route;
 	var stopID = req.params.stop;
+		console.log(routeID)
+
 	var agency = req.params.agency.toLowerCase();
 	res.render('stop', {
 		stopID : stopID,
 		stop : JSON.stringify(stop),
-		routeID : routeID,
+		routeID : JSON.stringify(routeID),
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
-		title : " | " + systems[agency]["name"] + " | " + routeID + " | " + stopID
+		title : " | " + systems[agency]["name"] + " | " + routeID + " | " + stopID,
+		controller : 'StopCtrl'
 	});
 	//res.send()
 

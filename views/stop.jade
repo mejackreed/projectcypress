@@ -15,7 +15,7 @@ block nav
   include partials/navstop
   
 block body
-  div(ng-controller = "StopCtrl")
+  div
     div(ng-init='init(#{agency},"#{stopID}", #{routeID})' )
       
     div.row-fluid
@@ -46,8 +46,8 @@ block body
       div#people.tab-pane.fade.in
         div.row-fluid
           div.span6
-            label Search Radius : 
-              select#searchRadius(onChange='updateRadius(value)').radius miles
+            label Search Radius (miles): 
+              select#searchRadius(onChange='updateRadius(value)').radius
                 option .25
                 option .5
                 option 1
@@ -89,7 +89,7 @@ block body
           
       div#locale.tab-pane.fade.in
         div
-          label Search Radius : 
+          label Search Radius (miles): 
               select#searchRadius(onChange='updateRadius(value)').radius miles
                 option .25
                 option .5
