@@ -180,7 +180,7 @@ function RouteCtrl($scope, $http, $resource, $filter) {
 	$scope.init = function(agency, route) {
 		//This function is sort of private constructor for controller
 		$scope.agency = agency;
-		$scope.route = route.toString();
+		$scope.route = route;
 		//console.log($scope.route)
 		//console.log($scope.agency)
 
@@ -271,6 +271,21 @@ function StopCtrl($scope, $http, $resource) {
 }
 
 function AgencyCtrl($scope, $http, $resource) {
+	$scope.currentPage = 0;
+	$scope.pageSize = 8;
+	//$scope.setPage = function (pageNo) {
+
+
+	$scope.numberOfPages = function() {
+		if ($scope.routeUniqueResults == undefined) {
+			return ""
+		} else {
+			//var dayFilter = $filter('dayButtons')
+			//console.log($scope.routeStopUnique | filter:dayButtons)
+			return Math.ceil(($scope.routeUniqueResults).length / $scope.pageSize);
+		}
+	}
+
 	//$scope.routeResults = []all_trips_tod
 	$scope.getTripsPerTime = function() {
 		$http({
@@ -309,24 +324,31 @@ function AgencyCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT average_speed, route_avg_hdwy from " + $scope.agency.output.route,
+				sql : "SELECT * from " + $scope.agency.output.route,
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			console.log(data)
-			$scope.averageSpeed = []
-			$scope.averageHeadway = []
+			console.log(data);
+			$scope.averageSpeed = [];
+			$scope.averageHeadway = [];
+			$scope.routeUniqueResults = [];
 			_.forEach(data['rows'], function(val) {
-				if ( typeof val[0] == 'number') {
-					$scope.averageSpeed.push(val[0])
+				if ( typeof val[4] == 'number') {
+					$scope.averageSpeed.push(val[4])
 				}
-				if ( typeof val[1] == 'number') {
-					$scope.averageHeadway.push(val[1])
+				if ( typeof val[7] == 'number') {
+					$scope.averageHeadway.push(val[7])
+				}
+				if (_.findWhere($scope.routeUniqueResults, {routeID : val[0]}) == undefined){
+					$scope.routeUniqueResults.push({
+						routeID : val[0],
+						route_short_name : val[13],
+						route_long_name : val[14]
+					})
 				}
 			})
-			//$scope.routeResults = data['rows'];
-			//console.log($scope.averageSpeed)
+		
 		})
 	}
 

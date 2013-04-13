@@ -45,7 +45,7 @@ var systems = {
 		},
 		"output" : {
 			"stop_route" : "1jOXT0VjrhC8hU_oxSoM3uXmNfoVikPicKcjM9W8",
-			"route" : "1henfUvSofz2FgYWpVX6x6AdKdrOtQ7VvPrNR6OA",
+			"route" : "1Ev3qB3h-o41XXWDk9QFwdFMkw8c8vqDR-6smem0",
 			"active_trips" : "1SYTpPar5lr1-j2PMJaikK41VVc3X6NVvEuRxzVE",
 			"stop" : "1oK5oxUd9AcEottLEc5zffkx3OLdPJDemANAySFY",
 			"all_trips_day" : "17XCiVpgdSVWa6In8Dx8d1YsPvFcwfSCaTEhrjzY",
@@ -73,10 +73,12 @@ var systems = {
 			"agency" : "13Qswnscl9VmvmlZXGrMhRrK2Q8bkRKD231dVW5k"
 		},
 		"output" : {
-			"stop_route" : "1bicK9T-3V3oZjBdZI5_Xh8Ox5_P-sK3E71fvSDw",
-			"route" : "1mr6QLIgyohcA7bDO49S6baY8-xOvGDWmw7iJfm4",
-			"active_trips" : "12cjopQyiJbh2NWthcPTKyJ1ySWLiqkeu3m50CjE",
-			"stop" : "1nFhBi5XL5ETwkxmsB77o-Ik9Ldc9dL_ikYNA5n0"
+			"stop_route" : "1x9SFeRubgfnqqDN0dy7hcJ6NxNRpdZjy68q4PKE",
+			"route" : "1JIVpDjCKsFJ2tA4j8Gagb7-Qy3Y5gWdDoBWr564",
+			"active_trips" : "1wmxuOU6pwmfi_gZXk21z_UPhFrTYo4IRTJKMA-w",
+			"all_trips_day" : "1-22SleuRfJ8ACgdBviVWhgDziiMC3OIERxYsG9I",
+			"all_trips_tod" : "1s1n6TC-lsNFte2QR0mxAi5htRMnUlfVNUtT9AmY",
+			"stop" : "1MUeCm0zKg8CPZXviIkvTnNOeAMTkV8LuywEKJDs"
 		}
 
 	},
@@ -96,8 +98,8 @@ var systems = {
 			"agency" : "1b_C6WurzKwGGm2_A4uaS-GmFqpJ43X6ul9_YOfo"
 		},
 		"output" : {
-			"stop_route" : "1NbSSQ3QnuXaIn9Ld8tBmNmv8RPoODWecD8_UKPQ",
-			"route" : "1TTqFZx41tgmFno7wRrqgOPAo7Nhww5C5-3X3Vtw",
+			"stop_route" : "1mHS-Jk1jY5M73reU2lYU2HK57cIemFU_C2Z4bOk",
+			"route" : "1sZxR8CK4DpOu9m1-9tFlZa7dj9LPJ3ajQUFphi4",
 			"active_trips" : "1Mos8MBcBLOrtyNJInuSUGaBskmNnkcvUr23YRvU",
 			"stop" : "18jlD7Lv8h4nncRKE1M3fAF7yjKvRdg3NLTOfABw",
 			"all_trips_day" : "1_WlKqutfPlbF0BFwC7GxHXGgML-W2c1-1F8SbkA",
@@ -105,6 +107,7 @@ var systems = {
 		}
 	}
 }
+
 
 exports.agencies = function(req, res) {
 	//console.log(req.params)

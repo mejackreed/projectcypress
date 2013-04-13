@@ -20,7 +20,18 @@ block body
                     input#stopField(type='text', class='search-query', ng-model='routeSearch')
                 div.search
                   a#stopSubmit.btn(href='{{agency.name}}/{{routeSearch}}') Search
-      div
+          div.span6
+            table.table.table-hover
+              tr
+                th Route
+              tr(ng-repeat=" route in routeUniqueResults | startFrom:currentPage*pageSize | limitTo:pageSize")
+                td 
+                  a(href='/{{agency.name}}/{{route.routeID}}'){{route.route_short_name}} {{route.route_long_name}}
+            button.btn.btn-small(ng-show='routeUniqueResults.length > 0', ng-disabled="currentPage == 0", ng-click="currentPage=currentPage-1") Previous
+            span(ng-show='routeUniqueResults.length > 0') &nbsp; {{currentPage+1}}/{{numberOfPages()}} &nbsp;
+            button.btn.btn-small(ng-show='routeUniqueResults.length > 0', ng-disabled="currentPage >= routeUniqueResults.length/pageSize - 1", ng-click="currentPage=currentPage+1") Next
+    
+            div
         div.span6
           h3.navbar-inner Trips per day
           d-Bar(val='tripsPerDay').span6
