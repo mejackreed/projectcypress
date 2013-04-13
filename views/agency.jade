@@ -2,15 +2,14 @@ extends layout
 
 block head
   link(rel='stylesheet', href='/css/agency.css')
+  
+block nav
+  include partials/navagency
+  
 
 block body
   div(ng-controller = "AgencyCtrl")
       div.container-fluid(ng-init='init(#{agency})' )
-        div
-          h4.navbar-inner.navbar-text Agency
-            span.label.label-important {{stop}}
-            &nbsp; | &nbsp;
-            a(href='{{agency.website}}', target='_blank') {{agency.name}}
         div.row-fluid
           div.span6
             label Search for a {{agency.name}} stop

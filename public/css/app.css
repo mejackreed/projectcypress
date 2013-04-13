@@ -1,4 +1,8 @@
 /* app css stylesheet */
+h4 a:hover{
+	text-decoration: none;
+}
+
 #map-canvas, #street-canvas {
 	height: 300px;
 	min-width: 200px;

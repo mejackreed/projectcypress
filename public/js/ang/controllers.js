@@ -31,7 +31,6 @@ function RouteCtrl($scope, $http, $resource, $filter) {
 	$scope.currentPage = 0;
 	$scope.pageSize = 8;
 	//$scope.setPage = function (pageNo) {
-   
 
 	$scope.getService = function(input) {
 		if (input != undefined) {
@@ -90,9 +89,12 @@ function RouteCtrl($scope, $http, $resource, $filter) {
 		}).success(function(data) {
 			$scope.routeStopResult = data['rows'];
 			$scope.routeStopUnique = [];
-			_.each($scope.routeStopResult, function(v,i){
-				var stop = _.findWhere($scope.routeStopUnique, {'stop_id' : v[2], "dow" : v[4]})
-				if (stop == undefined){
+			_.each($scope.routeStopResult, function(v, i) {
+				var stop = _.findWhere($scope.routeStopUnique, {
+					'stop_id' : v[2],
+					"dow" : v[4]
+				})
+				if (stop == undefined) {
 					$scope.routeStopUnique.push({
 						"stop_id" : v[2],
 						"stop_name" : v[1],
@@ -216,14 +218,13 @@ function StopCtrl($scope, $http, $resource) {
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE stop_id ='" + $scope.stop + "'",
+				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE stop_id ='" + $scope.stop + "' AND route_id ='" + $scope.route + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
-			//console.log(data)
+			console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
-		
 
 		})
 	}
@@ -259,9 +260,10 @@ function StopCtrl($scope, $http, $resource) {
 			$scope.stopResults = data['rows'];
 		})
 	}
-	$scope.init = function(agency, stop) {
+	$scope.init = function(agency, stop, route) {
 		$scope.agency = agency;
 		$scope.stop = stop.toString();
+		$scope.route = route.toString();
 
 		$scope.getStop()
 		$scope.getStopRoute()
@@ -336,6 +338,13 @@ function AgencyCtrl($scope, $http, $resource) {
 		$scope.getTripsPerDay()
 		//$scope.getStop()
 		//$scope.getStopRoute()
+	}
+}
+
+function HomeCtrl($scope) {
+	$scope.init = function(systems) {
+		$scope.systems = systems.split(',')
+		console.log(systems)
 	}
 }
 

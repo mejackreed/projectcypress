@@ -1,78 +1,82 @@
 extends layout
 
 block body
-  div
-    h1 transitious
-  div.span6
-    div.accordion#accordion2
-      div.accordion-group
-        div.accordion-heading
-          a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseOne') 
-            | 
-            b transitious 
-            | knows about people.
-        div#collapseOne(class='accordion-body collapse')
-          div.accordion-inner
-            b transitious 
-            | is fueled by demographic information culled from the 2010 census, the American Community Survey and the snazziest people data in the United States. When you explore near a transit facility, you’ll see all the data for areas in that transit-shed.
-      div.accordion-group
-        div.accordion-heading
-          a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseTwo') 
-            | 
-            b transitious 
-            | knows about neighborhoods.
-        div#collapseTwo(class='accordion-body collapse')
-          div.accordion-inner Using unique datasets not previously leveraged for planners, transitious explores the areas around transit facilities using information found in Yelp!. Despite following no formal research method, Yelp! data is one of the most comprehensive online databases of places in the world. And its free.
-      div.accordion-group
-        div.accordion-heading
-          a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseThree')
-            | 
-            b transitious 
-            | knows about transit.
-        div#collapseThree(class='accordion-body collapse')
-          div.accordion-inner 
-            | Transit is not described solely by stop locations. 
-            b transitious 
-            | uses complete GTFS datasets to identify the quality of service provided at transit facilities including headways, hours of service, route speeds, trips per day and even connectivity to other stops and routes.
-            p
-            p Check out the following transit stops:
-            ul.unstyled
-              li
-                a(href='marta/stop/797') MARTA's Five Points Station 
-              li
-                a(href='bart/stop/24TH') BART's 24th St. Mission Station 
-              li
-                a(href='cta/stop/1864') CTA's Clark & Lake Station 
-              li
-                a(href='septa-rail/stop/90001') SEPTA's Cynwid Station
-          
+  div(ng-controller = "HomeCtrl")
+    div(ng-init='init("#{systems}")' )
+      h1 transitious #{systems}
+    div.row-fluid
+      div.span6
+        div.accordion#accordion2
+          div.accordion-group
+            div.accordion-heading
+              a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseOne') 
+                | 
+                b transitious 
+                | knows about people.
+            div#collapseOne(class='accordion-body collapse')
+              div.accordion-inner
+                b transitious 
+                | is fueled by demographic information culled from the 2010 census, the American Community Survey and the snazziest people data in the United States. When you explore near a transit facility, you’ll see all the data for areas in that transit-shed.
+          div.accordion-group
+            div.accordion-heading
+              a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseTwo') 
+                | 
+                b transitious 
+                | knows about neighborhoods.
+            div#collapseTwo(class='accordion-body collapse')
+              div.accordion-inner Using unique datasets not previously leveraged for planners, transitious explores the areas around transit facilities using information found in Yelp!. Despite following no formal research method, Yelp! data is one of the most comprehensive online databases of places in the world. And its free.
+          div.accordion-group
+            div.accordion-heading
+              a.accordion-toggle(data-toggle='collapse', data-parent='#accordion2', href='#collapseThree')
+                | 
+                b transitious 
+                | knows about transit.
+            div#collapseThree(class='accordion-body collapse')
+              div.accordion-inner 
+                | Transit is not described solely by stop locations. 
+                b transitious 
+                | uses complete GTFS datasets to identify the quality of service provided at transit facilities including headways, hours of service, route speeds, trips per day and even connectivity to other stops and routes.
+                p
+                p Check out the following transit stops:
+                ul.unstyled
+                  li
+                    a(href='marta/stop/797') MARTA's Five Points Station 
+                  li
+                    a(href='bart/stop/24TH') BART's 24th St. Mission Station 
+                  li
+                    a(href='cta/stop/1864') CTA's Clark & Lake Station 
+                  li
+                    a(href='septa-rail/stop/90001') SEPTA's Cynwid Station
       
-     
-
-    div
-      p Project by:
-      ul.unstyled
-        li 
-          a(href='https://twitter.com/gefilte20') Aaron Gooze
-        li 
-          a(href='https://twitter.com/mejackreed') Jack Reed
-        li 
-          a(href='https://twitter.com/eltiar') Landon Reed
-        li 
-          a(href='https://twitter.com/jcwong86') James Wong   
-  div.span4
-    label Search for a stop
-    select#agencySelect.span3
-      option MARTA
-      option BART
-      option CTA
-    div.form-search()
-      fieldset
-        div
-          label
-            input#stopField(type='text', class='search-query span3')
-        div.search
-          button#stopSubmit.btn Search
-  
+      div.span6
+        p Project by:
+        ul.unstyled
+          li 
+            a(href='https://twitter.com/gefilte20') Aaron Gooze
+          li 
+            a(href='https://twitter.com/mejackreed') Jack Reed
+          li 
+            a(href='https://twitter.com/eltiar') Landon Reed
+          li 
+            a(href='https://twitter.com/jcwong86') James Wong 
+    div.row-fluid 
+      div.span6
+        h4 Go to an agency:
+        ul.unstyled
+          li(ng-repeat="system in systems") <a href='/{{system}}/'>{{system}}</a>
+      div.span6
+        label Search for a stop
+        select#agencySelect.span3
+          option MARTA
+          option BART
+          option CTA
+        div.form-search()
+          fieldset
+            div
+              label
+                input#stopField(type='text', class='search-query')
+            div.search
+              button#stopSubmit.btn Search
+    
 block scripts
   script(src='js/index.js')

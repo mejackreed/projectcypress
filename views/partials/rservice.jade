@@ -7,7 +7,7 @@ div.row-fluid
         th Stop Name
       tr(ng-Repeat=" stop in routeStopUnique | filter:dayButtons | startFrom:currentPage*pageSize | limitTo:pageSize") <!--  See if we can limit by trip headsign-->
         td 
-          a(href='/#{name}/stop/{{stop.stop_id}}'){{stop.stop_name}}
+          a(href='/#{name}/#{routeID}/{{stop.stop_id}}'){{stop.stop_name}}
     button.btn.btn-small(ng-show='routeStopUnique.length > 0', ng-disabled="currentPage == 0", ng-click="currentPage=currentPage-1") Previous
     span(ng-show='routeStopUnique.length > 0') &nbsp; {{currentPage+1}}/{{numberOfPages()}} &nbsp;
     button.btn.btn-small(ng-show='routeStopUnique.length > 0', ng-disabled="currentPage >= routeStopUnique.length/pageSize - 1", ng-click="currentPage=currentPage+1") Next

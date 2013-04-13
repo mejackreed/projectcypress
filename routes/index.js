@@ -1,6 +1,7 @@
 /*
  * GET home page.
  */
+var _ = require('underscore')._;
 
 var systems = {
 	"marta" : {
@@ -118,29 +119,54 @@ exports.agencies = function(req, res) {
 exports.routes = function(req, res) {
 	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
-	var route = req.params.route;
+	var routeID = req.params.route;
 	//console.log(route)
 	res.render('route', {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
-		route : JSON.stringify(route)
+		routeID : routeID
 	});
 }
 
 exports.index = function(req, res) {
-	res.render('index');
+	var sys = []
+	_.each(systems, function(val){
+		sys.push(val.name)
+	})
+	res.render('index', {
+		systems : sys
+	});
 };
 
-exports.stops = function(req, res) {
+// exports.stops = function(req, res) {
+	// var stop = {
+		// "stopID" : req.params.stop.toUpperCase()
+	// };
+	// var stopID = req.params.stop;
+	// var agency = req.params.agency.toLowerCase();
+	// res.render('stop', {
+		// stopID : stopID,
+		// stop : JSON.stringify(stop),
+		// agency : JSON.stringify(systems[agency]),
+		// name : systems[agency]["name"],
+		// website : systems[agency]["website"]
+	// });
+	// //res.send()
+// 
+// }
+
+exports.stoproute = function(req, res) {
 	var stop = {
 		"stopID" : req.params.stop.toUpperCase()
 	};
+	var routeID = req.params.route;
 	var stopID = req.params.stop;
 	var agency = req.params.agency.toLowerCase();
 	res.render('stop', {
 		stopID : stopID,
 		stop : JSON.stringify(stop),
+		routeID : routeID,
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"]

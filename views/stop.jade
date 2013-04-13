@@ -9,22 +9,20 @@ block head
     
   script(src='js/stops.js')
   
+block nav
+  include partials/navagency
+  include partials/navroute
+  include partials/navstop
+  
 block body
   div(ng-controller = "StopCtrl")
-    div(ng-init='init(#{agency},"#{stopID}")' )
-      div
-        h4.navbar-inner.navbar-text Stop ID 
-          span.label.label-important {{stop}}
-          &nbsp; | &nbsp;
-          span#stopname
-          &nbsp; | &nbsp;
-          a(href='{{agency.website}}', target='_blank') {{agency.name}}
-          include partials/homenav
+    div(ng-init='init(#{agency},"#{stopID}", #{routeID})' )
+      
     div.row-fluid
       div.navbar
         ul.nav.nav-pills#navi-tabs
           li.active
-            a(href='#home', data-toggle='tab').tabclick Home
+            a(href='#map', data-toggle='tab').tabclick Map
           li
             a(href='#service', data-toggle='tab') Service
           li
@@ -33,7 +31,7 @@ block body
             a(href='#locale', data-toggle='tab', onClick='updateRadius()') Locale
             
     div(id="myTabContent",class="tab-content").container-fluid
-      div#home.tab-pane.fade.in.active
+      div#map.tab-pane.fade.in.active
         div.row-fluid
           div.span6
             h3.navbar-inner <i class="icon-globe"> </i> Map of transit stop

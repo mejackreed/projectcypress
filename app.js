@@ -31,9 +31,10 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/:agency/stop/:stop', routes.stops);
-app.get('/:agency/route/:route', routes.routes);
+//app.get('/:agency/stop/:stop', routes.stops);
+//app.get('/:agency/route/:route', routes.routes);
 app.get('/:agency/:route', routes.routes)
+app.get('/:agency/:route/:stop', routes.stoproute)
 
 //app.get('/partials/:name', routes.partials);
 app.get('/:agency/', routes.agencies);

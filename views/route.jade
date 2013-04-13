@@ -3,18 +3,13 @@ extends layout
 block head 
     link(rel='stylesheet', href='/css/route.css')
 
+block nav
+  include partials/navagency
+  include partials/navroute
+  
 
 block body
-  div(ng-controller='RouteCtrl')(ng-init='init(#{agency},#{route})' )
-    div
-        h4.navbar-inner.navbar-text Route ID 
-          span.label.label-important {{route}}
-          &nbsp; | &nbsp;
-          {{routeResult[0][2]}}
-          &nbsp; | &nbsp;
-          a(href='{{agency.website}}', target='_blank') {{agency.name}}
-          include partials/homenav
-
+  div(ng-controller='RouteCtrl')(ng-init='init(#{agency},#{routeID})' )
     
     div.row-fluid
         include partials/rservice
