@@ -112,7 +112,8 @@ exports.agencies = function(req, res) {
 	res.render('agency', {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
-		website : systems[agency]["website"]
+		website : systems[agency]["website"],
+		title : " | " + systems[agency]["name"]
 	});
 }
 
@@ -125,7 +126,8 @@ exports.routes = function(req, res) {
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
 		website : systems[agency]["website"],
-		routeID : routeID
+		routeID : routeID,
+		title : " | " + systems[agency]["name"] + " | " + routeID
 	});
 }
 
@@ -135,7 +137,8 @@ exports.index = function(req, res) {
 		sys.push(val.name)
 	})
 	res.render('index', {
-		systems : sys
+		systems : sys,
+		title : ""
 	});
 };
 
@@ -169,7 +172,8 @@ exports.stoproute = function(req, res) {
 		routeID : routeID,
 		agency : JSON.stringify(systems[agency]),
 		name : systems[agency]["name"],
-		website : systems[agency]["website"]
+		website : systems[agency]["website"],
+		title : " | " + systems[agency]["name"] + " | " + routeID + " | " + stopID
 	});
 	//res.send()
 

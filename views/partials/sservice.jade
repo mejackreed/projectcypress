@@ -11,19 +11,7 @@ div.row-fluid
           button.btn(type = "button", ng-model="dayButtons", btn-radio="'Saturday'") Sat
           button.btn(type = "button", ng-model="dayButtons", btn-radio="'Sunday'") Sun
       
-    table.table.table-hover
-      tr
-        th Day of the week
-        th Number of trips
-        th Number of routes
-        th First arrival
-        th Last arrival
-      tr(ng-repeat=" stop in stopResults | filter:dayButtons")
-        td {{stop[2]}}
-        td {{stop[5]}}
-        td {{stop[10]}}
-        td {{stop[17]}}
-        td {{stop[19]}}
+    
   div.span6
     div()
       form

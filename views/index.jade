@@ -3,7 +3,7 @@ extends layout
 block body
   div(ng-controller = "HomeCtrl")
     div(ng-init='init("#{systems}")' )
-      h1 transitious #{systems}
+      h1 transitio.us
     div.row-fluid
       div.span6
         div.accordion#accordion2
@@ -64,12 +64,7 @@ block body
         h4 Go to an agency:
         ul.unstyled
           li(ng-repeat="system in systems") <a href='/{{system}}/'>{{system}}</a>
-      div.span6
-        label Search for a stop
-        select#agencySelect.span3
-          option MARTA
-          option BART
-          option CTA
+      
         
     
 block scripts

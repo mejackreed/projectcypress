@@ -245,27 +245,27 @@ function StopCtrl($scope, $http, $resource) {
 		})
 	}
 
-	$scope.getStop = function() {
-		console.log($scope.stop)
-		$http({
-			method : 'JSONP',
-			url : fusionURL,
-			params : {
-				sql : "SELECT * from " + $scope.agency.output.stop + " WHERE stop_id ='" + $scope.stop + "'",
-				key : googleKey,
-				callback : 'JSON_CALLBACK'
-			}
-		}).success(function(data) {
-			//	console.log(data)
-			$scope.stopResults = data['rows'];
-		})
-	}
+	// $scope.getStop = function() {
+		// console.log($scope.stop)
+		// $http({
+			// method : 'JSONP',
+			// url : fusionURL,
+			// params : {
+				// sql : "SELECT * from " + $scope.agency.output.stop + " WHERE stop_id ='" + $scope.stop + "'",
+				// key : googleKey,
+				// callback : 'JSON_CALLBACK'
+			// }
+		// }).success(function(data) {
+			// //	console.log(data)
+			// $scope.stopResults = data['rows'];
+		// })
+	// }
 	$scope.init = function(agency, stop, route) {
 		$scope.agency = agency;
 		$scope.stop = stop.toString();
 		$scope.route = route.toString();
 
-		$scope.getStop()
+		//$scope.getStop()
 		$scope.getStopRoute()
 	}
 }
