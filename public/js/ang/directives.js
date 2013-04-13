@@ -271,7 +271,7 @@ function(version) {
 		top : 10,
 		right : 30,
 		bottom : 30,
-		left : 60
+		left : 0
 	}
 	var width = $('d-Bar').width(), height = 300 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
 
@@ -327,7 +327,7 @@ function(version) {
 				var mouseover = function(d, i) {
 					d3.select(this).style('fill', 'red')
 					div.transition().duration(0).style("opacity", .9);
-					div.html(d).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+					div.html(d[0] + " - " + d[1] + " trips").style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
 				};
 
 				var mouseout = function() {
@@ -348,8 +348,8 @@ function(version) {
 				}))]).rangeRound([height - margin.top, margin.top])
 				//.rangeRound([0, height - margin.top]);
 
-				var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
-				svg.append("g").attr("class", "axis").attr("transform", "translate(60,-5)").call(yAxis);
+				//var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+				//svg.append("g").attr("class", "axis").attr("transform", "translate(60,-5)").call(yAxis);
 
 				svg.selectAll("rect").data(values).enter().append("rect").attr("x", function(d, i) {
 					return (i * ((width - margin.left) / values.length)) + margin.left;
@@ -364,7 +364,7 @@ function(version) {
 				})
 
 				svg.selectAll("text").data(values).enter().append("text").attr("y", height + 15).attr("class", "small").attr("x", function(d, i) {
-					return (i * (width / values.length)) + margin.left
+					return (i * ((width - margin.left) / values.length)) + margin.left + 5
 				}).text(function(d) {
 					return d[0].slice(0, 3)
 				});
