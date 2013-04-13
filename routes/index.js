@@ -52,9 +52,9 @@ var systems = {
 			"all_trips_tod" : "1uPGAd4zKYBsDHMQ6MZ5MJJTI_gbFAOweon0tZNw"
 
 		}
-		
+
 		// SEPTA-bus
-// route : 1gNdpc6oOV0hMahN2MU5byjPVR4WRY7YcI3NJnqI
+		// route : 1gNdpc6oOV0hMahN2MU5byjPVR4WRY7YcI3NJnqI
 
 	},
 	"cta" : {
@@ -108,7 +108,6 @@ var systems = {
 	}
 }
 
-
 exports.agencies = function(req, res) {
 	//console.log(req.params)
 	var agency = req.params.agency.toLowerCase();
@@ -126,7 +125,7 @@ exports.routes = function(req, res) {
 	var agency = req.params.agency.toLowerCase();
 	var routeID = "";
 	routeID = req.params.route;
-	console.log(routeID)
+	//console.log(routeID)
 	//console.log(route)
 	res.render('route', {
 		agency : JSON.stringify(systems[agency]),
@@ -140,7 +139,7 @@ exports.routes = function(req, res) {
 
 exports.index = function(req, res) {
 	var sys = []
-	_.each(systems, function(val){
+	_.each(systems, function(val) {
 		sys.push(val.name)
 	})
 	res.render('index', {
@@ -151,20 +150,20 @@ exports.index = function(req, res) {
 };
 
 // exports.stops = function(req, res) {
-	// var stop = {
-		// "stopID" : req.params.stop.toUpperCase()
-	// };
-	// var stopID = req.params.stop;
-	// var agency = req.params.agency.toLowerCase();
-	// res.render('stop', {
-		// stopID : stopID,
-		// stop : JSON.stringify(stop),
-		// agency : JSON.stringify(systems[agency]),
-		// name : systems[agency]["name"],
-		// website : systems[agency]["website"]
-	// });
-	// //res.send()
-// 
+// var stop = {
+// "stopID" : req.params.stop.toUpperCase()
+// };
+// var stopID = req.params.stop;
+// var agency = req.params.agency.toLowerCase();
+// res.render('stop', {
+// stopID : stopID,
+// stop : JSON.stringify(stop),
+// agency : JSON.stringify(systems[agency]),
+// name : systems[agency]["name"],
+// website : systems[agency]["website"]
+// });
+// //res.send()
+//
 // }
 
 exports.stoproute = function(req, res) {
@@ -174,7 +173,7 @@ exports.stoproute = function(req, res) {
 	var routeID = "";
 	routeID = req.params.route;
 	var stopID = req.params.stop;
-		console.log(routeID)
+	//	console.log(routeID)
 
 	var agency = req.params.agency.toLowerCase();
 	res.render('stop', {

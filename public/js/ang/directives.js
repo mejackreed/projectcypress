@@ -512,7 +512,7 @@ function(version) {
 			var j =1;
 			
 				var my_nodes = [{
-					"name" : values[0][2],
+					"name" : values[0][1],
 					"group" : 1
 				}]
 				var my_links = [];
