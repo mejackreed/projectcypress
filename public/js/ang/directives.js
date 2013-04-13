@@ -418,7 +418,7 @@ function(version) {
 				var mouseover = function(d, i) {
 					d3.select(this).style('fill', 'red')
 					div.transition().duration(0).style("opacity", .9);
-					div.html(formatTime(d[1]) + " - " + d[2]).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+					div.html(formatTime(d[1]) + " - " + d[2] + " trips").style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
 				};
 
 				var mouseout = function() {
