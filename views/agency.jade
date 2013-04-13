@@ -12,15 +12,6 @@ block body
       div.container-fluid(ng-init='init(#{agency})' )
         div.row-fluid
           div.span6
-            label Search for a {{agency.name}} route
-            div.form-search
-              fieldset
-                div
-                  label
-                    input#stopField(type='text', class='search-query', ng-model='routeSearch')
-                div.search
-                  a#stopSubmit.btn(href='{{agency.name}}/{{routeSearch}}') Search
-          div.span6
             table.table.table-hover
               tr
                 th Route
