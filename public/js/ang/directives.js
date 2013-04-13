@@ -108,7 +108,7 @@ function(version) {
 	var margin = {
 		top : 10,
 		right : 30,
-		bottom : 30,
+		bottom : 50,
 		left : 30
 	}
 	var width = $('d-hist').width() - margin.left - margin.right, height = 300 - .5 - margin.top - margin.bottom, color = d3.interpolateRgb("#f77", "#77f");
@@ -117,10 +117,12 @@ function(version) {
 		restrict : 'E',
 		terminal : true,
 		scope : {
-			val : '='
+			val : '=',
+			xlab : '='
 		},
 		link : function(scope, element, attrs) {
 			var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
+		//	console.log(scope.xlab)
 
 			scope.$watch('val', function(newVal, oldVal) {
 				var values = new Array();
@@ -140,7 +142,7 @@ function(version) {
 				var mouseover = function(d, i) {
 					d3.select(this).select('rect').style('fill', 'red')
 					div.transition().duration(0).style("opacity", .9);
-					div.html(formatCount(d.y)).style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
+					div.html(formatCount(d.y) + " - trips").style("left", (d3.event.pageX) + "px").style("top", (d3.event.pageY - 28) + "px");
 				};
 
 				var mouseout = function() {
@@ -171,10 +173,23 @@ function(version) {
 				}).duration(400).ease("sin").attr("height", function(d) {
 					return height - y(d.y);
 				})
+				//console.log(scope.xLabel)
+				svg.append("text").text(scope.xlab).attr("y",height + 40).attr("x", function(d){
+					return width/2
+				}).attr("text-anchor", "middle")
+				
+				// svg.selectAll('text').data(scope.xlab).enter().append("text").attr("y", height ).attr("class", "small").attr("x", function(d, i) {
+					// return width/2
+				// }).text(function(d) {
+					// return d[0].slice(0, 3)
+				// });
 
 				svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
-
+				
+				
 			});
+			
+		
 		}
 	}
 }).directive('dScat', function() {
@@ -373,8 +388,6 @@ function(version) {
 	}
 }).directive('dBarttd', function() {
 
-	// constants
-	//console.log($('d-hist').width())
 	var margin = {
 		top : 10,
 		right : 30,

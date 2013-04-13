@@ -271,6 +271,8 @@ function StopCtrl($scope, $http, $resource) {
 }
 
 function AgencyCtrl($scope, $http, $resource) {
+	$scope.histLabel1 = "Speed in mph"
+	$scope.histLabel2 = "Headway in minutes"
 	$scope.currentPage = 0;
 	$scope.pageSize = 8;
 	//$scope.setPage = function (pageNo) {
