@@ -31,4 +31,14 @@ div.row-fluid
           td {{route[10]}}
           td {{route[11]}}
           td {{route[13]}}
+  
+  div.span6(ng-show='allRoutes.length>0')
+    h3.navbar-inner Other routes that serve this stop
+    table.table.table-hover
+      tr
+        th Trip head sign
+      tr(ng-repeat='route in allRoutes')
+        td 
+          a(href='/#{name}/{{route.route_id}}'){{route.route_id}} {{route.trip_headsign}}
+    
                 

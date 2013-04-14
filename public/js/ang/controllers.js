@@ -196,39 +196,28 @@ function StopCtrl($scope, $http, $resource) {
 	$scope.dayButtons = "Tuesday"
 	$scope.stop_name = "Stop Name"
 
-	//	$scope.serviceSelect = "xxxxx"
-	// $scope.updateRoutes = function() {
-		// $scope.routeStopResults = []
-		// _.each($scope.routeStopResultsAll, function(val) {
-			// //console.log(val)
-			// //console.log($scope.serviceSelect)
-			// //if (val[4] == $scope.serviceSelect[3]) {
-			// $scope.routeStopResults.push(val)
-			// //	}
-		// })
-		// //console.log($scope.routeStopResults)
-		// //$scope.routeStopResults =
-	// }
-	// $scope.updateRouteInfo = function() {
-		// $scope.getRouteStats()
-	// }
 	$scope.getAllRoutes = function() {
-		//console.log($scope.serviceSelect)
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
 			params : {
-				sql : "SELECT * from " + $scope.agency.output.route + " WHERE route_id ='" + $scope.route + "'",
+				sql : "SELECT * from " + $scope.agency.output.stop_route + " WHERE stop_id ='" + $scope.stop + "'",
 				key : googleKey,
 				callback : 'JSON_CALLBACK'
 			}
 		}).success(function(data) {
 			console.log(data)
-			$scope.routeStats = data['rows'];
+			$scope.allRoutes =[]
+			_.each(data['rows'], function(val){
+				if (_.findWhere($scope.allRoutes, {route_id : val[3]}) == undefined){
+					$scope.allRoutes.push({
+						route_id : val[3],
+						trip_headsign : val[9]
+					})					
+				}
+			})
 		})
 	}
-	
-	
 
 	$scope.getStopRoute = function() {
 		//console.log($scope.agency.output)
@@ -244,8 +233,8 @@ function StopCtrl($scope, $http, $resource) {
 			//console.log($scope.stop, $scope.route)
 			//console.log(data)
 			$scope.routeStopResultsAll = data['rows'];
-			if (data['rows']){
-			$scope.stop_name = $scope.routeStopResultsAll[0][1]
+			if (data['rows']) {
+				$scope.stop_name = $scope.routeStopResultsAll[0][1]
 			}
 		})
 	}
@@ -265,8 +254,8 @@ function StopCtrl($scope, $http, $resource) {
 			$scope.routeStats = data['rows'];
 		})
 	}
-	
-	$scope.getRouteInfo = function(){
+
+	$scope.getRouteInfo = function() {
 		$http({
 			method : 'JSONP',
 			url : fusionURL,
@@ -285,10 +274,11 @@ function StopCtrl($scope, $http, $resource) {
 		$scope.agency = agency;
 		$scope.stop = stop
 		$scope.route = route.toString()
-//	console.log($scope.route, route.toString())
+		//	console.log($scope.route, route.toString())
 		$scope.getRouteInfo()
 		$scope.getStopRoute()
 		$scope.getRouteStats()
+		$scope.getAllRoutes()
 	}
 }
 
@@ -299,7 +289,6 @@ function AgencyCtrl($scope, $http, $resource) {
 	$scope.pageSize = 8;
 	//$scope.setPage = function (pageNo) {
 
-
 	$scope.numberOfPages = function() {
 		if ($scope.routeUniqueResults == undefined) {
 			return ""
@@ -309,7 +298,6 @@ function AgencyCtrl($scope, $http, $resource) {
 			return Math.ceil(($scope.routeUniqueResults).length / $scope.pageSize);
 		}
 	}
-
 	//$scope.routeResults = []all_trips_tod
 	$scope.getTripsPerTime = function() {
 		$http({
@@ -364,7 +352,9 @@ function AgencyCtrl($scope, $http, $resource) {
 				if ( typeof val[7] == 'number') {
 					$scope.averageHeadway.push(val[7])
 				}
-				if (_.findWhere($scope.routeUniqueResults, {routeID : val[0]}) == undefined){
+				if (_.findWhere($scope.routeUniqueResults, {
+					routeID : val[0]
+				}) == undefined) {
 					$scope.routeUniqueResults.push({
 						routeID : val[0],
 						route_short_name : val[13],
@@ -372,7 +362,6 @@ function AgencyCtrl($scope, $http, $resource) {
 					})
 				}
 			})
-		
 		})
 	}
 
