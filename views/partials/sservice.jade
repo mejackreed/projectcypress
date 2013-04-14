@@ -1,5 +1,5 @@
 div.row-fluid
-  div.span6
+  div.span8
     form
       .btn-toolbar
         .btn-group(data-toggle="buttons-radio")
@@ -14,14 +14,14 @@ div.row-fluid
     div(ng-show="routeStats.length > 0")
       table.table.table-hover
         tr
-          th Trip head sign
-          th Average speed
-          th Route length
-          th Average headway
-          th Std. Dev of headway
-          th Hours of service
-          th Service span
-          th Stop spacing
+          th(data-toggle='tooltip', data-original-title='{{ttdes}}').tool Destination
+          th(data-toggle='tooltip', data-original-title='{{ttrl}}').tool Route speed
+          th(data-toggle='tooltip', data-original-title='{{ttrl}}').tool Route length
+          th(data-toggle='tooltip', data-original-title='{{ttrh}}').tool Route headway
+          th(data-toggle='tooltip', data-original-title='{{ttrhsd}}').tool Headway Variability
+          th(data-toggle='tooltip', data-original-title='{{tthos}}').tool Hours of Service
+          th(data-toggle='tooltip', data-original-title='{{tthos}}').tool Span of Service
+          th(data-toggle='tooltip', data-original-title='{{ttss}}').tool Average stop spacing
         tr(ng-repeat='route in routeStats | filter:dayButtons')
           td {{route[9]}}
           td {{route[4]}}
@@ -32,11 +32,11 @@ div.row-fluid
           td {{route[11]}}
           td {{route[13]}}
   
-  div.span6(ng-show='allRoutes.length>0')
+  div.span4(ng-show='allRoutes.length>0')
     h3.navbar-inner Other routes that serve this stop
     table.table.table-hover
       tr
-        th Trip head sign
+        th(data-toggle='tooltip', data-original-title='{{ttdes}}').tool Destination
       tr(ng-repeat='route in allRoutes')
         td 
           a(href='/#{name}/{{route.route_id}}'){{route.route_id}} {{route.trip_headsign}}

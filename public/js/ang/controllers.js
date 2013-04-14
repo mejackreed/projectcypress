@@ -26,6 +26,13 @@ function MyCtrl2() {
 MyCtrl2.$inject = [];
 
 function RouteCtrl($scope, $http, $resource, $filter) {
+	$scope.ttdes = "This is what the agency describes as the direction or destination of this route."
+	$scope.ttrl = "This is the length of the route in miles. Changes in service throughout the day make for slightly different routing, such as certain trips that go a longer distance; this is calculated on the most common configuration of the route."
+	$scope.ttrs = "This is the scheduled speed that the route is served using the length and times for all trip throughout the day."
+	$scope.ttss = "The average distance between stops on this route.  Changes in service throughout the day make for slightly different routing, such as certain trips that go a longer distance; this is calculated on the most common configuration of the route."
+	$scope.tthos = "This is the number of hours where this route provides at least 60-minute headway service. In some cases, this will be less than the span of service, for example when a commuter service runs only in the AM and PM peak hours."
+	$scope.ttsos = "This is the number of hours between the first departure and the last arrival of a route. Given the length of the route and the possibility that trips start and end after midnight, this may be more than 24 hours."
+	$scope.tttpd = "For each direction of this route, this is the total number of trips throughout a day."
 	//$scope.serviceSelect = '40205'
 	$scope.dayButtons = "Tuesday"
 	$scope.currentPage = 0;
@@ -193,6 +200,17 @@ function RouteCtrl($scope, $http, $resource, $filter) {
 }
 
 function StopCtrl($scope, $http, $resource) {
+	$scope.ttdes = "This is what the agency describes as the direction or destination of this route."
+	$scope.ttrl = "This is the length of the route in miles. Changes in service throughout the day make for slightly different routing, such as certain trips that go a longer distance; this is calculated on the most common configuration of the route."
+	$scope.ttrs = "This is the scheduled speed that the route is served using the length and times for all trip throughout the day."
+	$scope.ttss = "The average distance between stops on this route.  Changes in service throughout the day make for slightly different routing, such as certain trips that go a longer distance; this is calculated on the most common configuration of the route."
+	$scope.tthos = "This is the number of hours where this route provides at least 60-minute headway service. In some cases, this will be less than the span of service, for example when a commuter service runs only in the AM and PM peak hours."
+	$scope.ttsos = "This is the number of hours between the first departure and the last arrival of a route. Given the length of the route and the possibility that trips start and end after midnight, this may be more than 24 hours."
+	$scope.tttpd = "For each direction of this route, this is the total number of trips throughout a day."
+	$scope.ttrh = "Each headway in the system is calculated as the time between arrivals for a specific route at a specific stop. The route headway is calculated as the average of all headways sharing that route."
+	$scope.ttrhsd = "The standard deviation of the headway calculated in the previous average is an indication of how much variability there is in headways throughout the course of a day. A low standard deviation indicates consistent headways all day while a higher standard deviation indicates variability, such as frequent peak commuter service with infrequent mid-day service."
+	
+	
 	$scope.dayButtons = "Tuesday"
 	$scope.stop_name = "Stop Name"
 
@@ -207,13 +225,15 @@ function StopCtrl($scope, $http, $resource) {
 			}
 		}).success(function(data) {
 			console.log(data)
-			$scope.allRoutes =[]
-			_.each(data['rows'], function(val){
-				if (_.findWhere($scope.allRoutes, {route_id : val[3]}) == undefined){
+			$scope.allRoutes = []
+			_.each(data['rows'], function(val) {
+				if (_.findWhere($scope.allRoutes, {
+					route_id : val[3]
+				}) == undefined) {
 					$scope.allRoutes.push({
 						route_id : val[3],
 						trip_headsign : val[9]
-					})					
+					})
 				}
 			})
 		})
@@ -283,6 +303,10 @@ function StopCtrl($scope, $http, $resource) {
 }
 
 function AgencyCtrl($scope, $http, $resource) {
+	$scope.ttntpd = "Agencies provide different amounts of service depending on the day of week. This illustrates the total number of trips scheduled by day."
+	$scope.ttntbt = "Agencies provide different amounts of service throughout the various days of the week. This illustrates the total number of trips scheduled at each time over the course of a day."
+	$scope.ttrh = "Each headway in the system is calculated as the time between arrivals for a specific route at a specific stop. The route headway is calculated as the average of all headways sharing that route."
+	$scope.ttrs = "This is the scheduled speed that the route is served using the length and times for all trip throughout the day."
 	$scope.histLabel1 = "Speed in mph"
 	$scope.histLabel2 = "Headway in minutes"
 	$scope.currentPage = 0;

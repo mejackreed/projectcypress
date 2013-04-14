@@ -1,5 +1,5 @@
 div.row-fluid
-  div.span6
+  div.span4
     div
       h3.navbar-inner Stops that are on this route
     table.table.table-hover
@@ -12,7 +12,7 @@ div.row-fluid
     span(ng-show='routeStopUnique.length > 0') &nbsp; {{currentPage+1}}/{{numberOfPages()}} &nbsp;
     button.btn.btn-small(ng-show='routeStopUnique.length > 0', ng-disabled="currentPage >= routeStopUnique.length/pageSize - 1", ng-click="currentPage=currentPage+1") Next
     
-  div.span6
+  div.span8
     form
       .btn-toolbar
         .btn-group(data-toggle="buttons-radio")
@@ -29,19 +29,21 @@ div.row-fluid
     table.table.table-hover
       tr
         th Day of the week
-        th Trip Sign
-        th Length
-        th Average Speed
-        th Stop Spacing
-        th Hours of Service/Span
-        th Number of Trips
-      tr(ng-repeat=" routeinfo in routeStats | filter:dayButtons | limitTo:5")
+        th(data-toggle='tooltip', data-original-title='{{ttdes}}').tool Destination
+        th(data-toggle='tooltip', data-original-title='{{ttrl}}').tool Route Length
+        th(data-toggle='tooltip', data-original-title='{{ttrl}}').tool Route Speed
+        th(data-toggle='tooltip', data-original-title='{{ttss}}').tool Average stop spacing
+        th(data-toggle='tooltip', data-original-title='{{tthos}}').tool Hours of Service
+        th(data-toggle='tooltip', data-original-title='{{tthos}}').tool Span of Service
+        th(data-toggle='tooltip', data-original-title='{{tttpd}}').tool Trips per Day
+      tr(ng-repeat=" routeinfo in routeStats | filter:dayButtons")
         td {{routeinfo[1]}}
         td {{routeinfo[9]}}
         td {{routeinfo[5]}}
         td {{routeinfo[4]}}
-        td {{routeinfo[13]}}
-        td {{routeinfo[11]}} / {{routeinfo[12]}}
+        td {{routeinfo[12]/5280 | number:2}}
+        td {{routeinfo[10]}}
+        td {{routeinfo[11]}}
         td {{routeinfo[6]}}
 
 div.row-fluid

@@ -24,21 +24,25 @@ block body
     
             div
         div.span6
-          h3.navbar-inner Trips per day
+          h3.navbar-inner(data-toggle='tooltip', data-original-title='{{ttntpd}}').tool Number of Trips per Day
           d-Bar(val='tripsPerDay').span6
         div.span6
-          h3.navbar-inner Trips per time of day
+          h3.navbar-inner(data-toggle='tooltip', data-original-title='{{ttntbt}}').tool Number of Trips by Time
           d-Barttd(val='tripsPerTime').span6
       div
         div.span6
-          h3.navbar-inner Average Route Speed (mph)
+          h3.navbar-inner(data-toggle='tooltip', data-original-title='{{ttrs}}').tool Route Speed
           d-Hist(val='averageSpeed', xlab = "histLabel1").span6
         div.span6
-          h3.navbar-inner Average Route Headway
+          h3.navbar-inner(data-toggle='tooltip', data-original-title='{{ttrh}}').tool Route Headway
           d-Hist(val='averageHeadway', xlab = 'histLabel2').span6
       
         
 
 block scripts
   script(src='http://d3js.org/d3.v3.min.js')
+  script
+    $('.tool').tooltip({
+      container : 'body'  
+    })
   
